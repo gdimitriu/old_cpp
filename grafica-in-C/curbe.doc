@@ -1,0 +1,81 @@
+                CURBE DATE DE ECUATII PARAMETRICE (Cparam.cpp)
+
+ Curbele plane sint exprimate de o functie F(t)=(f(t),g(t)), unde
+t apartine [a,b],F:R->RxR.
+ Pentru reprezentarea grafica a unei astfel de curbe,se considera
+o fdiviziune a intervalului [a,b] dupa ce in prealabil s-a
+realizat o scalare in functie de cardinalul multimii [a,b]
+intersectat cu N sau Z,dupa caz.
+ 1)Concoida lui NICOMEDE (concoida dreptei):
+          x=a+_b*cos(t);
+          y=a*tg(t)+_b*sin(t);
+          t apartine (-pi/2,pi/2)
+ 2)Melcul lui PASCAL(concoida cercului,cardioida pt a=b):
+          x=2(a*cos(t)+b)cos(t);
+          y=2(a*cos(t)+b)sin(t);
+          t apartine (-pi,pi)
+ 3)Cisoida lui DIOCLES:
+          x=2a*sin(t)*sin(t);
+          y=2a*sin(t)*sin(t)*cos(t);
+          t apartine (-pi2,pi/2)
+ 4)Cisoida elipsei:
+          x=(2*a^3*tg^2(t))/(a^2*tg^2(t)+b^2);
+          y=(2*a^3*tg^3(t))/(a^2*tg^2(t)+b^2);
+          t apartine (-pi/2,pi/2)
+ 5)Trisectoarea lui MAC-LAURIN:
+          x=a(4cos^2(t)-1);
+          y=a(4cos^2(t)-1)*tg(t);
+          t apartine (-pi/2,pi/2)
+ 6)Trisectoarea LONGCHAMPS:
+          x=a/(a*cos^2(t)-3);
+          y=a*tg(t)/(4*cos^2(t)-3);
+          t apartine (-pi/2,pi/2)\{-pi/6,+pi/6}
+ 7)Cicloida:
+          x=at-b*sin(t);
+          y=a-b*cos(t);
+          t apartine lui R
+ 8)Epicicloida:
+          x=(R+r)*cos(r/R*t)-r*cos(t+r/R*t);
+          y=R+r)*sin(r/R*t)-r*sin(t+r/R*t);
+          t apartine [0,2pi]
+          Daca R=r se obtine cardioida;
+          Forma epicicloidei depinde de raportul r/R;
+ 9)Hipocicloida:
+          x=(R-r)*cos(r/R*t)+r*cos(t-r/R*t);
+          y=(R-r)*sin(r/R*t)-r*sin(t-r/R*t);
+          t apartine [0,2pi]
+          Pentru R=4r se va obtine astroida
+ 10)Astroida:
+          x=a*cos^3(t);
+          y=a*sin^3(t);
+          t apartine [0,2pi]
+ 11)Strofoida:
+          x=a(1+_sin(t));
+          y=a(1+_sin(t))*tg(t);
+          t apartine (-pi/2,pi/2)
+ 12)Bucla Maria Agnesi:
+          x=a*ctg(t);
+          y=a*sin^2(t);
+          t apartine (0,pi)
+
+                CURBE DATE DE ECUATII POLARE (cpolare.cpp)
+
+ Curbele sint exprimate de coordonate polare (r,t),unde t
+apartine lui [a,b] iar r=f(t).
+ Pentru reprezentarea grafica a unei astfel de curbe este
+necesar ca pentru un punct dat in coordonate polare (r,t) sa se
+realizeze transformarea in coordonate carteziene.Aceasta
+transformare este:
+             x=f(t)*cos(t);
+             y-f(t)*sin(t).
+ 1)Lemniscata lui BERNOULLI:   r=+_a*sqrt(2cos(2t));t apartine (-pi/4,pi/4)
+ 2)Concoida lui NICOMEDE:      r=a/cos(t)+_b;t apartine (-pi/2,pi/2)
+ 3)Melcul lui PASCAL:          r=2a*cos(t)+_2b;t apartine (-pi/2,pi/2)
+ 4)Cisoida lui DIOCLES:        r=2a*sin(t)*tg(t);t apartine [-pi/2,pi/2]
+ 5)Trisectoarea lui MAC_LAURIN:
+                    r=a(4*cos^2(t)-1)/cos(t);t apartine (-pi/2,pi/2)
+ 6)Strofoida:
+                    r=a(1+-sin(t))/cos(t);t apartine (-pi/2,pi/2)
+ 7)Spirala logaritmica:        r=a*e^(1+t);t apartine (0,infinit)
+ 8)Spirala hiperbolica:        r=a/t;t apatrtine (0,infinit)
+ 9)Spirala lui ARHIMEDE:       r=at;t apartine (0,infinit)

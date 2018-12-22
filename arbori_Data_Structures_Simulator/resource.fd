@@ -1,0 +1,28 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by arbori.rc
+!
+      integer, parameter :: IDM_ABOUTBOX                    = 16
+      integer, parameter :: IDD_ABOUTBOX                    = 100
+      integer, parameter :: IDS_ABOUTBOX                    = 101
+      integer, parameter :: IDD_ARBORI_DIALOG               = 102
+      integer, parameter :: IDR_MAINFRAME                   = 128
+      integer, parameter :: IDC_Ival                        = 1000
+      integer, parameter :: IDC_Insert                      = 1001
+      integer, parameter :: IDC_Fname                       = 1002
+      integer, parameter :: IDC_Load                        = 1003
+      integer, parameter :: IDC_Save                        = 1004
+      integer, parameter :: IDC_Eval                        = 1005
+      integer, parameter :: IDC_Erase                       = 1006
+      integer, parameter :: IDC_View                        = 1007
+      integer, parameter :: IDC_sview                       = 1008
+      integer, parameter :: IDC_Search                      = 1009
+      integer, parameter :: IDC_sSearch                     = 1010
+      integer, parameter :: IDC_SResult                     = 1011
+      integer, parameter :: IDC_elistDL                     = 1017
+      integer, parameter :: IDC_etree                       = 1018
+      integer, parameter :: IDC_Create                      = 1020
+      integer, parameter :: IDC_eresult                     = 1021
+      integer, parameter :: IDC_delete                      = 1022
+      integer, parameter :: IDC_reset                       = 1023
+      integer, parameter :: IDC_estack                      = 1024

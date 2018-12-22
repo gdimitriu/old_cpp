@@ -1,0 +1,23 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by Men_in_Space.rc
+!
+      integer, parameter :: IDM_ABOUTBOX                    = 16
+      integer, parameter :: IDD_ABOUTBOX                    = 100
+      integer, parameter :: IDS_ABOUTBOX                    = 101
+      integer, parameter :: IDD_MEN_IN_SPACE_DIALOG         = 102
+      integer, parameter :: IDR_MAINFRAME                   = 128
+      integer, parameter :: IDC_NEXT                        = 1000
+      integer, parameter :: IDC_A                           = 1003
+      integer, parameter :: IDC_MA                          = 1004
+      integer, parameter :: IDC_B                           = 1005
+      integer, parameter :: IDC_C                           = 1006
+      integer, parameter :: IDC_D                           = 1007
+      integer, parameter :: IDC_E                           = 1008
+      integer, parameter :: IDC_F                           = 1009
+      integer, parameter :: IDC_MB                          = 1010
+      integer, parameter :: IDC_MC                          = 1011
+      integer, parameter :: IDC_MD                          = 1012
+      integer, parameter :: IDC_ME                          = 1013
+      integer, parameter :: IDC_ENUNT                       = 1014
+      integer, parameter :: IDC_MF                          = 1015

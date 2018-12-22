@@ -1,0 +1,25 @@
+\documentclass {report}
+\usepackage [dvips]{graphics}
+\usepackage [romanian]{babel}
+\usepackage{rotating}
+\usepackage{a4}
+\title{Rshell pentru UNIX}
+\author{Dimitriu Gabriel ISC}
+\date{}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6in}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\marginparwidth}{0mm}
+\setlength{\marginparsep}{0mm}
+\begin{document}
+\maketitle
+\tableofcontents
+\input{introducere.tex}
+\input{implementare.tex}
+\chapter{Listingul surselor}
+\section{Programul server}
+\input{rshelld.tex}
+\section{Programul client}
+\input{rshell.tex}
+\end{document}

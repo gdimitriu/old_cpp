@@ -1,0 +1,240 @@
+/*\ Programul\ client\ pentru\ remote\ shell\ */
+\label{client}
+
+\#include$<$stdio.h$>$
+
+\#include$<$stdlib.h$>$
+
+\#include$<$string.h$>$
+
+\#include$<$unistd.h$>$
+
+\#include$<$sys/socket.h$>$
+
+\#include$<$sys/types.h$>$
+
+\#include$<$netinet/in.h$>$
+
+\#include$<$arpa/inet.h$>$
+
+\#include$<$netdb.h$>$
+
+\#define\ SIZE\ 512
+
+\#define\ PORT\ 12345
+
+
+
+static\ char\ consola[SIZE];\hspace{5mm}\hspace{5mm}\hspace{5mm}//buffer\ de\ consola
+
+static\ char\ buff[SIZE+3];\hspace{5mm}\hspace{5mm}\hspace{5mm}//bufferul\ de\ date
+
+static\ char\ data[SIZE];\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}//buffer\ pentru\ afisare
+
+static\ char\ pager[SIZE];\hspace{5mm}\hspace{5mm}\hspace{5mm}//buffer\ pentru\ pager
+
+static\ char\ sincro[3];\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}//buffer\ pentru\ sincronizare
+
+int\ main(int\ argc,\ char\ **argv)
+
+\{
+
+int\ client\_socket;\hspace{5mm}\hspace{5mm}//socketul\ client
+
+struct\ sockaddr\_in\ server\_addr;
+
+int\ i,j;\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}//contoare
+
+int\ exit1,exit2,pipe;\ \ \ //sincronizari
+
+FILE\ *fpipe;\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}//pipe\ de\ iesire
+
+\hspace{5mm}if(argc!=2)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}printf("rshell\_client\ adresa");
+
+\hspace{5mm}\hspace{5mm}exit(1);
+
+\hspace{5mm}\}
+
+\hspace{5mm}memset((char\ *)\&server\_addr,0,sizeof(server\_addr));
+
+\hspace{5mm}server\_addr.sin\_family=AF\_INET;
+
+\hspace{5mm}server\_addr.sin\_port=htons(PORT);
+
+\hspace{5mm}server\_addr.sin\_addr.s\_addr=inet\_addr(argv[1]);
+
+\hspace{5mm}//creare\ socket
+
+\hspace{5mm}if((client\_socket=socket(AF\_INET,SOCK\_STREAM,0))$<$0)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}perror("error\ socket");
+
+\hspace{5mm}\hspace{5mm}exit(2);
+
+\hspace{5mm}\}
+
+\hspace{5mm}//conectare
+
+\hspace{5mm}if(connect(client\_socket,(struct\ sockaddr\ *)\&server\_addr,sizeof(server\_addr))$<$0)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}perror("error\ connect");
+
+\hspace{5mm}\hspace{5mm}close(client\_socket);
+
+\hspace{5mm}\hspace{5mm}exit(3);
+
+\hspace{5mm}\}
+
+\hspace{5mm}exit1=0;
+
+\hspace{5mm}while(exit1==0)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}memset((char\ *)\&consola,0,sizeof(consola));
+
+\hspace{5mm}\hspace{5mm}memset((char\ *)\&data,0,sizeof(data));
+
+\hspace{5mm}\hspace{5mm}memset((char\ *)\&pager,0,sizeof(pager));
+
+\hspace{5mm}\hspace{5mm}gets(consola);
+
+\hspace{5mm}\hspace{5mm}i=0;
+
+\hspace{5mm}\hspace{5mm}while((consola[i]!='|')\&\&(i$<$SIZE))
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}data[i]=consola[i];\hspace{5mm}\hspace{5mm}\hspace{5mm}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}i++;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}if(consola[i]=='|')\ pipe=1;
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}if(pipe==1)
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}j=0;i++;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}while(i$<$SIZE)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}pager[j]=consola[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}i++;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}j++;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}if((strcmp(pager,"less")==0)||(strcmp(pager,"more")==0))
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}if((fpipe=(FILE\ *)popen(pager,"w"))==(FILE\ *)NULL)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}perror("nu\ se\ poate\ deschide\ pipe");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}strcpy(data,"exit");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}pipe=0;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}else\ pipe=1;
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}else\ pipe=0;
+
+\hspace{5mm}\hspace{5mm}if(strcmp(data,"exit")==0)
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}send(client\_socket,data,strlen(data),0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}memset((char\ *)\&buff,0,sizeof(buff));
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}recv(client\_socket,buff,SIZE+3,0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}for(i=0;i$<$SIZE;i++)\ data[i]=buff[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}printf("\%s$\setminus$n",data);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}close(client\_socket);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}exit(0);
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}else
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}send(client\_socket,data,strlen(data),0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}exit2=0;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}while(exit2==0)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}memset((char\ *)\&buff,0,sizeof(buff));
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}recv(client\_socket,buff,SIZE+3,0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}for(i=0;i$<$SIZE;i++)\ data[i]=buff[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}for(i=0;i$<$3;i++)\hspace{5mm}sincro[i]=buff[SIZE+i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if(strcmp(sincro,"END")==0)\ exit2=1;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if(strcmp(sincro,"000")==0)\ exit2=0;
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if(pipe==0)\hspace{5mm}\hspace{5mm}printf("\%s\ ",data);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if(pipe==1)\hspace{5mm}\hspace{5mm}fprintf(fpipe,"\%s",data);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}fflush(stdin);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}if(pipe==0)\hspace{5mm}printf("$\setminus$n");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}if(pipe==1)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}fprintf(fpipe,"$\setminus$n");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}pclose(fpipe);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\}\hspace{5mm}
+
+\hspace{5mm}\}
+
+\hspace{5mm}close(client\_socket);
+
+\hspace{5mm}exit(0);
+
+\}
+
+ÿ

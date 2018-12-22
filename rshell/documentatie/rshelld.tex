@@ -1,0 +1,250 @@
+/*\ Programul\ SERVER\ pentru\ remote\ shell\ */
+\label{server}
+
+\#include$<$stdio.h$>$
+
+\#include$<$stdlib.h$>$
+
+\#include$<$string.h$>$
+
+\#include$<$unistd.h$>$
+
+\#include$<$sys/socket.h$>$
+
+\#include$<$sys/wait.h$>$
+
+\#include$<$sys/types.h$>$
+
+\#include$<$netinet/in.h$>$
+
+\#include$<$netdb.h$>$
+
+\#define\ SIZE\ 512
+
+\#define\ PORT\ 12345
+
+
+
+static\ char\ buff[SIZE+3];\hspace{5mm}\hspace{5mm}\hspace{5mm}//bufferul\ de\ mesaj
+
+static\ char\ noend[3]="000";\hspace{5mm}\hspace{5mm}//mesaj\ de\ neterminare\ pipe
+
+static\ char\ end[3]="END";\hspace{5mm}\hspace{5mm}\hspace{5mm}//mesaj\ de\ terminare
+
+static\ char\ argument[SIZE];\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}//argumentul
+
+char\ *eroare;
+
+FILE\ *fpipe;\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}//pipe
+
+pid\_t\ client;\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}//pid\ pentru\ procese
+
+int\ status;
+
+int\ main()
+
+\{
+
+int\ listen\_socket,\hspace{5mm}//socket\ pentru\ ascultare
+
+\hspace{5mm}server\_socket,\hspace{5mm}\hspace{5mm}//socket\ pentru\ server
+
+\hspace{5mm}client\_len;\hspace{5mm}\hspace{5mm}\hspace{5mm}//lungimea\ adresei\ client
+
+struct\ sockaddr\_in
+
+\hspace{5mm}server\_addr,\hspace{5mm}\hspace{5mm}//adresa\ serverului
+
+\hspace{5mm}client\_addr;\hspace{5mm}\hspace{5mm}//adresa\ clientului
+
+int\ i;
+
+\hspace{5mm}//creare\ socket
+
+\hspace{5mm}if((listen\_socket=socket(AF\_INET,SOCK\_STREAM,0))$<$0)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}perror("listen\ error");
+
+\hspace{5mm}\hspace{5mm}exit(1);
+
+\hspace{5mm}\}
+
+\hspace{5mm}memset((char\ *)\&server\_addr,0,sizeof(server\_addr));
+
+\hspace{5mm}server\_addr.sin\_family=AF\_INET;
+
+\hspace{5mm}server\_addr.sin\_port=htons(PORT);
+
+\hspace{5mm}server\_addr.sin\_addr.s\_addr=htonl(INADDR\_ANY);
+
+\hspace{5mm}//legare\ (bind)
+
+\hspace{5mm}if(bind(listen\_socket,(struct\ sockaddr\ *)\&server\_addr,sizeof(server\_addr))$<$0)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}perror("bind\ error");
+
+\hspace{5mm}\hspace{5mm}close(listen\_socket);
+
+\hspace{5mm}\hspace{5mm}exit(2);
+
+\hspace{5mm}\}
+
+\hspace{5mm}if(listen(listen\_socket,5)$<$0)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}perror("listen\ socket\ error");
+
+\hspace{5mm}\hspace{5mm}close(listen\_socket);
+
+\hspace{5mm}\hspace{5mm}exit(3);
+
+\hspace{5mm}\}
+
+\hspace{5mm}client\_len=sizeof(client\_addr);
+
+\hspace{5mm}while(1)
+
+\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}//acceptare\ conexiune
+
+\hspace{5mm}\hspace{5mm}if((server\_socket=accept(listen\_socket,(struct\ sockaddr\ *)\&client\_addr,\&client\_len))$<$0)
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}perror("accept\ error");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}close(listen\_socket);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}exit(4);
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}if((client=fork())$<$0)
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}perror("fork\ client\ error");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}close(server\_socket);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}close(listen\_socket);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}exit(5);
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}if(client==0)\hspace{5mm}//proces\ client
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}while(1)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}memset((char\ *)\&buff,0,sizeof(buff));
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}memset((char\ *)\&argument,0,sizeof(argument));
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}recv(server\_socket,buff,SIZE,0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if(strcmp(buff,"exit")==0)\ 
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}send(server\_socket,"exit",4,0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}close(server\_socket);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}exit(6);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}for(i=0;i$<$2;i++)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}argument[i]=buff[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if(strcmp(argument,"cd")==0)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}for(i=3;i$<$strlen(buff);i++)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}argument[i-3]=buff[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}i=chdir(argument);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}memset((char\ *)\&buff,0,sizeof(buff));
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}memset((char\ *)\&argument,0,sizeof(argument));
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}eroare=strerror(i);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}strcpy(buff,eroare);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}for(i=0;i$<$3;i++)\ buff[SIZE+i]=end[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}send(server\_socket,buff,SIZE+3,0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}else
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\{\hspace{5mm}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}strcpy(argument,buff);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if((fpipe=(FILE\ *)popen(argument,"r"))==(FILE\ *)NULL)
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}perror("error\ open\ pipe");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}exit(7);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}while(!feof(fpipe))
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}memset((char\ *)\&buff,0,sizeof(buff));
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}fread(buff,sizeof(char),SIZE,fpipe);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}if(!feof(fpipe))\ for(i=0;i$<$3;i++)\ buff[SIZE+i]=noend[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}else\ for(i=0;i$<$3;i++)\ buff[SIZE+i]=end[i];
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}send(server\_socket,buff,SIZE+3,0);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}pclose(fpipe);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\hspace{5mm}if((client=waitpid(client,\&status,0))$<$0)
+
+\hspace{5mm}\hspace{5mm}\{
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}perror("error\ waitpid\ client");
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}close(listen\_socket);
+
+\hspace{5mm}\hspace{5mm}\hspace{5mm}exit(7);
+
+\hspace{5mm}\hspace{5mm}\}
+
+\hspace{5mm}\}
+
+\}ÿ

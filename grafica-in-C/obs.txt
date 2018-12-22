@@ -1,0 +1,15 @@
+        OBSERVATII REFERITOARE LA FISIERELE DIN GEOMETRIA TURTLE
+
+ Pentru a avea introdus in fisierul exe si driverul grafic egavga
+se procedeaza astfel:
+   -se face un project din fisierul sussa si fisierul obiect
+egavgaf.obj;
+   -de asemenea se va folosi declaratia #include"turtle.h"
+ Pentru a nu avea introdus driverul grafic schimbat declaratia
+initiala #include"turtle.h" cu declaratia #include"turtle1.h"
+
+OBS:
+  Fisierele sint formate pentru includerea driverului grafic,cele
+care folosesc biblioteca turtle.
+  Pentru celelalte se scoate comentariul din fata liniei:
+         errorcode=registerfarbgidrib\ver(EGAVGA_driver_far);

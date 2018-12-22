@@ -1,0 +1,2467 @@
+
+\documentclass[a4paper,twoside]{book}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=LATEX.DLL}
+%TCIDATA{Version=5.00.0.2552}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{Created=Sunday, January 09, 2005 20:01:08}
+%TCIDATA{LastRevised=Friday, February 04, 2005 12:43:13}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="Title" CONTENT="Metode Iterative de rezolvare a SEL">}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Standard LaTeX\Blank - Standard LaTeX Article">}
+%TCIDATA{CSTFile=40 LaTeX Book.cst}
+%TCIDATA{<META NAME="PrintViewPercent" CONTENT="100">}
+
+\setlength{\textheight}{8in}
+\setlength{\textwidth}{6in}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\marginparwidth}{0mm}
+\setlength{\marginparsep}{0mm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+\input{tcilatex}
+\setlength{\evensidemargin}{0cm}
+
+\begin{document}
+
+\title{Metode iterative de rezolvare a sistemelor de ecuatii liniare}
+\author{Dimitriu Gabriel}
+\maketitle
+\tableofcontents
+
+\chapter{Metoda Jacobi}
+
+\section{Considerente generale}
+
+In R$^{m}$ vom considera sistemul de ecuatii liniare
+
+\begin{equation}
+(I-B)x=b  \label{1}
+\end{equation}
+
+in care $B=(b_{ij})_{i,j=\overline{1,m}}$ si $b=(b_{1},...,b_{m})$ cu
+acestea sistemul se poate scrie pe componente astfel
+
+\begin{equation}
+x_{i}-\sum_{j=1}^{m}b_{ij}x_{j}=b_{i},i=\overline{1,m}  \label{1prim}
+\end{equation}
+
+\begin{theorem}
+(Jacobi)\label{Jacobi}
+\end{theorem}
+
+Afirmatiile urmatoare sunt echivalente:
+
+1) $\lim_{n\rightarrow \infty }B^{n}=0$
+
+2)$\forall b\in R^{m}$ $\exists !$ $z$ ai $(I-B)z=b$ si $\forall x^{(0)}\in
+R^{m}$ sirul $(x^{(n)})_{n\in N}$ \ definit prin
+
+\begin{equation}
+x_{i}^{(n+1)}=\sum_{j=1}^{m}b_{ij}x_{j}^{(n)}+b_{i},i=\overline{1,m}
+\label{2}
+\end{equation}%
+converge catre z
+
+3)$\rho (B)<1$
+
+\textbf{Demonstratie:}
+
+Se stie ca 1)$\Leftrightarrow $3) deci nu mai trebuie sa aratam decit ca 1)$%
+\Leftrightarrow $2).
+
+Pentru 1)$\Rightarrow $2) vom presupune ca $\lim_{n\rightarrow \infty
+}B^{m}=0$ si vom arta ca $I-B$ este injectiva.
+
+Deoarece $I-B$ este operator liniar este suficient sa demonstram ca $\ker
+(I-B)=\{0\}$.
+
+Daca $(I-B)x=0\Leftrightarrow $iterind avem $x=Bx=BBx=B^{2}x=...$ deci $%
+x=B^{n}x,\forall n$ .
+
+Din relatia de mai sus si din ipoteza $\lim_{n\rightarrow \infty }B^{n}x=0$
+avem $x=0$. Deci $I-B\,\ $este injectiva.
+
+Deoarece $\dim (R^{m})=m$ finit atunci $I-B$ este surjectiva.
+
+Deoarece $I-B$ este injectiva si surjectiva cum am artat mai sus atunci $I-B$
+este bijectiva.
+
+Pentru demostrarea convergentei sirului pornim de la $%
+x^{(n+1)}-z=Bx^{(n)}+b-z$ dar din ipoteza $z-Bz=b$ deci
+
+\begin{equation*}
+x^{(n+1)}-z=B(x^{(n)}-z)
+\end{equation*}
+
+Iterind o data formula de mai sus devine
+
+\begin{equation*}
+x^{(n+1)}-z=B^{2}(x^{(n-1)}-z)
+\end{equation*}
+
+Iterind de n ori avem
+
+\begin{equation*}
+x^{(n-1)}-z=B^{n+1}(x^{(0)}-z)
+\end{equation*}
+
+Trecind la limita si tinind cont de ipoteza $\lim_{n\rightarrow \infty
+}B^{n}=0$ avem
+
+\begin{equation*}
+\lim_{n\rightarrow \infty }x^{(n)}=z
+\end{equation*}
+
+\textbf{Reciproc} pentru 2)$\Rightarrow $1)
+
+Fie $b=0$. Solutia ecuatiei \ref{1} este atunci $z=0$.
+
+Formula de recurenta a sirului $x^{(n+1)}=Bx^{(n)}$ o iteram de n ori si avem
+
+\begin{equation*}
+x^{(n+1)}=B^{n+1}x^{(0)}
+\end{equation*}
+
+trecind la limita si tinind cont de ipoteza ca sirul $(x^{(n)})_{n\in N}$
+converge la 0 pentru $\forall x^{(0)}\in R^{m}$ avem $\lim_{n\rightarrow
+\infty }B^{n}x^{(0)}=0,\forall x^{(0)}\in R^{m}$ deci
+
+\begin{equation*}
+\lim_{n\rightarrow \infty }B^{n}=0
+\end{equation*}
+
+\begin{theorem}
+\bigskip \label{Teorema2}
+\end{theorem}
+
+Peresupunind ca $\left\Vert B\right\Vert \leq q<1$. Atunci avem formula de
+aproximare a erorii
+
+\begin{equation*}
+\left\Vert x^{(n)}-z\right\Vert \leq \frac{q}{(1-q)}\left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert \leq \frac{q^{n}}{(1-q)}\left\Vert
+x^{(1)}-x^{(0)}\right\Vert
+\end{equation*}
+
+\textbf{Demonstratie:}
+
+Aplicind ipotezei $\left\Vert B\right\Vert \leq q<1$ proprietatile normei
+avem: $0\leq \left\Vert B^{n}\right\Vert \leq \left\Vert B\right\Vert
+^{n}\leq q^{n}$. Aplicind limita acestei relatii si tinind cont ca $q\in
+\lbrack 0,1)$ avem $\lim_{n\rightarrow \infty }\left\Vert B^{n}\right\Vert
+=0 $ sau $\lim_{n\rightarrow \infty }B=0$. Datorita ultimei relatii putem
+aplica Teorema \ref{Jacobi} (Jacobi).
+
+Deci $\exists !z$ solutie pentru ecuatia (\ref{1}) si este valabil sirul de
+aproximari
+
+\begin{equation*}
+x^{(n+1)}-z^{(n)}=Bx^{(n)}+b-z^{(n)}=Bx^{(n)}+z-Bz-x^{(n)}=(I-B)(z-x^{(n)})
+\end{equation*}
+
+Deci $(I-B)(z-x^{(n)})=x^{(n+1)}-x^{(n)}$ dar $I-B$ este inversabila deci
+
+\begin{equation*}
+z-x^{(n)}=(I-B)^{-1}B(x^{(n)}-x^{(n-1)})
+\end{equation*}
+
+Relatiei anterioare aplicam norma si avem
+
+\begin{equation*}
+\left\Vert z-x^{(n)}\right\Vert =\left\Vert
+(I-B)^{-1}B(x^{(n)}-x^{(n-1)}\right\Vert
+\end{equation*}
+
+aplicind relatiei anterioare $\left\Vert xy\right\Vert \leq \left\Vert
+x\right\Vert \left\Vert y\right\Vert $ si $\left\Vert a-x\right\Vert \leq
+a-\left\Vert x\right\Vert $ avem:
+
+\begin{equation*}
+\left\Vert z-x^{(n)}\right\Vert \leq \left\Vert (I-B)^{-1}\right\Vert
+\left\Vert B\right\Vert \left\Vert x^{(n)}-x^{(n-1)}\right\Vert \leq \frac{1%
+}{1-\left\Vert B\right\Vert }\left\Vert B\right\Vert \left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert
+\end{equation*}
+
+Aplicind ipoteza $\left\Vert B\right\Vert \leq q$ relatiei anterioare avem
+
+\begin{equation*}
+\left\Vert z-x^{(n)}\right\Vert \leq \frac{q}{1-q}\left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert
+\end{equation*}
+
+Tinind cont ca $x^{(n)}-x^{(n-1)}=B^{n-1}(x^{(1)}-x^{(0)})$ avem
+
+\begin{equation*}
+\left\Vert z-x^{(n)}\right\Vert \leq \left\Vert B^{n-1}\right\Vert
+\left\Vert x^{(1)}-x^{(0)}\right\Vert
+\end{equation*}
+
+Deci in final aplicind ipoteza avem
+
+\begin{equation*}
+\left\Vert z-x^{(n)}\right\Vert \leq \frac{q}{1-q}\left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert \leq \frac{q^{n}}{1-q}\left\Vert
+x^{(1)}-x^{(0)}\right\Vert
+\end{equation*}
+
+QED.
+
+\section{Metoda lui Jacobi pentru matrici diagonal dominante pe linii}
+
+\subsection{Prezentarea teoretica a metodei}
+
+Fie sistemul
+
+\begin{equation}
+Ax=a  \label{3}
+\end{equation}
+
+unde $A=(a_{ij})_{i,j=\overline{1,m}},a=(a_{1},...,a_{m})$ care se poate
+scrie pe componente
+
+\begin{equation}
+\sum_{j=1}^{m}a_{ij}x_{j}=a_{i},\forall i=\overline{1,m}  \label{3prim}
+\end{equation}
+
+Presupunind ca $a_{ii}\neq 0,\forall i=\overline{1,m}$ avem notatiile
+
+\begin{equation*}
+D=\left( 
+\begin{array}{cc}
+a_{11} & 0 \\ 
+0 & a_{mm}%
+\end{array}%
+\right) \Rightarrow \exists D^{-1}=\left( 
+\begin{array}{cc}
+\frac{1}{a_{11}} & 0 \\ 
+0 & \frac{1}{a_{mm}}%
+\end{array}%
+\right)
+\end{equation*}
+
+Atunci daca inmultim cu \thinspace $D^{-1}$ sistemul (\ref{3}) el se poate
+scrie $D^{-1}Ax=D^{-1}a$ care dupa citeva prelucari se poate aduce la forma
+
+\begin{equation*}
+(I-(I-D^{-1}A))x=D^{-1}a
+\end{equation*}
+
+iar daca notam: $B=I-D^{-1}A$ si $b=D^{-1}a$ avem sistemul echivalent pentru
+(\ref{3})
+
+\begin{equation}
+(I-B)x=b  \label{4}
+\end{equation}
+
+\begin{theorem}
+\label{Jacobirow} (Teorema Jacobi pentru matrici dominante pe linii)
+\end{theorem}
+
+Daca
+
+\begin{equation}
+\left\vert a_{ii}\right\vert >\sum_{j=1,j\neq i}^{m}\left\vert
+a_{ij}\right\vert ,\forall i=\overline{1,m}  \label{5}
+\end{equation}
+
+atunci sistemul (\ref{4}) care este chivalent cu sistemul (\ref{3}) are
+solutia unica $z$ si $\forall x^{(0)}\in R^{m}$ sirul $(x^{(n)})_{n\in N}$, $%
+x^{(n+1)}=Bx^{(n)}+b$ converge catre \ $z$ si au loc relatiile de evaluare a
+erorii
+
+\begin{equation}
+\left\Vert x^{(n)}-z\right\Vert _{\infty }\leq \frac{q}{1-q}\left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert _{\infty }\leq \frac{q^{n}}{1-q}\left\Vert
+x^{(1)}-x^{(0)}\right\Vert _{\infty }  \label{6}
+\end{equation}
+
+unde 
+\begin{equation*}
+q=\max_{1\leq i\leq m}\sum_{j=1,i\neq j}^{m}\left\vert \frac{a_{ij}}{a_{ii}}%
+\right\vert
+\end{equation*}
+
+\textbf{Demonstratie:}
+
+Daca facem calculele in relatia $B=I-D^{-1}A$ aceasta devine scrisa pe
+componente
+
+\begin{equation*}
+B=\left( 
+\begin{array}{cc}
+0 & -\frac{a_{ij}}{a_{ii}} \\ 
+-\frac{a_{ij}}{a_{ii}} & 0%
+\end{array}%
+\right) ,i=\overline{1,m},j=\overline{1,m}
+\end{equation*}
+
+Aplicind norma infinit asupra matricii $B\in M_{mm}$ avem
+
+\begin{equation*}
+\left\Vert B\right\Vert _{\infty }=\max_{1\leq i\leq m}\sum_{j=1,i\neq
+j}^{m}\left\vert \frac{a_{ij}}{a_{ii}}\right\vert
+\end{equation*}
+
+Aplicind ipoteza (\ref{5}) avem $\left\Vert B\right\Vert _{\infty }<1$ sau
+altfel spus
+
+\begin{equation*}
+\left\Vert B\right\Vert _{\infty }=q=\max_{1\leq i\leq m}\sum_{j=1,i\neq
+j}^{m}\left\vert \frac{a_{ij}}{a_{ii}}\right\vert <1
+\end{equation*}
+
+Deoarece avem $\left\Vert B\right\Vert _{\infty }<1$ putem aplica Teorema
+Jacobi (Theorem \ref{Jacobi}).
+
+Din Teorema Jacobi avem $\exists !z$ solutie pentru sistemul (\ref{4})$%
+\Leftrightarrow $(\ref{3}).
+
+Tot din Teorema Jacobi avem $\forall x^{(n)}$sirul $(x^{(n)})_{n\in N}$,
+definit prin $x^{(n+1)}=Bx^{(n)}+b$ converge catre $\ z$ si au loc formulele
+de evaluare ale erorii (\ref{6}).
+
+Sirul se poate scrie pe componente
+
+\begin{equation}
+x_{i}^{(n+1)}=-\sum_{j=1,j\neq i}^{m}\frac{a_{ij}}{a_{ij}}x_{j}^{(n)}+\frac{%
+a_{i}}{a_{ii}},\forall i=\overline{1,m}  \label{Jacobi-Row}
+\end{equation}
+
+formula care se va utiliza pentru implementare impreuna cu formula de
+evaluare a erorii (\ref{6}). QED.
+
+\subsection{Prezentare implementarii in C++}
+
+\bigskip Functia care realizeaza rezolvare sistemului de ecuatii este:
+
+\textit{int jacobi\_row(double **mat,double *va,double *xn,double err,long
+N,int type)}
+
+\textit{/*}
+
+\textit{\qquad returneaza 0 in caz de succes si -1 in caz de insucces.}
+
+\textit{\qquad mat este matricea A, va este vectorul termenilor liber, xn
+este solutia}
+
+\textit{\qquad err este eroarea cu care dorim sa calculam solutia sistemului}
+
+\textit{\qquad N este dimensiunea sistemului}
+
+\textit{\qquad type: }
+
+\textit{\qquad 0 daca se doreste doar rezultatul}
+
+\textit{\qquad 1 daca se doreste rezultatul si pasii intermediari scosi in
+fisierul jacobi\_row.dat}
+
+\textit{\qquad 2 daca se doreste rezultatul si pasii intermediari scosi in
+fisierul jacobi\_row.dat si pe ecran}
+
+\textit{*/}
+
+\textit{\{}
+
+\textit{\qquad double *xn\_1;}
+
+\textit{\qquad double max,sum,q;}
+
+\textit{\qquad long i,j,crt;}
+
+\textit{\qquad double count;}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad sum=0.0;}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++) if(j!=i)
+sum+=fabs(mat[i][j]);}
+
+\textit{\qquad \qquad if(fabs(mat[i][i])\TEXTsymbol{<}sum)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Sistemul nu
+poate fi rezolvat deoarece nu este dominant diagonal pe linii\TEXTsymbol{%
+\backslash}n";}
+
+\textit{\qquad \qquad \qquad return -1;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad xn\_1=new double[N];}
+
+\textit{\qquad ofstream file;}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.open("jacobi\_row.dat");}
+
+\textit{\qquad //calculam q}
+
+\textit{\qquad q=0.0;}
+
+\textit{\qquad for(j=1;j\TEXTsymbol{<}N;j++) q+=fabs(mat[0][j]/mat[0][0]);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad sum=0.0;}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++) if(j!=i)
+sum+=fabs(mat[i][j]/mat[i][i]);}
+
+\textit{\qquad \qquad if(q\TEXTsymbol{<}sum) q=sum;}
+
+\textit{\qquad \}}
+
+\textit{\qquad max=fabs(va[0]/mat[0][0]);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}N;i++) }
+
+\qquad \qquad \textit{if(max\TEXTsymbol{<}fabs(va[i]/mat[i][i]))
+max=fabs(va[i]/mat[i][i]);}
+
+\textit{\qquad count=q*max/(1-q);}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) xn[i]=va[i]/mat[i][i];}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"q="\TEXTsymbol{<}\TEXTsymbol{%
+<}q\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\qquad cout\textit{\TEXTsymbol{<}\TEXTsymbol{<}"max="\TEXTsymbol{<}%
+\TEXTsymbol{<}max\TEXTsymbol{<}\TEXTsymbol{<}endl\TEXTsymbol{<}\TEXTsymbol{<}%
+"count="\TEXTsymbol{<}\TEXTsymbol{<}fabs(count)\TEXTsymbol{<}\TEXTsymbol{<}%
+endl;}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"q="\TEXTsymbol{<}%
+\TEXTsymbol{<}q\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas=0 err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"pas=0
+err="\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["\TEXTsymbol{%
+<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}\TEXTsymbol{<}%
+xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad crt=1;}
+
+\textit{\qquad while(fabs(count)\TEXTsymbol{>}err)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++) xn\_1[i]=xn[i];}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad xn[i]=va[i]/mat[i][i];}
+
+\textit{\qquad \qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++) if(i!=j)
+xn[i]-=mat[i][j]/mat[i][i]*xn\_1[j];}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad max=fabs(xn[0]-xn\_1[0]);}
+
+\textit{\qquad \qquad for(i=1;i\TEXTsymbol{<}N;i++) }
+
+\qquad \qquad \qquad \textit{if(max\TEXTsymbol{<}fabs(xn[i]-xn\_1[i]))
+max=fabs(xn[i]-xn\_1[i]);}
+
+\textit{\qquad \qquad count=q*max/(1-q);}
+
+\textit{\qquad \qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert}
+type==2)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas="%
+\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}%
+"pas="\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}%
+\TEXTsymbol{<}"x["\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}%
+"]="\TEXTsymbol{<}\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \}}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad crt++;}
+
+\textit{\qquad \}}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.close();}
+
+\textit{\qquad //Afisez nr pasii}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Dupa "\TEXTsymbol{<}%
+\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" pasi avem solutia"\TEXTsymbol{%
+<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad delete []xn\_1;}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Metoda a fost testata cu urmatorul sistem de ecuatii cu eroarea de 0.000001:
+
+\begin{equation*}
+A=\left( 
+\begin{array}{ccc}
+10 & 1 & 2 \\ 
+-1 & 7 & 4 \\ 
+-2 & -2 & 10%
+\end{array}%
+\right) \,\,a=\left( 
+\begin{array}{c}
+1 \\ 
+1 \\ 
+1%
+\end{array}%
+\right)
+\end{equation*}
+
+obtinind urmatorul rezultat prezentat in tabelul urmator
+
+q=0.714286
+
+\begin{tabular}{lllll}
+pas & err & X[0] & X[1] & X[2] \\ 
+0 & 0.357143 & 0.1 & 0.142857 & 0.1 \\ 
+1 & 0.121429 & 0.0657143 & 0.1 & 0.148571 \\ 
+2 & 0.0816327 & 0.0602857 & 0.0673469 & 0.133143 \\ 
+3 & 0.020102 & 0.0666367 & 0.0753878 & 0.125527 \\ 
+4 & 0.0131487 & 0.0673559 & 0.0806472 & 0.128405 \\ 
+5 & 0.0038551 & 0.0662543 & 0.0791052 & 0.129601 \\ 
+6 & 0.00210162 & 0.0661694 & 0.0782645 & 0.129072 \\ 
+7 & 0.000724995 & 0.0663592 & 0.0785545 & 0.128887 \\ 
+8 & 0.000332245 & 0.0663672 & 0.0786874 & 0.128983 \\ 
+9 & 0.000134223 & 0.0663347 & 0.0786337 & 0.129011 \\ 
+10 & 5.18641e-005 & 0.0663344 & 0.078613 & 0.128994 \\ 
+11 & 2.45247e-005 & 0.06634 & 0.0786228 & 0.128989 \\ 
+12 & 7.97582e-006 & 0.0663398 & 0.078626 & 0.128993 \\ 
+13 & 4.43052e-006 & 0.0663389 & 0.0786242 & 0.128993 \\ 
+14 & 1.35225e-006 & 0.0663389 & 0.0786237 & 0.128993 \\ 
+15 & 7.92436e-007 & 0.0663391 & 0.0786241 & 0.128993%
+\end{tabular}
+
+OBS:
+
+Se observa ca eroarea este calculata dupa formula
+
+\begin{equation*}
+\left\Vert x^{(n)}-z\right\Vert _{\infty }\leq \frac{q}{1-q}\left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert _{\infty }
+\end{equation*}
+
+deoarece aceasta este solutia care converge cel mai repede.
+
+\section{Metoda Jacobi pentru matrici diagonal dominante pe coloane}
+
+\subsection{Prezentarea teoretica a metodei}
+
+Fie sistemul
+
+\begin{equation}
+Ax=a  \label{7}
+\end{equation}
+
+in care $A=(a_{ij})_{i,j}$ si prespunem ca au loc relatiile
+
+\begin{equation}
+\left\vert a_{jj}\right\vert >\sum_{i=1,i\neq j}^{m}\left\vert
+a_{ij}\right\vert ,\forall j=\overline{1,m}  \label{8}
+\end{equation}
+
+si presupunind ca $a_{ii}\neq 0,\forall i=\overline{1,m}$ avem notatiile
+
+\begin{equation*}
+D=\left( 
+\begin{array}{cc}
+a_{11} & 0 \\ 
+0 & a_{mm}%
+\end{array}%
+\right) \Rightarrow \exists D^{-1}=\left( 
+\begin{array}{cc}
+\frac{1}{a_{11}} & 0 \\ 
+0 & \frac{1}{a_{mm}}%
+\end{array}%
+\right)
+\end{equation*}
+
+Atunci sistemul (\ref{7}) devine
+
+\begin{equation*}
+AD^{-1}Dx=a\Leftrightarrow (I-(I-AD^{-1}))Dx=a
+\end{equation*}
+
+sau
+
+\begin{equation}
+(I-C)Dx=a  \label{9}
+\end{equation}
+
+unde $C=I-AD^{-1}$ si $I=DD^{-1}$ este matricea unitate de dimensiune m.
+
+Fie sistemul
+
+\begin{equation}
+(I-C)y=a  \label{10}
+\end{equation}
+
+\begin{theorem}
+\label{Jacobi_col}
+\end{theorem}
+
+Daca au loc ipotezele (\ref{8}) atunci exista si este unic w astfel incit $%
+(I-C)w=a$ si metoda Jacobi pentru (\ref{10}) este convergenta.
+
+\textbf{Demonstratie:}
+
+Vom arata ca $\left\Vert C\right\Vert _{1}<1$.
+
+Intr-adevar
+
+\begin{equation*}
+C=I-AD^{-1}=\left( 
+\begin{tabular}{lll}
+1 & ... & 0 \\ 
+.. & 1 & ... \\ 
+0 & .. & 1%
+\end{tabular}%
+\right) -\left( 
+\begin{tabular}{lll}
+1 & ... & $\frac{a_{1m}}{a_{11}}$ \\ 
+... & 1 & ... \\ 
+$\frac{a_{m1}}{a_{mm}}$ & ... & 1%
+\end{tabular}%
+\right)
+\end{equation*}
+
+deci
+
+\begin{equation*}
+C=\left( 
+\begin{tabular}{lll}
+0 & ... & $-\frac{a_{1m}}{a_{11}}$ \\ 
+... & 0 & ... \\ 
+$-\frac{a_{m1}}{a_{mm}}$ & ... & 0%
+\end{tabular}%
+\right)
+\end{equation*}
+
+Aplicind norma avem
+
+\begin{equation*}
+\left\Vert C\right\Vert _{1}=\max_{j\in \overline{1,m}}\sum_{i=1,i\neq
+j}^{m}\left\vert \frac{a_{ij}}{a_{jj}}\right\vert \overset{not}{=}q\overset{(%
+\ref{8})}{<}1
+\end{equation*}
+
+Atunci metoda Jacobi pentru sistemul (\ref{9}) este convergenta deci
+
+\begin{equation}
+\exists !\:w\in R^{m}\:a.i.\:(I-C)w=a  \label{11}
+\end{equation}
+
+si $\forall y^{(0)}\in R^{m}$ sirul $(y^{(n)})_{n\in N}$ dat de $%
+y^{(n+1)}=Cy^{(n)}+a$ converge catre w si are loc formula de evaluare a
+erorii: 
+\begin{equation}
+\left\Vert y^{(n)}-w\right\Vert _{1}\leq \frac{q}{1-q}\left\Vert
+y^{(n)}-y^{(n-1)}\right\Vert _{1}\leq \frac{q^{n}}{1-q}\left\Vert
+y^{(1)}-y^{(0)}\right\Vert _{1}  \label{12}
+\end{equation}
+
+Fie $z\in R^{m}$ astfel incit $Dz=w$ deci inlocuind in (\ref{11}) avem $%
+(I-C)Dz=a$ deci $Az=a$ asadar $z=D^{-1}w$.
+
+Din theorema Jacobi avem $y^{(n)}\rightarrow w$ deci aplicind continuitatea
+si liniaritatea lui $D^{-1}$ avem $D^{-1}y^{(n)}\rightarrow D^{-1}w=z$.
+
+Dar noi am notat $D^{-1}y^{(n)}=x^{(n)}$ deci $x^{(n)}\rightarrow z$ .
+
+Pentru evaluarea erorii avem norma:
+
+\begin{equation*}
+\left\Vert x^{(n)}-z\right\Vert _{1}=\left\Vert
+D^{-1}y^{(n)}-D^{-1}w\right\Vert _{1}=\left\Vert
+D^{-1}(y^{(n)}-w)\right\Vert _{1}\leq \left\Vert D^{-1}\right\Vert
+_{1}\left\Vert y^{(n)}-w\right\Vert _{1}
+\end{equation*}
+
+Aplicind definitia normei 1 avem
+
+\begin{equation*}
+\left\Vert x^{(n)}-z\right\Vert _{1}\leq \frac{1}{\min_{j\in \overline{1,m}%
+}\left\vert a_{jj}\right\vert }\left\Vert y^{(n)}-w\right\Vert _{1}\overset{(%
+\ref{12})}{\leq }\frac{q}{\min_{j\in \overline{1,m}}\left\vert
+a_{jj}\right\vert }\frac{\left\Vert y^{(n)}-y^{(n-1)}\right\Vert _{1}}{1-q}
+\end{equation*}
+
+sau
+
+\begin{equation*}
+\left\Vert x^{(n)}-z\right\Vert _{1}\leq \frac{1}{\min_{j\in \overline{1,m}%
+}\left\vert a_{jj}\right\vert }\frac{q^{n}}{1-q}\left\Vert
+y^{(1)}-y^{(0)}\right\Vert _{1}
+\end{equation*}
+
+QED.
+
+\subsection{Prezentare implementarii in C++}
+
+\bigskip Functia care realizeaza rezolvare sistemului de ecuatii este:
+
+\textit{int jacobi\_collumn(double **mat,double *va,double *xn,double
+err,long N,int type)}
+
+\textit{/*}
+
+\textit{\qquad returneaza 0 in caz de succes si -1 in caz de insucces.}
+
+\textit{\qquad mat este matricea A, va este vectorul termenilor liber, xn
+este solutia}
+
+\textit{\qquad err este eroarea cu care dorim sa calculam solutia sistemului}
+
+\textit{\qquad N este dimensiunea sistemului}
+
+\textit{\qquad type: }
+
+\textit{\qquad 0 daca se doreste doar rezultatul}
+
+\textit{\qquad 1 daca se doreste rezultatul si pasii intermediari scosi in
+fisierul jacobi\_col.dat}
+
+\textit{\qquad 2 daca se doreste rezultatul si pasii intermediari scosi in
+fisierul jacobi\_col.dat si pe ecran}
+
+\textit{*/}
+
+\textit{\{}
+
+\textit{\qquad double *xn\_1;}
+
+\textit{\qquad double *yn,*yn\_1;}
+
+\textit{\qquad double max,sum,q;}
+
+\textit{\qquad long i,j,crt;}
+
+\textit{\qquad double count;}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad sum=0.0;}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++) if(j!=i)
+sum+=fabs(mat[j][i]);}
+
+\textit{\qquad \qquad if(fabs(mat[i][i])\TEXTsymbol{<}sum)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Sistemul nu
+poate fi rezolvat deoarece nu este dominant diagonal pe coloane";}
+
+\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}endl;
+
+\textit{\qquad \qquad \qquad return -1;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad xn\_1=new double[N];}
+
+\textit{\qquad yn=new double[N];}
+
+\textit{\qquad yn\_1=new double[N];}
+
+\textit{\qquad ofstream file;}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.open("jacobi\_col.dat");}
+
+\textit{\qquad //calculeaza q}
+
+\textit{\qquad q=0.0;}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}N;i++) q+=fabs(mat[i][0]/mat[i][i]);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad sum=0.0;}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++) if(i!=j)
+sum+=fabs(mat[j][i]/mat[j][j]);}
+
+\textit{\qquad \qquad if(q\TEXTsymbol{<}sum) q=sum;}
+
+\textit{\qquad \}}
+
+\textit{\qquad max=fabs(mat[0][0]);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}N;i++) if(max\TEXTsymbol{>}%
+fabs(mat[i][i])) max=fabs(mat[i][i]);}
+
+\textit{\qquad count=q/(max*(1-q));}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) yn[i]=va[i];}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"q="\TEXTsymbol{<}%
+\TEXTsymbol{<}q\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas=0 err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"pas=0
+err="\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["\TEXTsymbol{%
+<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}\TEXTsymbol{<}%
+yn[i]/mat[i][i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}yn[i]/mat[i][i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad crt=1;}
+
+\textit{\qquad sum=0.0;}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) sum+=fabs(yn[i]);}
+
+\textit{\qquad count=count*sum;}
+
+\textit{\qquad while(fabs(count)\TEXTsymbol{>}err)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++) yn\_1[i]=yn[i];}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad yn[i]=va[i];}
+
+\textit{\qquad \qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++) if(i!=j)
+yn[i]-=mat[i][j]/mat[j][j]*yn\_1[j];}
+
+\textit{\qquad \qquad \qquad xn[i]=yn[i]/mat[i][i];}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad sum=0.0;}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)
+sum+=fabs(yn[i]-yn\_1[i]);}
+
+\textit{\qquad \qquad count=q*sum/(max*(1-q));}
+
+\textit{\qquad \qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert}
+type==2)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas="%
+\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}%
+"pas="\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}%
+\TEXTsymbol{<}"x["\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}%
+"]="\TEXTsymbol{<}\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \}}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad crt++;}
+
+\textit{\qquad \}}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.close();}
+
+\textit{\qquad delete []xn\_1;}
+
+\textit{\qquad delete []yn;}
+
+\textit{\qquad delete []yn\_1;}
+
+\textit{\qquad //afisez numarul de pasi}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Dupa "\TEXTsymbol{<}%
+\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" pasi avem solutia"\TEXTsymbol{%
+<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Metoda a fost testata cu urmatorul sistem de ecuatii cu eroarea de 0.000001:
+
+\begin{equation*}
+A=\left( 
+\begin{array}{ccc}
+10 & 1 & 2 \\ 
+-1 & 7 & 4 \\ 
+-2 & -2 & 10%
+\end{array}%
+\right) \,\,a=\left( 
+\begin{array}{c}
+1 \\ 
+1 \\ 
+1%
+\end{array}%
+\right)
+\end{equation*}
+
+obtinind urmatorul rezultat prezentat in tabelul urmator
+
+q=0.771429
+
+\begin{tabular}{lllll}
+pas & err & X[0] & X[1] & X[2] \\ 
+0 & 0.482143 & 0.1 & 0.142857 & 0.1 \\ 
+1 & 0.544133 & 0.0657143 & 0.1 & 0.148571 \\ 
+2 & 0.210765 & 0.0602857 & 0.0673469 & 0.133143 \\ 
+3 & 0.0944803 & 0.0666367 & 0.0753878 & 0.125527 \\ 
+4 & 0.0350961 & 0.0673559 & 0.0806472 & 0.128405 \\ 
+5 & 0.0162809 & 0.0662543 & 0.0791052 & 0.129601 \\ 
+6 & 0.00579598 & 0.0661694 & 0.0782645 & 0.129072 \\ 
+7 & 0.00278644 & 0.0663592 & 0.0785545 & 0.128887 \\ 
+8 & 0.00094989 & 0.0663672 & 0.0786874 & 0.128983 \\ 
+9 & 0.0004737 & 0.0663347 & 0.0786337 & 0.129011 \\ 
+10 & 0.000154402 & 0.0663344 & 0.078613 & 0.128994 \\ 
+11 & 7.99925e-005 & 0.06634 & 0.0786228 & 0.128989 \\ 
+12 & 2.62282e-005 & 0.0663398 & 0.078626 & 0.128993 \\ 
+13 & 1.34171e-005 & 0.0663389 & 0.0786242 & 0.128993 \\ 
+14 & 4.50005e-006 & 0.0663389 & 0.0786237 & 0.128993 \\ 
+15 & 2.23492e-006 & 0.0663391 & 0.0786241 & 0.128993 \\ 
+16 & 7.66892e-007 & 0.0663391 & 0.0786241 & 0.128993%
+\end{tabular}
+
+\chapter{Metoda Gauss-Seidel}
+
+\section{Prezentarea teoretica a metodei}
+
+Fie sistemul
+
+\begin{equation}
+(I-B)x=b  \label{13}
+\end{equation}
+
+Fie $B=(b_{ij})_{i,j=\overline{1,m}}=L+R$ unde
+
+\begin{equation*}
+L=\left( 
+\begin{tabular}{lllll}
+0 & 0 & 0 & 0 & 0 \\ 
+$b_{21}$ & 0 & 0 & 0 & 0 \\ 
+$b_{31}$ & $b_{32}$ & 0 & 0 & 0 \\ 
+.. & .. & .. & .. & .. \\ 
+$b_{m1}$ & $b_{m2}$ & $b_{m3}$ & .. & 0%
+\end{tabular}%
+\right) \:R=\left( 
+\begin{tabular}{lll}
+$b_{11}$ & .. & $b_{1m}$ \\ 
+0 & .. & .. \\ 
+0 & 0 & $b_{mm}$%
+\end{tabular}%
+\right)
+\end{equation*}
+
+Atunci sistemul (\ref{13}) devine $(I-L-R)x=b\Leftrightarrow
+(I-(I-L)^{-1}R)x=(I-L)^{-1}b$ si notind cu $C\overset{not}{=}(I-L)^{-1}R$ si
+cu $c\overset{not}{=}(I-L)^{-1}b$ sistemul se rescrie
+
+\begin{equation}
+(I-C)x=c  \label{14}
+\end{equation}
+
+Metoda Gauss-Siedel este Metoda Jacobi pentru sistemul (\ref{14}).
+
+Sa consideram sirul $(x^{(n)})_{n\in N}$ definit prin
+
+\begin{equation*}
+x^{(n+1)}=Cx^{(n)}+c
+\end{equation*}
+
+care, revenind la notatiile facute mai inainte, este echivalent cu
+
+\begin{equation*}
+x^{(n+1)}=(I-L)^{-1}Rx^{(n)}+(I-L)^{-1}b
+\end{equation*}
+
+Daca aplicam la stinga $(I-L)$ avem
+
+\begin{equation*}
+(I-L)x^{(n+1)}=Rx^{(n)}+b
+\end{equation*}
+
+Desfacind parantezele si rearanjind avem relatia de recurenta scrisa
+matricial si pe componente
+
+\begin{eqnarray}
+x^{(n+1)} &=&Lx^{(n+1)}+Rx^{(n)}+b  \label{15} \\
+x_{i}^{(n+1)}
+&=&\sum_{j=1}^{i-1}b_{ij}x_{j}^{(n+1)}+%
+\sum_{j=i}^{m}b_{ij}x_{j}^{(n)}+b_{i},i=\overline{2,m}  \notag \\
+x_{1}^{(n+1)} &=&\sum_{j=1}^{m}b_{1j}x_{j}^{(n)}+b_{1}  \notag
+\end{eqnarray}
+
+Fie
+
+\begin{eqnarray}
+q_{1} &=&\sum_{j=1}^{m}\left\vert b_{ij}\right\vert  \label{15_1} \\
+q_{i} &=&\sum_{j=1}^{i-1}\left\vert b_{ij}\right\vert
+q_{j}+\sum_{j=i}^{m}\left\vert b_{ij}\right\vert ,i=\overline{2,m}  \notag
+\end{eqnarray}
+
+Fie
+
+\begin{equation*}
+q=\max_{i=\overline{1,m}}q_{i}
+\end{equation*}
+
+\begin{theorem}
+\label{GS_2}
+\end{theorem}
+
+Daca q\TEXTsymbol{<}1 atunci sistemul (\ref{13}) care este echivalent cu (%
+\ref{14}) are solutie unica z si $\forall x^{(0)}\in R^{m}$ sirul definit
+prin (\ref{15}) converge catre z. Au loc in acelasi timp relatiile de
+evaluare a erorii:
+
+\begin{equation}
+\left\Vert x^{(n)}-z\right\Vert _{\infty }\leq \frac{q}{1-q}\left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert _{\infty }\leq \frac{q^{n}}{1-q}\left\Vert
+x^{(1)}-x^{(0)}\right\Vert _{\infty }  \label{16}
+\end{equation}
+
+\textbf{Demonstratie:}
+
+Vom arata ca $\left\Vert C\right\Vert _{\infty }\leq q$.
+
+Intr-adevar 
+\begin{equation*}
+\left\Vert C\right\Vert _{\infty }\overset{def}{=}\sup_{\left\Vert
+x\right\Vert _{\infty }\leq 1}\left\Vert Cx\right\Vert _{\infty }
+\end{equation*}
+
+Fie $x=(x_{1},...,x_{m});Cx\overset{not}{=}y;y=(y_{1},...,y_{m})$.
+
+Atunci $Rx=(I-L)y\Leftrightarrow (I-L)^{-1}Rx=y$.
+
+Daca inmultim la stinga cu $(I-L)$ avem
+
+\begin{equation}
+y=Ly+Rx  \label{17}
+\end{equation}
+
+Fie $y_{1}=\sum_{j=1}^{m}b_{1j}x_{j}$ aplicind modulul si proprietatile lui
+avem 
+\begin{equation*}
+\left\vert y_{1}\right\vert \leq \sum_{j=1}^{m}\left\vert b_{1j}\right\vert
+\left\vert x_{j}\right\vert \leq \left( \sum_{j=1}^{m}\left\vert
+b_{1j}\right\vert \right) \left\Vert x\right\Vert _{\infty }
+\end{equation*}
+
+Aplicind relatiile (\ref{15_1}) avem
+
+\begin{equation*}
+\left\vert y_{1}\right\vert \leq q_{1}\left\Vert x\right\Vert _{\infty }
+\end{equation*}
+
+Presupunem prin inductie ca urmatoarele relatii sunt adevarate:
+
+\begin{equation}
+\left\vert y_{k}\right\vert \leq q_{k}\left\Vert x\right\Vert _{\infty
+},1\leq k\leq i-1  \label{18}
+\end{equation}
+
+Din relatia (\ref{17}) avem
+
+\begin{equation*}
+y_{i}=\sum_{j=1}^{i-1}b_{ij}y_{j}+\sum_{j=i}^{m}b_{ij}x_{j}
+\end{equation*}
+
+Aplicind modulul si proprietatile acestuia avem
+
+\begin{equation*}
+\left\vert y_{i}\right\vert \leq \sum_{j=1}^{i-1}\left\vert
+b_{ij}\right\vert \left\vert y_{j}\right\vert +\sum_{j=i}^{m}\left\vert
+b_{ij}\right\vert \left\vert x_{j}\right\vert \overset{(\ref{18})}{\leq }%
+\left( \sum_{j=1}^{i-1}\left\vert b_{ij}\right\vert q_{j}\right) \left\Vert
+x\right\Vert _{\infty }+\left( \sum_{j=i}^{m}\left\vert b_{ij}\right\vert
+\right) \left\Vert x\right\Vert _{\infty }
+\end{equation*}
+
+Deci
+
+\begin{equation*}
+\left\vert y_{i}\right\vert \leq \left( \sum_{j=1}^{i-1}\left\vert
+b_{ij}\right\vert q_{j}+\sum_{j=i}^{m}\left\vert b_{ij}\right\vert \right)
+\left\Vert x\right\Vert _{\infty }\leq q_{i}\left\Vert x\right\Vert _{\infty
+}
+\end{equation*}
+
+Deci prin inductie avem \ $\left\vert y_{i}\right\vert \leq q_{i}\left\Vert
+x\right\Vert _{\infty },i=\overline{1,m}$.
+
+Aplicind maximum relatiei precedente avem $\left\Vert y\right\Vert _{\infty
+}\leq q\left\Vert x\right\Vert _{\infty }$.
+
+Deci $\left\Vert Cx\right\Vert _{\infty }\leq q$. Aplicind superior avem $%
+\left\Vert C\right\Vert _{\infty }\leq q$.
+
+Daca q\TEXTsymbol{<}1 relatia precedenta devine $\left\Vert C\right\Vert
+_{\infty }\leq q<1$ deci se poate aplica Teorema Jacobi, asadar sistemul (%
+\ref{13})$\Leftrightarrow $(\ref{14}) are solutie unica z si $\forall
+x^{(0)}\in R^{m}$ sirul definit prin relatia (\ref{15}) converge catre z si
+au loc relatiile de evaluare a erorii (\ref{15_1}). QED.
+
+\begin{theorem}
+\label{GS_3}
+\end{theorem}
+
+Daca urmatoarele afirmatii au loc
+
+\begin{equation}
+\sum_{j=1}^{m}\left\vert b_{ij}\right\vert \leq 1,\forall i=\overline{1,m}
+\label{19}
+\end{equation}
+
+si
+
+\begin{equation}
+\sum_{j=i}^{m}\left\vert b_{ij}\right\vert <1,\forall i=\overline{1,m}
+\label{20}
+\end{equation}
+
+atunci metoda Gauss-Siedel este convergenta.
+
+\textbf{Demonstratie:}
+
+Vom arata ca are loc teorema (\ref{GS_2}) adica q\TEXTsymbol{<}1.
+
+Daca in (\ref{20}) facem pe i=1 avem $\sum_{j=1}^{m}\left\vert
+b_{ij}\right\vert <1$ deci $q_{1}<1$.
+
+Vom arata prin inductie ca $q_{k}<1,\forall k=\overline{1,m}$.
+
+Presupunem ca $q_{k}<1,\forall k=\overline{1,i-1}$ si aratam prim inductie
+ca $q_{i}<1$, unde
+
+\begin{equation*}
+q_{i}=\sum_{j=1}^{i-1}\left\vert b_{ij}\right\vert
+q_{j}+\sum_{j=i}^{m}\left\vert b_{ij}\right\vert
+\end{equation*}
+
+I) Daca $\sum_{j=1}^{i-1}\left\vert b_{ij}\right\vert q_{j}=0$ atunci $%
+q_{i}=\sum_{j=i}^{m}\left\vert b_{ij}\right\vert \overset{(\ref{20})}{<}1$.
+
+II) Daca $\sum_{j=1}^{i-1}\left\vert b_{ij}\right\vert q_{j}\neq 0$ atunci $%
+\exists j_{0}$ astfel incit $\left\vert b_{ij_{0}}\right\vert q_{j_{0}}\neq
+0 $, dar
+
+\begin{equation}
+\left\vert b_{ij_{0}}\right\vert q_{j_{0}}\overset{ip\:ind}{<}\left\vert
+b_{ij_{0}}\right\vert  \label{21}
+\end{equation}
+
+Atunci
+
+\begin{equation*}
+q_{i}=\sum_{j=1}^{i-1}\left\vert b_{ij}\right\vert
+q_{j}+\sum_{j=i}^{m}\left\vert b_{ij}\right\vert \overset{(\ref{21})}{<}%
+\sum_{j=1}^{i-1}\left\vert b_{ij}\right\vert +\sum_{j=i}^{m}\left\vert
+b_{ij}\right\vert =\sum_{j=1}^{m}\left\vert b_{ij}\right\vert \overset{(\ref%
+{19})}{\leq }1
+\end{equation*}
+
+Deci $q_{i}<1$.
+
+Conform principiului inductiei matematice atunci
+
+\begin{equation*}
+q_{i}<1\,\forall i=\overline{1,m}
+\end{equation*}
+
+si deci $q<1$.
+
+Asadar se poate aplica teorema (\ref{GS_2}). QED.
+
+Fie sistemul de ecuatii
+
+\begin{equation}
+Ax=a  \label{22}
+\end{equation}
+cu $A=(a_{ij})_{i,j=\overline{1,m}}$.
+
+Daca $\exists D^{-1}\,(a_{ii}\neq 0\,\forall i=\overline{1,m})$ atunci
+
+\begin{equation*}
+Ax=a\Leftrightarrow (I-(\underset{B}{\underbrace{I-D^{-1}A})})x=\underset{b}{%
+\underbrace{D^{-1}a}}
+\end{equation*}
+
+Atunci sistemul (\ref{22}) se poate scrie
+
+\begin{equation*}
+(I-B)x=b
+\end{equation*}
+
+Daca facem calculele in relatia $B=I-D^{-1}A$ aceasta devine scrisa pe
+componente
+
+\begin{equation*}
+B=\left( 
+\begin{array}{cc}
+0 & -\frac{a_{ij}}{a_{ii}} \\ 
+-\frac{a_{ij}}{a_{ii}} & 0%
+\end{array}%
+\right) ,i=\overline{1,m},j=\overline{1,m}
+\end{equation*}
+
+deci se poate aplica Gauss-Siedel iar conditiile (\ref{19}) devine
+
+\begin{equation}
+\sum_{j=1,j\neq i}^{m}\left\vert \frac{a_{ij}}{a_{ii}}\right\vert \leq
+1,\forall i=\overline{1,m}  \label{23}
+\end{equation}
+
+si (\ref{20}) devine
+
+\begin{equation}
+\sum_{j=i+1}^{m}\left\vert \frac{a_{ij}}{a_{ii}}\right\vert <1,\forall i=%
+\overline{1,m}  \label{24}
+\end{equation}
+
+Aceste conditii revin la a spune ca matricea A trebuie sa fie diagonal
+dominanta.
+
+\section{Prezentarea implementarii in C++}
+
+Functia care implementeaza metoda Gauss-Siedel este
+
+\textit{int gauss\_siedel(double **mat,double *va,double *xn,double err,long
+N,int type)}
+
+\textit{/*}
+
+\textit{\qquad returneaza 0 in caz de succes si -1 in caz de insucces.}
+
+\textit{\qquad mat este matricea A, va este vectorul termenilor liber, xn
+este solutia}
+
+\textit{\qquad err este eroarea cu care dorim sa calculam solutia sistemului}
+
+\textit{\qquad N este dimensiunea sistemului}
+
+\textit{\qquad type: }
+
+\textit{\qquad 0 daca se doreste doar rezultatul}
+
+\textit{\qquad 1 daca se doreste rezultatul si pasii intermediari scosi in
+fisier}
+
+\textit{\qquad 2 daca se doreste rezultatul si pasii intermediari scosi in
+fisier si pe ecran}
+
+\qquad fisierul este \textit{gauss\_siedel.dat }
+
+\textit{*/}
+
+\textit{\{}
+
+\textit{\qquad double sum1,sum2,*qi,q,max,count;}
+
+\textit{\qquad double *xn\_1;}
+
+\textit{\qquad int i,j,crt;}
+
+\textit{\qquad //verificam daca conditiile de convergenta sunt indeplinite}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad sum1=0.0;}
+
+\textit{\qquad \qquad sum2=0.0;}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++)}
+
+\textit{\qquad \qquad \qquad if(i!=j) sum1+=fabs(mat[i][j]/mat[i][i]);}
+
+\textit{\qquad \qquad for(j=i+1;j\TEXTsymbol{<}N;j++)}
+
+\textit{\qquad \qquad \qquad sum2+=fabs(mat[i][j]/mat[i][i]);}
+
+\textit{\qquad \qquad if(!(sum1\TEXTsymbol{<}=1 \&\& sum2\TEXTsymbol{<}1))}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Sistemul nu
+poate fi rezolvat cu metoda Gauss-Siedel\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad \qquad \qquad return -1;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad xn\_1=new double[N];}
+
+\textit{\qquad ofstream file;}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.open("gauss\_siedel.dat");}
+
+\textit{\qquad //calculam q-urile}
+
+\textit{\qquad qi=new double[N];}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) qi[i]=0.0;}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad sum1=0.0;}
+
+\textit{\qquad \qquad for(j=i+1;j\TEXTsymbol{<}N;j++)}
+
+\textit{\qquad \qquad sum1+=fabs(mat[i][j]/mat[i][i]);}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}i;j++)}
+
+\textit{\qquad \qquad \qquad sum1+=fabs(mat[i][j]/mat[i][i])*qi[j];}
+
+\textit{\qquad \qquad qi[i]=sum1;}
+
+\textit{\qquad \}}
+
+\textit{\qquad //calculam maximul (adica q real)}
+
+\textit{\qquad q=qi[0];}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}N;i++) if(q\TEXTsymbol{<}qi[i])
+q=qi[i];}
+
+\textit{\qquad delete[] qi;}
+
+\textit{\qquad if(q\TEXTsymbol{>}=1)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Sistemul nu poate fi
+rezolvat cu metodat Gauss-Siedel";}
+
+\textit{\qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}" deoarece q="%
+\TEXTsymbol{<}\TEXTsymbol{<}q\TEXTsymbol{<}\TEXTsymbol{<}"\TEXTsymbol{>}=1%
+\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad \qquad return -1;}
+
+\textit{\qquad \}}
+
+\textit{\qquad //calculam primul pas}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) xn\_1[i]=0.0;}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad xn[i]=va[i]/mat[i][i];}
+
+\textit{\qquad \qquad for(j=i+1;j\TEXTsymbol{<}N;j++)
+xn[i]-=mat[i][j]/mat[i][i]*xn\_1[j];}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}i;j++)
+xn[i]-=mat[i][j]/mat[i][i]*xn[j];}
+
+\textit{\qquad \}}
+
+\textit{\qquad max=fabs(xn[0]-xn\_1[0]);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad if(max\TEXTsymbol{<}fabs(xn[i]-xn\_1[i]))
+max=fabs(xn[i]-xn\_1[i]);}
+
+\textit{\qquad count=q*max/(1-q);}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"q="\TEXTsymbol{<}\TEXTsymbol{%
+<}q\TEXTsymbol{<}\TEXTsymbol{<}endl\TEXTsymbol{<}\TEXTsymbol{<}"max="%
+\TEXTsymbol{<}\TEXTsymbol{<}max\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"count="\TEXTsymbol{<}%
+\TEXTsymbol{<}fabs(count)\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"q="\TEXTsymbol{<}%
+\TEXTsymbol{<}q\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas=0 err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"pas=0
+err="\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["\TEXTsymbol{%
+<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}\TEXTsymbol{<}%
+xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad crt=1;}
+
+\textit{\qquad while(fabs(count)\TEXTsymbol{>}err)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++) xn\_1[i]=xn[i];}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad xn[i]=va[i]/mat[i][i];}
+
+\textit{\qquad \qquad \qquad for(j=i+1;j\TEXTsymbol{<}N;j++)
+xn[i]-=mat[i][j]/mat[i][i]*xn\_1[j];}
+
+\textit{\qquad \qquad \qquad for(j=0;j\TEXTsymbol{<}i;j++)
+xn[i]-=mat[i][j]/mat[i][i]*xn[j];}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad max=fabs(xn[0]-xn\_1[0]);}
+
+\textit{\qquad \qquad for(i=1;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \qquad if(max\TEXTsymbol{<}fabs(xn[i]-xn\_1[i]))
+max=fabs(xn[i]-xn\_1[i]);}
+
+\textit{\qquad \qquad count=q*max/(1-q);}
+
+\textit{\qquad \qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert}
+type==2)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas="%
+\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}%
+"pas="\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}count\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}%
+\TEXTsymbol{<}"x["\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}%
+"]="\TEXTsymbol{<}\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \}}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad crt++;}
+
+\textit{\qquad \}}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.close();}
+
+\textit{\qquad //Afisez nr pasii}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Dupa "\TEXTsymbol{<}%
+\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" pasi avem solutia"\TEXTsymbol{%
+<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad delete []xn\_1;}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Metoda a fost testata cu urmatorul sistem de ecuatii cu eroarea de 0.000001:
+
+\begin{equation*}
+A=\left( 
+\begin{array}{ccc}
+10 & 1 & 2 \\ 
+-1 & 7 & 4 \\ 
+-2 & -2 & 10%
+\end{array}%
+\right) \,\,a=\left( 
+\begin{array}{c}
+1 \\ 
+1 \\ 
+1%
+\end{array}%
+\right)
+\end{equation*}
+
+obtinind urmatorul rezultat prezentat in tabelul urmator
+
+q=0.614286
+
+\begin{tabular}{lllll}
+pas & err & X[0] & X[1] & X[2] \\ 
+0 & 0.250265 & 0.1 & 0.157143 & 0.151429 \\ 
+1 & 0.148274 & 0.054 & 0.0640408 & 0.123608 \\ 
+2 & 0.0287021 & 0.0688743 & 0.0820631 & 0.130187 \\ 
+3 & 0.00669693 & 0.0657562 & 0.077858 & 0.128723 \\ 
+4 & 0.0014952 & 0.0664696 & 0.0787969 & 0.129053 \\ 
+5 & 0.000337129 & 0.0663097 & 0.0785852 & 0.128979 \\ 
+6 & 7.58448e-005 & 0.0663457 & 0.0786328 & 0.128996 \\ 
+7 & 1.70716e-005 & 0.0663376 & 0.0786221 & 0.128992 \\ 
+8 & 3.84213e-006 & 0.0663394 & 0.0786245 & 0.128993 \\ 
+9 & 8.64732e-007 & 0.066339 & 0.078624 & 0.128993%
+\end{tabular}
+
+\chapter{Metode de relaxare}
+
+\section{Prezentarea teoretica a metodei}
+
+Pe spatiul R$^{m}$ vom defini produsul scalar dintre doi vectori astfel
+
+$<x,y>=\sum_{i=1}^{m}x_{i}y_{i}$ unde $x=(x_{1},..,x_{m})$ si $%
+y=(y_{1},..,y_{m})$.
+
+Fie o matrice $A=(a_{ij})_{i,j=\overline{1,m}}$:
+
+\begin{itemize}
+\item A este o matrice simetrica daca si numai daca $<Ax,y>=<x,Ay>$%
+\thinspace ,
+
+$\forall x,y\in R^{m}$
+
+\item daca A este simetrica atunci $S(A)=\{\lambda \in C|\det (A-\lambda
+I)=0\}\subset R$
+
+\item daca A este simetrica atunci $\lambda \in S(A)\Leftrightarrow \exists
+x\in R^{m},x\neq 0\,a.i.\,Ax=\lambda x$ $\lambda $ se numeste numar propriu
+
+\item daca A este pozitiv definita atunci $<Ax,x>>0\,\forall x\in
+R^{m},x\neq 0$
+\end{itemize}
+
+\begin{proposition}
+\thinspace \qquad \label{REL_1}
+\end{proposition}
+
+Daca A este simetrica si pozitiv definita atunci $S(A)\subset (0,\infty )$.
+
+\textbf{Demonstratie:}
+
+$\lambda \in S(A)\overset{def}{\Rightarrow }\exists x\in R^{m},x\neq
+0\,\,a.i.\,\,Ax=\lambda x$ daca aplicam produsul scalar cu x avem $%
+<Ax,x>=<\lambda x,x>$
+
+Deoarece $<Ax,x>>0$ si $\left\Vert x\right\Vert _{2}^{2}>0$ realtia
+anterioara devine $0<\lambda <x,x>=\lambda >0$ atunci $\lambda >0$.
+
+Reciproc A este simetrica si $S(A)\subset (0,\infty )$ atunci A este pozitiv
+definita. QED.
+
+Fie B o matrice de dimensiune mxm $B=(b_{ij})_{i,j=\overline{1,m}}$ iar $%
+B^{\ast }=(b_{ji})_{i,j=\overline{1,m}}$ atunci avem $<B^{\ast
+}x,y>=<x,By>,\forall x,y\in R^{m}$ iar $\left\Vert B\right\Vert
+_{2}=\sup_{\left\Vert x\right\Vert _{2}\leq 1}\left\Vert Bx\right\Vert _{2}$
+iar $\left\Vert x\right\Vert _{2}=\sqrt{\sum_{i=1}^{m}x_{i}^{2}}$ de aici se
+poate arata ca 
+\begin{equation}
+\left\Vert B\right\Vert _{2}=\sqrt{\rho (BB^{\ast })}  \label{R1}
+\end{equation}
+
+Fie $A=(a_{ij})_{i,j=\overline{1,m}}$ o matrice simetrica si pozitiv
+definita, deci $a_{ij}>0$ in acest caz vom nota
+
+\begin{equation*}
+D=\left( 
+\begin{tabular}{llll}
+a$_{11}$ & 0 & 0 & 0 \\ 
+0 & a$_{22}$ & 0 & 0 \\ 
+... & ... & ... & ... \\ 
+0 & 0 & 0 & a$_{mm}$%
+\end{tabular}%
+\right)
+\end{equation*}
+
+Sistemul
+
+\begin{equation}
+Ax=a  \label{R2}
+\end{equation}
+
+este echivalent cu $D^{-1}Ax=D^{-1}a$ iar daca inmultim cu $\alpha >0$ avem $%
+\alpha D^{-1}Ax=\alpha D^{-1}a$ care este echivalent cu
+
+\begin{equation*}
+(I-\underset{B_{\alpha }}{\underbrace{(I-\alpha D^{-1}A)}})x=\underset{%
+b_{\alpha }}{\underbrace{\alpha D^{-1}a}}
+\end{equation*}
+
+Sistemul (\ref{R2}) este echivalent cu sistemul
+
+\begin{equation}
+(I-B_{\alpha })x=b_{\alpha }  \label{R3}
+\end{equation}
+
+unde $B_{\alpha }=I-\alpha D^{-1}A$ iar $b_{\alpha }=\alpha D^{-1}a$.
+
+Metoda relaxarii simultane este metoda Jacobi pentru sistemul (\ref{R3}).
+
+\textbf{OBS:}Daca A este simetrica si pozitiv definita atuncti A este
+inversabila sau mai bine zis A inversabila daca si numai daca A este
+injectiva.
+
+\textbf{Demonstratie:}
+
+\qquad Daca $Ax=0$ atunci $<Ax,x>=0$ deci x=0 asadar A este injectiva.
+
+Asadar (\ref{R2}) are solutie unica z si deci (\ref{R3}) are solutie unica z.
+
+Fie $\lambda \in S(D^{-1}A)\Rightarrow \lambda \in R\,\ si\,\ \exists x\neq
+0,x\in R^{m}\,\ avem\,\,D^{-1}Ax=\lambda x$ de aici avem $Ax=D\lambda x$ sau 
+$Ax=\lambda Dx\Leftrightarrow <Ax,x>=\lambda <Dx,x>=\lambda
+\sum_{i=1}^{m}a_{ii}x_{i}^{2}.$ Dar $Ax>0$ si $a_{ii}>0$ deci $\lambda >0$.
+
+Pentru $S(D^{-1}A)=(\lambda _{1},\lambda _{2},...,\lambda _{m})$ vom
+presupune ca $\lambda _{1}\leq \lambda _{2}\leq ...\leq \lambda _{m}$.
+
+\begin{proposition}
+\label{REL_2}
+\end{proposition}
+
+\begin{equation*}
+S(I-\alpha D^{-1}A)=(1-\alpha \lambda _{1},1-\alpha \lambda
+_{2},...,1-\alpha \lambda _{m})
+\end{equation*}
+
+\textbf{Demonstratie:}
+
+Fie $\lambda \in S(I-\alpha D^{-1}A)\Rightarrow \lambda \in R\,\ si\,\
+\exists x\neq 0,x\in R^{m}\,\ avem\,\,(I-\alpha D^{-1}A)x=\lambda x$ sau $%
+x-\alpha (D^{-1}A)x=\lambda x$ care cu presupunerea anterioara este $x-$ $%
+\alpha \lambda ^{\ast }x=\lambda x$ sau $(1-\alpha \lambda ^{\ast
+})x=\lambda x$ rezultind $\lambda =(1-\alpha \lambda ^{\ast })$.
+
+Unde $\lambda ^{\ast }=(\lambda _{1},\lambda _{2},...,\lambda _{m})$ din
+presupunerea anterioara.
+
+Inlocuind avem $S(I-\alpha D^{-1}A)=(1-\alpha (\lambda _{1},\lambda
+_{2},...,\lambda _{m}))=(1-\alpha \lambda _{1},1-\alpha \lambda
+_{2},...,1-\alpha \lambda _{m})$. QED.
+
+Notam $\left\langle x,y\right\rangle _{D}\overset{def}{=}\left\langle
+Dx,y\right\rangle $ unde $\left\langle ,\right\rangle _{D}$ este produs
+scalar deci
+
+\begin{equation*}
+\left\Vert x\right\Vert _{D}=\sqrt{\left\langle x,x\right\rangle _{D}}=\sqrt{%
+\sum_{i=1}^{m}a_{ii}x_{i}^{2}}
+\end{equation*}
+
+Atunci pentru $B\in M^{mxm}$, $\left\Vert B\right\Vert _{D}=\underset{%
+\left\Vert x\right\Vert _{D}\leq 1}{\sup }\left\Vert Bx\right\Vert _{D}$.
+
+\begin{theorem}
+(Metoda Relaxarii Simultane)\label{REL_3}
+\end{theorem}
+
+Fie A simetrica si pozitiv definita. Fie $(x^{(n)})_{n\in N}$ sirul definit
+prin 
+\begin{equation}
+x^{(n)}=B_{\alpha }x^{(n)}+b_{\alpha }  \label{R4}
+\end{equation}
+
+Fie z solutia ecuatiei (\ref{R2}). Sunt echivalente urmatoarele afirmatii:
+
+i) $\forall x^{(0)}\in R^{m}$ sirul (\ref{R4}) converge catre solutia z
+
+ii) $0<\alpha <2/\lambda _{m}$.
+
+Avem atunci urmatorele formale de evaluare a erorii:
+
+\begin{equation}
+\left\Vert x^{(n)}-z\right\Vert _{D}\leq \frac{q}{1-q}\left\Vert
+x^{(n)}-x^{(n-1)}\right\Vert _{D}\leq \frac{q^{n}}{1-q}\left\Vert
+x^{(1)}-x^{(0)}\right\Vert _{D}  \label{R5}
+\end{equation}
+
+unde $q=\underset{1\leq i\leq m}{\max }\left\vert 1-\alpha \lambda
+_{i}\right\vert $.
+
+\textbf{Demonstratie:}
+
+\textbf{Direct (i)=\TEXTsymbol{>}(ii):}
+
+$(i)\overset{Th\,Jacobi}{\Leftrightarrow }\rho (B_{\alpha })<1$.
+
+Stiim ca $S(B_{\alpha })\overset{(\ref{REL_2})}{=}(1-\alpha \lambda
+_{1},1-\alpha \lambda _{2},...,1-\alpha \lambda _{m})$ si ca $\rho
+(B_{\alpha })=\underset{i=\overline{1,m}}{\max }\left\vert 1-\alpha \lambda
+_{i}\right\vert $.
+
+Din $\rho (B_{\alpha })<1\Leftrightarrow \left\vert 1-\alpha \lambda
+_{i}\right\vert <1$ $\forall i=\overline{1,m}$ deci $-1<1-\alpha \lambda
+_{i}<1,\forall i=\overline{1,m}$.
+
+Din $1-\alpha \lambda _{i}<1$ avem $\alpha \lambda _{i}>0\,\forall i=%
+\overline{1,m}$ dar $\lambda _{i}>0,\forall i=\overline{1,m}$ asadar $\alpha
+>0$.
+
+Din $-1<1-\alpha \lambda _{i}$ avem $\alpha \lambda i<2$ dar din presupunea
+ca $\lambda _{1}\leq \lambda _{2}\leq ...\leq \lambda _{m}$ avem $\alpha
+\lambda _{m}<2\Leftrightarrow \alpha <2/\lambda _{m}$.
+
+Asadar (i)=\TEXTsymbol{>}(ii).
+
+\textbf{Reciproc (ii)=\TEXTsymbol{>}(i) :}
+
+Prelucram (i).
+
+Din \ $\left\Vert B_{\alpha }\right\Vert _{D}=\sqrt{\rho (B_{\alpha
+}B_{\alpha }^{\ast })}$ , unde $B_{\alpha }^{\ast }$ este adjunctul lui $%
+B_{\alpha }$ in raport cu $\left\langle ,\right\rangle _{D}$ , deci $%
+\left\langle B_{\alpha }^{\ast }x,y\right\rangle _{D}=\left\langle B_{\alpha
+}x,y\right\rangle _{D}$ deci $B_{\alpha }^{\ast }=B_{\alpha }$.
+
+Inlocuind in norma avem: $\left\Vert B_{\alpha }\right\Vert _{D}=\sqrt{\rho
+(B_{\alpha }^{2})}=\sqrt{\rho ^{2}(B_{\alpha })}=\rho (B_{\alpha })$.
+
+Asadar $\left\Vert B_{\alpha }\right\Vert _{D}=\rho (B_{\alpha })=\underset{%
+1\leq i\leq m}{\max }\left\vert 1-\alpha \lambda _{i}\right\vert $.
+
+(ii) este echivalent cu $\rho (B_{\alpha })<1\Leftrightarrow \left\Vert
+B_{\alpha }\right\Vert _{D}<1$.
+
+Evaluarile (\ref{R5}) provin din Teorema Jacobi prezentata in (\ref{Jacobi}).
+
+Determinarea sirului de iteratii:
+
+Din relatia (\ref{R3}) aplicind Teorema Jacobi (\ref{Jacobi}) avem
+
+\begin{equation*}
+x^{(n+1)}=B_{\alpha }x^{(n)}+b_{\alpha }
+\end{equation*}
+
+Inlocuind avem
+
+\begin{equation*}
+x^{(n+1)}=x^{(n)}-\alpha D^{-1}Ax^{(n)}+\alpha D^{-1}a
+\end{equation*}
+
+Stiind ca $x^{(n)}=(x_{1}^{(n)},x_{2}^{(n)},...,x_{m}^{(n)})$ avem scrierea
+relatiei anterioare pe componente:
+
+\begin{equation*}
+x_{i}^{(n+1)}=(1-\alpha )x_{i}^{(n)}-\alpha \sum_{j=1,j\neq i}^{m}\frac{%
+a_{ij}}{a_{ii}}x_{j}^{(n)}+\alpha \frac{a_{ii}}{a_{ij}}
+\end{equation*}
+
+cu $A=(a_{ij})_{i,j=\overline{1,m}}\,\ si\,\ a=(a_{1},a_{2},...,a_{m}\dot{)}$
+. QED.
+
+Se observa ca $q=q(\alpha )$ noi am dori o valoare $\alpha $ a.i. sa
+minimizeze $q(\alpha )$ fie aceasta valoarea $q_{0}=\underset{0<\alpha
+<2/\lambda _{m}}{\min }q(\alpha )$.
+
+Cu notatiile si ipotezele precedente avem:
+
+\begin{equation}
+\min_{0<\alpha <2/\lambda _{m}}q(\alpha )=q\left( \frac{2}{\lambda
+_{1}+\lambda _{m}}\right) =\frac{\lambda _{m}-\lambda _{1}}{\lambda
+_{m}+\lambda _{1}}  \label{R6}
+\end{equation}
+
+\textbf{Demonstratie:}
+
+Stiim din ipotezele si notatiile anterioare 
+\begin{equation*}
+q(\alpha )=\underset{i=\overline{1,m}}{\max }\left\vert 1-\alpha \lambda
+_{i}\right\vert \,\ cu\,\ \lambda _{1}\leq \lambda _{2}\leq ...\leq \lambda
+_{m}
+\end{equation*}
+
+\begin{equation*}
+\alpha >0,\forall i=\overline{1,m}\,\ \ \alpha \lambda _{i}-1\leq \alpha
+\lambda _{m}-1
+\end{equation*}
+
+\begin{equation*}
+\alpha >0,\forall i=\overline{1,m}\,\ \ 1-\alpha \lambda _{i}\leq 1-\alpha
+\lambda _{1}
+\end{equation*}
+
+din acestea avem
+
+$\alpha \lambda _{i}-1\leq \max \{\alpha \lambda _{m}-1,1-\alpha \lambda
+_{1}\}$ si $1-\alpha \lambda _{i}\leq \max \{\alpha \lambda _{m}-1,1-\alpha
+\lambda _{1}\}$ aceste doua relatii sunt de fapt definitia modului deci vom
+avea
+
+\begin{equation*}
+\left\vert 1-\alpha \lambda _{i}\right\vert \leq \max \{\alpha \lambda
+_{m}-1,1-\alpha \lambda _{1}\}\,\forall i=\overline{1,m}
+\end{equation*}
+
+Aplicind maximum dupa i avem
+
+\begin{equation*}
+\max_{i=\overline{1,m}}\left\vert 1-\alpha \lambda _{i}\right\vert \leq \max
+\{\alpha \lambda _{m}-1,1-\alpha \lambda _{1}\}
+\end{equation*}
+
+Vom lua numai relatia de egalitate si avem
+
+\begin{equation*}
+\max_{i=\overline{1,m}}\left\vert 1-\alpha \lambda _{i}\right\vert =\max
+\{\alpha \lambda _{m}-1,1-\alpha \lambda _{1}\}
+\end{equation*}
+
+Ceea ce inseamna cu notatiile anterioare
+
+\begin{equation*}
+q(\alpha )=\max \{\alpha \lambda _{m}-1,1-\alpha \lambda _{1}\}
+\end{equation*}
+
+Determinam punctul de intersectie al caracteristicilor maximului si avem $%
+\alpha \lambda _{m}-1=1-\alpha \lambda _{1}\Rightarrow \alpha (\lambda
+_{m}+\lambda _{1})=2$ deci%
+\begin{equation*}
+\alpha =\frac{2}{\lambda _{m}+\lambda _{1}}
+\end{equation*}
+
+Evident avem urmatoarele relatii
+
+\begin{eqnarray*}
+\frac{2}{\lambda _{m}+\lambda _{1}} &>&0 \\
+\frac{2}{\lambda _{m}+\lambda _{1}} &<&\frac{2}{\lambda _{m}}
+\end{eqnarray*}
+
+Din aceasta determina valoarea optima a parametrului de relaxare
+
+\begin{equation*}
+q\left( \frac{2}{\lambda _{1}+\lambda _{m}}\right) =1-\frac{2}{\lambda
+_{1}+\lambda _{m}}\lambda _{1}=\frac{\lambda _{m}-\lambda _{1}}{\lambda
+_{m}+\lambda _{1}}
+\end{equation*}
+
+\section{Prezentarea implementarii in C++}
+
+Programul pentru rezolvarea cu ajutorul metodei relaxarii succesive este
+
+\textit{\#include\TEXTsymbol{<}iostream.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}fstream.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}math.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdlib.h\TEXTsymbol{>}}
+
+\textit{int main(int argc, char* argv[])}
+
+\textit{\{}
+
+\textit{\qquad double **mat,*xn,*va;}
+
+\textit{\qquad double *temp;}
+
+\textit{\qquad long i,j,N;}
+
+\textit{\qquad double err;}
+
+\textit{\qquad int type;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti
+N=";cout.flush();cin\TEXTsymbol{>}\TEXTsymbol{>}N;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti eroarea,
+err=";cout.flush();cin\TEXTsymbol{>}\TEXTsymbol{>}err;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Doriti rulare simpla=0%
+\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Doriti rulare cu scoatere in
+fisier a pasilor intermediari=1\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Doriti rulare cu scoatere in
+fisier si la ecran a pasilor ";}
+
+\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}\textit{intermediari=2\TEXTsymbol{%
+\backslash}n";}
+
+\textit{\qquad cin\TEXTsymbol{>}\TEXTsymbol{>}type;}
+
+\textit{\qquad /* aloc memorie */}
+
+\textit{\qquad mat=(double **)calloc(N,sizeof(double *));}
+
+\textit{\qquad temp=(double *)calloc(N*N,sizeof(double));}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad mat[i]=temp;}
+
+\textit{\qquad \qquad temp+=N;}
+
+\textit{\qquad \}}
+
+\textit{\qquad xn=new double[N];}
+
+\textit{\qquad va=new double[N];}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti matricea
+sistemului\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++)}
+
+\textit{\qquad \qquad \qquad cin\TEXTsymbol{>}\TEXTsymbol{>}mat[i][j];}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti vectorul
+termenilor liberi\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) cin\TEXTsymbol{>}\TEXTsymbol{>}%
+va[i];}
+
+\textit{\qquad double lmin,lmax;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti valorile minime
+si maxime ale parametrilor lambda\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Lambda minim=";cin%
+\TEXTsymbol{>}\TEXTsymbol{>}lmin;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Lambda maxim=";cin%
+\TEXTsymbol{>}\TEXTsymbol{>}lmax;}
+
+\textit{\qquad double q=(lmax-lmin)/(lmax+lmin);}
+
+\textit{\qquad double alpha=2/(lmin+lmax);}
+
+\textit{\qquad ofstream file;}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.open("relaxare.dat");}
+
+\textit{\qquad int crt=0;}
+
+\textit{\qquad double count=q/(1-q);}
+
+\textit{\qquad double *xn\_1;}
+
+\textit{\qquad xn\_1=new double[N];}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) xn\_1[i]=0;}
+
+\textit{\qquad //calculam primul pas}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad xn[i]=alpha*va[i]/mat[i][i]+(1-alpha)*xn\_1[i];}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++)}
+
+\textit{\qquad \qquad \qquad if(i!=j)
+xn[i]-=alpha*mat[i][j]/mat[i][i]*xn\_1[j];}
+
+\textit{\qquad \}}
+
+\textit{\qquad //calculam eroarea}
+
+\textit{\qquad double sum;}
+
+\textit{\qquad sum=0.0;}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) sum+=mat[i][i]*(xn[i]-xn\_1[i]);%
+}
+
+\textit{\qquad sum=sqrt(sum);}
+
+\textit{\qquad sum=sum*count;}
+
+\textit{\qquad crt++;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"q="\TEXTsymbol{<}\TEXTsymbol{%
+<}q\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"q="\TEXTsymbol{<}%
+\TEXTsymbol{<}q\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas=0 err="%
+\TEXTsymbol{<}\TEXTsymbol{<}sum\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"pas=0
+err="\TEXTsymbol{<}\TEXTsymbol{<}sum\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["\TEXTsymbol{%
+<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}\TEXTsymbol{<}%
+xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad while(sum\TEXTsymbol{>}err)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++) xn\_1[i]=xn[i];}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad xn[i]=alpha*va[i]/mat[i][i]+(1-alpha)*xn\_1[i];}
+
+\textit{\qquad \qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++)}
+
+\textit{\qquad \qquad \qquad \qquad if(i!=j)
+xn[i]-=alpha*mat[i][j]/mat[i][i]*xn\_1[j];}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad //calculam eroarea}
+
+\textit{\qquad \qquad sum=0.0;}
+
+\textit{\qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)
+sum+=mat[i][i]*(xn[i]-xn\_1[i])*(xn[i]-xn\_1[i]);}
+
+\textit{\qquad \qquad sum=sqrt(sum);}
+
+\textit{\qquad \qquad sum=sum*count;}
+
+\textit{\qquad \qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert}
+type==2)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"pas="%
+\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}sum\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}\TEXTsymbol{<}%
+"pas="\TEXTsymbol{<}\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" err="%
+\TEXTsymbol{<}\TEXTsymbol{<}sum\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad \qquad file\TEXTsymbol{<}\TEXTsymbol{<}"x["%
+\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}%
+\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \qquad if(type==2) cout\TEXTsymbol{<}%
+\TEXTsymbol{<}"x["\TEXTsymbol{<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}%
+"]="\TEXTsymbol{<}\TEXTsymbol{<}xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad \qquad \qquad \}}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad crt++;}
+
+\textit{\qquad \}}
+
+\textit{\qquad if(type==1 \TEXTsymbol{\vert}\TEXTsymbol{\vert} type==2)
+file.close();}
+
+\textit{\qquad //Afisez nr pasii}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Dupa "\TEXTsymbol{<}%
+\TEXTsymbol{<}crt\TEXTsymbol{<}\TEXTsymbol{<}" pasi avem solutia"\TEXTsymbol{%
+<}\TEXTsymbol{<}endl;}
+
+\qquad \textit{for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"X["\TEXTsymbol{<}%
+\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}\TEXTsymbol{<}%
+xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad //eliberez memorie}
+
+\textit{\qquad delete[] xn;}
+
+\textit{\qquad delete[] va;}
+
+\textit{\qquad delete[] xn\_1;}
+
+\textit{\qquad free(*mat);}
+
+\textit{\qquad free(mat);}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Programul a fost verificat cu urmatorul sistem de ecuatii cu eroarea de
+0.00001
+
+Metoda a fost testata cu urmatorul sistem de ecuatii cu eroarea de 0.000001:
+
+\begin{equation*}
+A=\left( 
+\begin{array}{ccc}
+13 & -1 & 1 \\ 
+-1 & 13 & -1 \\ 
+1 & -1 & 13%
+\end{array}%
+\right) \,\,a=\left( 
+\begin{array}{c}
+18 \\ 
+-6 \\ 
+66%
+\end{array}%
+\right)
+\end{equation*}
+
+Calculam
+
+\begin{equation*}
+D^{-1}A=\left( 
+\begin{array}{ccc}
+1 & -1/13 & 1/13 \\ 
+-1/13 & 1 & -1/13 \\ 
+1/13 & -1/13 & 1%
+\end{array}%
+\right)
+\end{equation*}
+
+Calculam raza spectrala
+
+\begin{equation*}
+S(D^{-1}A)=\{\lambda |\det (D^{-1}A-\lambda I)=0\}
+\end{equation*}
+
+care este echivalent cu
+
+\begin{equation*}
+\det \left( 
+\begin{array}{ccc}
+1-\lambda & -1/13 & 1/13 \\ 
+-1/13 & 1-\lambda & -1/13 \\ 
+1/13 & -1/13 & 1-\lambda%
+\end{array}%
+\right) =0
+\end{equation*}
+
+Rezolvind avem $S(D^{-1}A)=\{0.923,0.923,1.1538\}$ deci avem $\lambda _{\min
+}=0.923$ si $\lambda _{\max }=1.1538$.
+
+Rulind programul obtinem urmatorul rezultat prezentat in tabelul urmator
+
+q=0.111133
+
+\begin{tabular}{lllll}
+pas & err & X[0] & X[1] & X[2] \\ 
+0 & 1.0836 & 1.33341 & -0.444471 & 4.88918 \\ 
+1 & 0.254842 & 0.987613 & 5.26811e-005 & 4.93828 \\ 
+2 & 0.0283197 & 1.00412 & -0.00548795 & 4.99864 \\ 
+3 & 0.00314707 & 0.999847 & 1.30092e-006 & 4.99924 \\ 
+4 & 0.000349723 & 1.00005 & -6.77606e-005 & 4.99998 \\ 
+5 & 3.88635e-005 & 0.999998 & 2.4094e-008 & 4.99999 \\ 
+6 & 4.31876e-006 & 1 & -8.36653e-007 & 5%
+\end{tabular}
+
+\chapter{Programul principal pentru Jacobi si Gauss-Siedel}
+
+\bigskip
+
+\textit{\#include \TEXTsymbol{<}iostream.h\TEXTsymbol{>}}
+
+\textit{\#include \TEXTsymbol{<}fstream.h\TEXTsymbol{>}}
+
+\textit{\#include \TEXTsymbol{<}math.h\TEXTsymbol{>}}
+
+\textit{\#include \TEXTsymbol{<}stdlib.h\TEXTsymbol{>}}
+
+\textit{int main(int argc, char* argv[])}
+
+\textit{\{}
+
+\textit{\qquad double **mat,*xn,*va;}
+
+\textit{\qquad double *temp;}
+
+\textit{\qquad long i,j,N;}
+
+\textit{\qquad double sum,err;}
+
+\textit{\qquad char test;}
+
+\textit{\qquad int type;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti
+N=";cout.flush();cin\TEXTsymbol{>}\TEXTsymbol{>}N;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti eroarea,
+err=";cout.flush();cin\TEXTsymbol{>}\TEXTsymbol{>}err;}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Doriti rulare simpla=0%
+\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Doriti rulare cu scoatere in
+fisier a pasilor intermediari=1\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Doriti rulare cu scoatere in
+fisier si la ecran a pasilor ";}
+
+\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}\textit{intermediari=2\TEXTsymbol{%
+\backslash}n";}
+
+\textit{\qquad cin\TEXTsymbol{>}\TEXTsymbol{>}type;}
+
+\textit{\qquad /* aloc memorie */}
+
+\textit{\qquad mat=(double **)calloc(N,sizeof(double *));}
+
+\textit{\qquad temp=(double *)calloc(N*N,sizeof(double));}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad mat[i]=temp;}
+
+\textit{\qquad \qquad temp+=N;}
+
+\textit{\qquad \}}
+
+\textit{\qquad xn=new double[N];}
+
+\textit{\qquad va=new double[N];}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti matricea
+sistemului\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad for(j=0;j\TEXTsymbol{<}N;j++)}
+
+\textit{\qquad \qquad \qquad cin\TEXTsymbol{>}\TEXTsymbol{>}mat[i][j];}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Introduceti vectorul
+termenilor liberi\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++) cin\TEXTsymbol{>}\TEXTsymbol{>}%
+va[i];}
+
+\textit{\qquad int solutie;}
+
+\textit{\qquad solutie=jacobi\_collumn(mat,va,xn,err,N,type);}
+
+\textit{\qquad if(solutie==-1)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Sistemul nu se poate
+rezolva cu metoda Jacobi pe coloane\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad \qquad solutie=jacobi\_row(mat,va,xn,err,N,type);}
+
+\textit{\qquad \qquad if(solutie==-1)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Sistemul nu se
+poate rezolva cu metoda Jacobi pe ";}
+
+\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"\textit{rinduri vom
+incerca Gauss-Siedel\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad solutie=gauss\_siedel(mat,va,xn,err,N,type);}
+
+\textit{\qquad \qquad if(solutie==-1)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"Sistemul nu se
+poate rezolva ";}
+
+\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"\textit{prin metoda
+Gauss-Siedel\TEXTsymbol{\backslash}n";}
+
+\textit{\qquad \qquad \qquad //eliberez memoria}
+
+\textit{\qquad \qquad \qquad free(*mat);}
+
+\textit{\qquad \qquad \qquad free(mat);}
+
+\textit{\qquad \qquad \qquad delete []xn;}
+
+\textit{\qquad \qquad \qquad delete []va;}
+
+\textit{\qquad \qquad \qquad return 1;}
+
+\textit{\qquad \qquad \}\qquad }
+
+\textit{\qquad \}}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}N;i++)}
+
+\textit{\qquad \qquad \qquad cout\TEXTsymbol{<}\TEXTsymbol{<}"X["\TEXTsymbol{%
+<}\TEXTsymbol{<}i\TEXTsymbol{<}\TEXTsymbol{<}"]="\TEXTsymbol{<}\TEXTsymbol{<}%
+xn[i]\TEXTsymbol{<}\TEXTsymbol{<}endl;}
+
+\textit{\qquad /* eliberez memoria */}
+
+\textit{\qquad free(*mat);}
+
+\textit{\qquad free(mat);}
+
+\textit{\qquad delete []xn;}
+
+\textit{\qquad delete []va;}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+\end{document}

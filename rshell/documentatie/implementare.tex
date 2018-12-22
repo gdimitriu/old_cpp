@@ -1,0 +1,138 @@
+\chapter{Implementare}
+\section{Protocolul de comunicatie}
+
+\hspace{5mm}Se transmite dupa cum am mai amintit in introducere pe
+protoculul TCP, dar am mai creat si un protocol aplicatie pentru a putea
+realiza sincronizarea paginilor transmise cind se face cerea de pager.
+
+Protocolul aplicatie este:
+\begin{itemize}
+\item Se trasmite in total 515 caractere imparite astfel: 512 caractere
+datele si 3 caractere sincronizare.
+\item Caracterele de sincronizare sunt intotdeauna ultimile trei caractare
+dupa date.
+\item Daca nu este ultimul pachet din mesaj se trasmite "000" iar daca este
+ultimul se trasmite "END".
+\item Sau utilizat trei caractere pentru posibilitati de dezvoltare
+ulterioare.
+\item Clientul nu transmite sincronizare.
+\item Pentru iesire se transmite "exit" in zona de date.
+\item Comunicarea se face pe portul 12345.
+\end{itemize}
+
+Numarul de caractere de cod este stocat in variabila preprocesor SIZE, iar
+datele sunt receptionate si transmise din bufferul de mesaje numit buff
+care are dimensiunea SIZE+3, deoarece trebuie sa aiba loc tot mesajul
+transmis de client sau receptionat de la server.
+
+Mesajele de continuare si sfirsit sunt memorate in sirurile statice
+noend[3]="000" si end[3]="END".
+
+\section{Implementarea serverului}
+
+\subsection{Prezentarea generala}
+\hspace{5mm}Initializam conexiunea:
+\begin{itemize}
+\item Cream socketul cu comanda socket.
+\item Initializam adresa serverului adica variabila server\_addr cu valoarea
+portului, tipul de conexiune AF\_INET si se permite accesul de la orice
+adresa.
+\item Legam socketul la adresa cu comanda bind.
+\item Initializa coada de mesaje cu comanda listen.
+\item Initializam adresa clientului :client\_len.
+\end{itemize}
+
+Din acest moment toate operatiile se executa intr-o bucla infinita while(1).
+
+Accept conexiunea daca clientul cere vreo conexiune prin comanda accept.
+
+Creez un proces nou prin functia fork() si daca sunt in procesul client
+(adica noul proces) realizez din nou o blucla infinita (while(1)) in care se
+vor executa toate prelucrarile procesului client, dina cest bucla nu se iese
+decit cu exit. In tot acest timp procesul parinte asteapta fiul datorita
+functiei waitpid(), dupa care revine in bucla infinita in asteptare.
+
+\subsection{Prezentarea prelucrarilor asupra datelor}
+
+\hspace{5mm}Dupa ce aceptam conexiunea realizam un recv (o receptie a unei
+comenzi), datele aflindu-se in buff. Daca se receptioneza comanda {\bf exit},
+ de remarcat ca clientul nu pune in cei trei biti de sincronizare deci
+clientul va putea transmite 515 caractere, am pastrat lungimea constanta a
+pachetului. Cu toate ca clientul nu va transmite toata lungimea decit in
+cazuri exceptionale deoarece se transmite decit sirul de caractere nu si
+zerourile terminale deci avind lungimea strlen(buff). Cind se primeste
+comanda exit, atunci se transmite clientului exit, bineninteles fara
+caractere de control, adica un pachet de 4 caractere care este interpretat
+diferit de client, deoarece si el asteapta un pachet de patru caractere,
+dupa care serverul iese. Aceasta comunicatie suplimentara a fost utilizata
+pentru a ne asigura ca si clientul si serverul au inceiat conversatia.
+
+In primul rind se testeaza daca acesta comanda venita este un {\bf cd}, daca
+da se trateaza separat, executind o comanda de sistem {\bf chdir()} deoarece daca am apela
+bash sau popen (in cazul de fata) nu am putea realiza un chdir deoarece cind
+se termima pipe-ul sau shell-ul se revine la starea initiala acesta fiind un
+o comanda care influenteaza numai shell-ul respectiv. Catre client se transmite codul de
+eroare returnat de functia chdir(), bineinteles cu terminatorul {\bf END}.
+
+Daca nu este o comanda {\bf cd} se trece la tratarea normala a apelului. Si
+anume se deschide un pipe cu functia popen() catre un fisier de unde se va
+citi rezultatul catre client.
+
+Raspunsul catre client se realizeaza intr-o bucla while() cu conditia de
+iesire de sfirsit de fisier, deoarece asupra pipe-ului se pot fece orice
+operatie se facea asupra unui fisier fizic. Din acest pipe se citesc binar
+cu ajutorul functiei fread() 512 caractere, la care se adauga terminatorul
+in functie daca este sau nu sfirsitul fisierului, rezultatul se paseaza
+functiei de transmitere send().
+
+Dupa confirmarea transmiterii se trece din nou in pozitia de asteptare.
+
+Sursa sererului este prezentata in sectiunea \ref{server}
+
+\section{Implementarea clientului}
+
+\subsection{Prezentare generala}
+
+\hspace{5mm}Daca nu am furnizat adresa masinii terget, adica a serverului,
+ni se cere acesta adresa si se iese din program.
+
+Se fac initializarile si se initilizeaza conexiunea:
+\begin{itemize}
+\item Se seteaza variabila server\_addr cu adresa serverului, portul care
+este acelasi ca la server 12345 si tipul de conexiune care este tot
+AF\_INET.
+\item Se creeza socketul cu ajutorul comenzi socket().
+\item Se face conexiune cu connect().
+\end{itemize}
+
+Din acest moment se intra intr-o bucla while() din care se iese stabilind
+valoarea varibilei exit1 diferita de 0. Cind se iese se inchide
+client\_socket.
+\subsection{Prezentarea prelucrarilor}
+
+\hspace{5mm}In primul rind se citesc datele de la tastatura (comanzile) si
+se verifica daca exista cerere de pager, adica daca exista carcaterul |.
+Daca da se seteaza variabila pipe=1 si in stringul pager se stocheaza numele
+pagerului. Se pot utiliza doua tipuri de pager {\bf less} si {\bf more}
+adica cele mai utilizate pageruri din lumea masinilor UNIX. Se deschide pipe
+de scriere cu argumentul pager, astfel incit datele nu se transmit catre
+stdout cum est modul normal de lucru ci spre acel pager.
+
+Daca comanda este exit se transmite acesta comanda serverului si se asteapta
+primirea de la server a unui mesaj care se afiseaza pe ecran si se iese
+afara. Obs: Se ignora sincronizarea pe care a transmis-o serverul deoarece
+se stie ce tip comanda este.
+
+Altfel se intra in procesarea normala:
+
+Se transmite comanda serverului cu comanda send() si imediat se intra
+intr-o bucla while() cu conditia de terminare exit2 diferit de zero.
+
+In acesta bucla se asteapta raspunsul de la server si se afiseaza zona de
+date de raspuns. Se fac testarile de sincronizare si daca se intilneste
+setul de caractere {\bf END} in cele trei caractere de sincronizare de la
+final se seteaza varibila exit2=1 sau se lasa variabila neschimbata si se
+afiseaza la stdout daca pipe=0 sau catre pipe daca pipe=1. Scrierea catre
+pipe se face cu fuctia fwrite(), iar catre stdout cu functia printf(\%s).
+
+Codul sursa este prezentat in sectiunea \ref{client}.

@@ -1,0 +1,2817 @@
+
+\documentclass[a4paper,twoside]{book}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+
+\setcounter{MaxMatrixCols}{10}
+%TCIDATA{OutputFilter=LATEX.DLL}
+%TCIDATA{Version=5.00.0.2552}
+%TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
+%TCIDATA{Created=Saturday, June 04, 2005 11:47:40}
+%TCIDATA{LastRevised=Wednesday, June 22, 2005 17:25:29}
+%TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
+%TCIDATA{<META NAME="DocumentShell" CONTENT="Standard LaTeX\Blank - Standard LaTeX Article">}
+%TCIDATA{CSTFile=40 LaTeX Book.cst}
+
+\setlength{\textheight}{8in}
+\setlength{\textwidth}{6in}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\marginparwidth}{0mm}
+\setlength{\marginparsep}{0mm}
+\newtheorem{theorem}{Teorema}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axioma}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Concluzie}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corolar}
+\newtheorem{criterion}[theorem]{Criteriu}
+\newtheorem{definition}[theorem]{Definitie}
+\newtheorem{example}[theorem]{Exemplu}
+\newtheorem{exercise}[theorem]{Exercitiu}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notatie}
+\newtheorem{problem}[theorem]{Problema}
+\newtheorem{proposition}[theorem]{Propositie}
+\newtheorem{remark}[theorem]{Remarka}
+\newtheorem{solution}[theorem]{Solutie}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{Demostratie} }{\ \rule{0.5em}{0.5em}}
+\input{tcilatex}
+
+\begin{document}
+
+\title{Metode de tip Runge Kutta}
+\author{Gabriel Dimitriu}
+\maketitle
+\tableofcontents
+
+\chapter{\protect\bigskip Considerente generale\label{TECouchy}}
+
+In tot ceea ce urmeaza vom considera domeniile de existenta:
+
+\begin{eqnarray*}
+A\times B &\subset &R^{2} \\
+\lbrack a,b] &\subset &A
+\end{eqnarray*}
+
+Pe aceste domenii de existenta vom considera urmatoare problema Couchy:
+
+\begin{eqnarray}
+x^{\prime }(t) &=&u(t,x(t)  \label{PCouchy} \\
+x(a) &=&\alpha _{0}  \notag
+\end{eqnarray}
+
+cu urmatoare conditii in plus de existenta
+
+\begin{gather*}
+t\in \lbrack a,b] \\
+\alpha _{0}\in R\,\,fixat \\
+u:A\times B\rightarrow R\,continua
+\end{gather*}
+
+De la teoria pentru problema Couchy prezentata in \cite{Rosca} avem
+urmatoarea teorema:
+
+\begin{theorem}
+\bigskip
+\end{theorem}
+
+Daca $\exists \dot{!}L>0$ astfel incit $|u(t,z)-u(t,w)|\leq
+L|z-w|\,\,\forall t\in A$ si $\forall z,w\in B$ atunci $\exists !\,x$
+solutie pentru ecuatia (\ref{PCouchy}).
+
+Vom presupune ca (\ref{PCouchy}) are solutie unica conform teoremei
+anterioare.
+
+Vom presupune ca $u$ este analitica.Atunci se stie ca si solutia $x$ este
+analitica si poate fi scrisa astfel:
+
+\begin{equation*}
+x(t)=\sum_{k=0}^{\infty }\frac{x^{(k)}(a)}{k!}(t-a)^{k},\,t\in \lbrack a,a+r]
+\end{equation*}
+
+unde r este raza de convergenta seriei de puteri
+
+\begin{equation*}
+\sum_{k\geq 0}\frac{x^{(k)}(a)}{k!}(t-a)^{k}
+\end{equation*}
+
+Deci vom putea face aproximarea:
+
+\begin{equation*}
+x(t)\simeq \sum_{k=0}^{n}\frac{x^{(k)}(a)}{k!}(t-a)^{k}
+\end{equation*}
+
+\textbf{Observatie:}
+
+Vom nota
+
+\begin{equation}
+T_{n,x,s_{0}}(t)=\sum_{k=0}^{n}\frac{x^{(k)}(s_{0})}{k!}(t-s_{0})^{k}
+\label{Tnx}
+\end{equation}
+
+Din cursul \cite{analiza1} avem urmatoarele propozitii:
+
+\begin{proposition}
+Fie $f,g:A\rightarrow R$ continue in $a\in A$ si $\lambda ,\mu \in R$ atunci 
+$\lambda f+\mu g$ este continua in a.\label{cont1}
+\end{proposition}
+
+\begin{proposition}
+Fie $g:A\rightarrow B$ continua in $a\in A$ si fie $g:B\rightarrow R$
+continua in $f(a)$ atunci $g\circ f:A\rightarrow R$ este continua in a.\label%
+{cont2}
+\end{proposition}
+
+\section{Metoda Taylor}
+
+Vom considera urmatoarea problema Couchy:
+
+\begin{gather}
+x^{\prime }(t)=u(t,x(t))  \label{PCTaylor} \\
+x(a)=\alpha _{0}  \notag \\
+\forall t\in \lbrack a,b]  \notag \\
+\alpha _{0}\in R\,\,fixat  \notag
+\end{gather}
+
+unde
+
+\begin{gather*}
+A\times B\subset R^{2} \\
+u:A\times B\rightarrow R\,\,si\,\,u\in C^{n} \\
+\lbrack a,b]\in A
+\end{gather*}
+
+Se observa ca aceste conditii sunt o extindere a conditiile necesare
+prezentate in sectiune \ref{TECouchy} ca problema (\ref{PCTaylor}) sa aiba
+solutie unica, deci putem considera adevarate toate notatille din sectiunea %
+\ref{TECouchy}.
+
+In continuare vom prezenta o aproximare a derivatelor de ordin superior
+pentru solutia x in punctul a.
+
+Fie $u_{0}(t,y)=y\Leftrightarrow u_{0}(t,x(t))=x(t)\Leftrightarrow
+u_{0}(a,x(a))=x(a)$ folosind conditia problemei Couchy avem 
+\begin{equation}
+u_{0}(a,\alpha _{0})=\alpha _{0}  \label{u0}
+\end{equation}
+
+Fie $u_{1}(t,y)=u(t,y)\Leftrightarrow u_{1}(t,x(t))=u(t,x(t))$ folosind
+ecuatia problemei Couchy avem
+
+\begin{equation}
+x^{\prime }(a)=u_{1}(a,x(a))  \label{u1}
+\end{equation}
+
+si folosind conditia problemei Couchy avem 
+\begin{equation}
+x^{\prime }(a)=u_{1}(a,\alpha _{0})  \label{x'a}
+\end{equation}
+
+Cu aceste notatii vom prelucra prima ecuatie a problemei Couchy pentru a
+determina derivatele de ordin superior ale solutiei.
+
+Din ecuatia problemei Couchy cu notatia (\ref{u1}) avem
+
+\begin{equation}
+x^{\prime }(t)=u_{1}(t,x(t))  \label{x'1}
+\end{equation}
+
+Derivind aceasta relatie in functie de t \ si y; folosind notatiile
+anterioare avem:
+
+\begin{equation}
+x^{\prime \prime }(t)=\frac{\partial u_{1}}{\partial t}(t,x(t))+\frac{%
+\partial u_{1}}{\partial y}(t,y)\cdot u(t,x(t))  \label{x'2}
+\end{equation}
+
+Fie%
+\begin{equation}
+u_{2}(t,y)=\frac{\partial u_{1}}{\partial t}(t,y)+\frac{\partial u_{1}}{%
+\partial y}(t,y)\cdot u(t,y)  \label{u2}
+\end{equation}
+
+Inlocuind pe $u_{2}$ in relatia (\ref{x'2}) avem $x^{\prime \prime
+}(t)=u_{2}(t,x(t))$ iar $x^{\prime \prime }(a)=u_{2}(a,x(a))$ folosind
+ipoteza avem
+
+\begin{equation}
+x^{\prime \prime }(a)=u_{2}(a,\alpha _{0})  \label{x''a}
+\end{equation}
+
+In continuare vom folosi procedeul inductiei matematice pentru a deterimina
+derivate de orice ordin a solutiei in punctul a.
+
+Presupunem adevarate relatiile $u_{k}$ deci avem 
+\begin{equation}
+x^{(k)}(t)=u_{k}(t,x(t))  \label{x'k}
+\end{equation}
+
+si%
+\begin{equation}
+x^{(k)}(a)=u_{k}(a,\alpha _{0})  \label{xka}
+\end{equation}
+
+pentru k si vom arata ca ramin adevarate pentru k+1.
+
+Derivam relatia (\ref{x'k}) in funcite de t si y; folosind notatiile
+anterioare avem:
+
+\begin{equation}
+x^{(k+1)}(t)=\frac{\partial u_{k}}{\partial t}(t,x(t))+\frac{\partial u_{k}}{%
+\partial y}(t,y)\cdot u(t,x(t))  \label{x'k+1}
+\end{equation}
+
+Fie
+
+\begin{equation}
+u_{k+1}(t,y)=\frac{\partial u_{k}}{\partial t}(t,y)+\frac{\partial u_{k}}{%
+\partial y}(t,y)\cdot u(t,y)  \label{uk+1}
+\end{equation}
+
+Inlocuind relatia (\ref{uk+1}) in relatia (\ref{x'k+1}) avem
+
+\begin{equation*}
+x^{(k+1)}(t)=u_{k+1}(t,x(t))
+\end{equation*}
+
+Iar pentru t=a avem
+
+\begin{equation}
+x^{(k+1)}(a)=u_{k+1}(a,\alpha _{0})  \label{xk+1a}
+\end{equation}
+
+Ceea ce incheie procesul de inductie matematica.
+
+Inlocuind relatiile (\ref{x'a}),(\ref{x''a}),(\ref{xka}) si (\ref{xk+1a}) in
+relatia (\ref{Tnx}) avem
+
+\begin{equation}
+T_{n,x,a}(t)=\sum_{k=0}^{n}\frac{u_{k}(a,\alpha _{0})}{k!}(t-a)^{k}
+\label{Tnx1}
+\end{equation}
+
+unde $u_{k}$ sunt date de relatiile (\ref{u0}),(\ref{u1}),(\ref{u2}) si (\ref%
+{uk+1}).
+
+Pe intervalul in care variaza t vom lua o diviziune astfel
+
+\begin{equation*}
+a=t_{0}<t_{1}<...<t_{m}\leq b
+\end{equation*}
+
+Fie $y:[a,b]\rightarrow R$ construita astfel pentru $\forall t\in \lbrack
+t_{0},t_{1}]$ avem
+
+\begin{equation}
+y(t)=\sum_{k=0}^{n}\frac{u_{k}(t_{0},\alpha _{0})}{k!}(t-t_{0})^{k}
+\label{Taylor1}
+\end{equation}
+
+Notam $x_{0}=\alpha _{0}$ si atunci relatia (\ref{Taylor1}) se scrie astfel
+
+\begin{equation}
+y(t)=\sum_{k=0}^{n}\frac{u_{k}(t_{0},x_{0})}{k!}(t-t_{0})^{k}
+\label{Taylor2}
+\end{equation}
+
+Vom face iteratii ale $x_{i}$ in punctele diviziunii pentru a afla termenul
+general al solutie.
+
+Fie $y:[t_{0},t_{1}]\rightarrow R$ si%
+\begin{equation*}
+x_{1}:=y(t_{1})=\sum_{k=0}^{n}\frac{u_{k}(t_{0},x_{0})}{k!}(t_{1}-t_{0})^{k}
+\end{equation*}
+
+Fie $y:[t_{1},t_{2}]\rightarrow R$ si
+
+\begin{equation*}
+x_{2}:=y(t_{2})=\sum_{k=0}^{n}\frac{u_{k}(t_{1},x_{1})}{k!}(t_{2}-t_{1})^{k}
+\end{equation*}
+
+Fie $y:[t_{0},t_{k}]\rightarrow R\,\ si\,\,\,x_{k}:=y(t_{k})$
+
+Fie $y:[t_{k},t_{k+1}]\rightarrow R$ si
+
+\begin{equation*}
+y(t)=\sum_{j=0}^{n}\frac{u_{j}(t_{k},x_{k})}{j!}(t-t_{k})^{j}
+\end{equation*}
+
+din definitia lui $x_{k+1}$ avem:
+
+\begin{equation*}
+x_{k+1}:=y(t_{k+1})=\sum_{j=0}^{n}\frac{u_{j}(t_{k},x_{k})}{j!}%
+(t_{k+1}-t_{k})^{j}
+\end{equation*}
+
+Fie $z:\delta =\{t_{0},t_{1},...,t_{m}\}\rightarrow R$
+
+\begin{equation*}
+z(t_{k})=x_{k}=\sum_{j=0}^{n}\frac{u_{j}(t_{k-1},x_{k-1})}{j!}%
+(t_{k}-t_{k-1})^{j}
+\end{equation*}
+
+\begin{definition}
+$(x|_{\delta }\simeq z)$ se numeste metoda lui Taylor pentru problema Couchy
+asociata (\ref{PCTaylor}).
+\end{definition}
+
+Metoda Taylor poate fi rescrisa astfel:
+
+\begin{eqnarray}
+x_{0} &=&\alpha _{0}  \label{difdiv} \\
+\frac{x_{k+1}-x_{k}}{t_{k+1}-t_{k}} &=&\sum_{j=1}^{n}\frac{u_{j}(t_{k},x_{k})%
+}{j!}(t_{k+1}-t_{k})^{j-1}\,\,\text{\thinspace \thinspace }k=\overline{0,m-1}
+\notag
+\end{eqnarray}
+
+Acest ultim sistem se numeste sistem de ecuatii cu diferente divizate.
+
+\subsection{Prezentare implementarii si exemple}
+
+In continuare vom lua urmatorul exemplul:
+
+\begin{eqnarray*}
+x_{0} &=&0 \\
+x^{\prime }(t) &=&t+x(t)\text{\thinspace \thinspace \thinspace }t\in \lbrack
+0,1]
+\end{eqnarray*}
+
+Sa se rezolve aproximativ ecuatia cu metoda lui Taylor in cazul in care avem
+urmatoarele diviziuni $\delta _{1}=\{0,1/2,1\}$ si $\delta
+_{2}=\{0,1/4,1/2,3/4,1\}$.
+
+\subsubsection{Implementare}
+
+Pentru a implementa aceasta metoda avem nevoie de derivata deci va trebui sa
+implementam o functie care sa faca derivatele partiale ale functiei $%
+u_{k}(t,y)$.
+
+Pentru implementare vom folosi urmatoarea formula de derivare partiala
+
+\begin{equation*}
+\frac{\partial f(x,y)}{\partial x}(a,b)=\frac{f(a+h/2,b)-f(a-h/2,b)}{h}
+\end{equation*}
+
+Iar cea de ordin doi este
+
+\begin{equation*}
+\frac{\partial ^{2}f(x,y)}{\partial x\partial y}(a,b)=\left( \frac{\partial
+f(x,y)}{\partial x}(a,b+h/2)-\frac{\partial f(x,y)}{\partial x}%
+(a,b-h/2)\right) /h
+\end{equation*}
+
+Asadar derivata va fi implementata recursiv conform formulelor prezentate
+anterior.
+
+\textit{\#include"parser\_func.cpp"}
+
+\textit{\#include\TEXTsymbol{<}math.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdlib.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdio.h\TEXTsymbol{>}}
+
+\textit{parser\_func *parser;}
+
+\textit{double *x;}
+
+\textit{long factorial(long val)}
+
+\textit{\{}
+
+\textit{\qquad if(val==0L) return 1L;}
+
+\textit{\qquad else return val*factorial(val-1);}
+
+\textit{\}}
+
+\textit{double derivata(double t,double y,double h,long ordin)}
+
+\textit{\{}
+
+\textit{\qquad double val1,val2;}
+
+\textit{\qquad double valt,valy;}
+
+\textit{\qquad double temp;}
+
+\textit{\qquad if(ordin==0) return x[0];}
+
+\textit{\qquad else if(ordin==1)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('t',t);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('y',y);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&val1);}
+
+\textit{\qquad \qquad return val1;}
+
+\textit{\qquad \}}
+
+\textit{\qquad else if(ordin==2)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('t',t+0.5*h);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('y',y);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&val1);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('t',t-0.5*h);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('y',y);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&val2);}
+
+\textit{\qquad \qquad \qquad valt=(val1-val2)/h;}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('y',y+0.5*h);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('t',t);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&val1);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('y',y-0.5*h);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('t',t);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&val2);}
+
+\textit{\qquad \qquad \qquad valy=(val1-val2)/h;}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('t',t);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('y',y);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&temp);}
+
+\textit{\qquad \qquad \qquad valy=valy*temp;}
+
+\textit{\qquad \qquad \qquad return valt+valy;}
+
+\textit{\qquad \}}
+
+\textit{\qquad else}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad \qquad val1=derivata(t+0.5*h,y,h,ordin-1);}
+
+\textit{\qquad \qquad \qquad val2=derivata(t-0.5*h,y,h,ordin-1);}
+
+\textit{\qquad \qquad \qquad valt=(val1-val2)/h;}
+
+\textit{\qquad \qquad \qquad val1=derivata(t,y+0.5*h,h,ordin-1);}
+
+\textit{\qquad \qquad \qquad val2=derivata(t,y-0.5*h,h,ordin-1);}
+
+\textit{\qquad \qquad \qquad valy=(val1-val2)/h;}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('t',t);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}set\_var('y',y);}
+
+\textit{\qquad \qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&temp);}
+
+\textit{\qquad \qquad \qquad valy=valy*temp;}
+
+\textit{\qquad \qquad \qquad return valt+valy;}
+
+\textit{\qquad \}}
+
+\textit{\qquad return 0.0;}
+
+\textit{\}}
+
+\textit{int main(int argc, char* argv[])}
+
+\textit{\{}
+
+\textit{\qquad double *delta;}
+
+\textit{\qquad char *dfunc;}
+
+\textit{\qquad long n,n1;}
+
+\textit{\qquad double h;}
+
+\textit{\qquad double sum;}
+
+\textit{\qquad long i,j;}
+
+\textit{\qquad parser=new parser\_func;}
+
+\textit{\qquad dfunc=(char *)calloc(100,sizeof(char));}
+
+\textit{\qquad printf("Introduceti numarul de valori ale diviziunii%
+\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad scanf("\%ld",\&n1);}
+
+\textit{\qquad delta=(double *)calloc(n1,sizeof(double));}
+
+\textit{\qquad x=(double *)calloc(n1,sizeof(double));}
+
+\textit{\qquad printf("Introduceti diviziunea\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}n1;i++)}
+
+\textit{\qquad \qquad scanf("\%lf",\&delta[i]);}
+
+\textit{\qquad printf("Introduceti conditia initiala\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad scanf("\%lf",\&x[0]);}
+
+\textit{\qquad printf("Introduceti parametrul n\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad scanf("\%ld",\&n);}
+
+\textit{\qquad printf("Introduceti pasul derivatei\TEXTsymbol{\backslash}n");%
+}
+
+\textit{\qquad scanf("\%lf",\&h);}
+
+\textit{\qquad printf("Introduceti functia cu t si y\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad fflush(stdin);}
+
+\textit{\qquad dfunc=gets(dfunc);}
+
+\textit{\qquad parser-\TEXTsymbol{>}set\_function(dfunc);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}n1;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad sum=0.0;}
+
+\textit{\qquad \qquad for(j=1;j\TEXTsymbol{<}=n;j++)}
+
+\textit{\qquad \qquad \qquad
+sum=sum+derivata(delta[i-1],x[i-1],h,j)*pow(delta[i]-delta[i-1],j)/factorial(j);%
+}
+
+\textit{\qquad \qquad x[i]=x[i-1]+sum;}
+
+\textit{\qquad \}}
+
+\textit{\qquad printf("Valorile in diviziune\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}n1;i++)}
+
+\textit{\qquad \qquad printf("\%lf ",x[i]);}
+
+\textit{\qquad printf("\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Clasa parser\_func va fi prezentata in Anexa 1 si contine parserul de
+functii.
+
+Functia set\_var(caracter,valoare) seteaza variabila caracter (care trebuie
+sa fie un caracter majuscul sau minuscul intre a-z deoarece nu tine cont de
+litere mari sau mici) cu valoarea data in valoare.
+
+Functia eval\_func evalueaza functia setata prin set\_function cu
+variabilele setata anterior.
+
+\subsubsection{Rezultatele rularii}
+
+In cazul acesta vom rula cu pasul pentru h=0.00001
+
+Pentru $\delta _{1}=\{0,1/2,1\}$ si functia data $t+y$ avem urmatoarele
+rezultate
+
+\begin{equation*}
+\begin{tabular}{llll}
+$t$ & 0 & 0.5 & 1.0 \\ 
+$x(Teoretic)$ & 0 & 0.1487 & 0.71828 \\ 
+$x(n=1)$ & 0 & 0 & 0.25 \\ 
+$x(n=2)$ & 0 & 0.125 & 0.64062 \\ 
+$x(n=3)$ & 0 & 0.1458 & 0.70876%
+\end{tabular}%
+\end{equation*}
+
+Pentru $\delta _{2}=\{0,1/4,1/2,3/4,1\}$ si functia data $t+y$ avem
+urmatoarele rezultate
+
+\begin{equation*}
+\begin{tabular}{llllll}
+$t$ & 0 & 0.25 & 0.5 & 0.75 & 1.0 \\ 
+$x(Teoretic)$ & 0 & 0.034 & 0.1487 & 0.367 & 0.71828 \\ 
+$x(n=1)$ & 0 & 0 & 0.0625 & 0.20312 & 0.44140 \\ 
+$x(n=2)$ & 0 & 0.0312 & 0.14160 & 0.35330 & 0.69485 \\ 
+$x(n=3)$ & 0 & 0.3385 & 0.14828 & 0.36615 & 0.71683%
+\end{tabular}%
+\end{equation*}
+
+Se observa cu cit diviziunea are mai multe puncte cu atit mai bine este
+aproximata solutia in punctul final.
+
+Se observa ca pentru n=1 este Euler dar pentru n=2 are o precizie mai buna
+decit Euler-Couchy iar pentru n=3 are o precizie comparabila cu Runge-Kutta.
+Bineinteles toate acestea cu dezavantajul de a fi mare consumatoare de
+resurse pentru derivate si factorial.
+
+Pentru n\TEXTsymbol{>}4 derivata in modul in care a fost implementata nu
+functioneaza deci trebuie sa ne limitam la n=4.
+
+\section{Consistenta si stabilitate}
+
+\bigskip Pentru problema Couchy (\ref{PCouchy}) avem:
+
+Fie $h\in (0,b-a)$ si $n=n_{h}=[(b-a)/h]$.
+
+Din aceasta creeam diviziunea $\delta _{h}=\{t_{0},t_{1},...,t_{n}\}$ si $%
+u_{h}:\delta _{h}\times B\rightarrow R$ si ecuatiile
+
+\begin{eqnarray}
+x_{0} &=&\alpha _{0}  \label{MED1} \\
+\frac{x_{j+1}-x_{j}}{h} &=&u_{h}(t_{j},x_{j})  \notag
+\end{eqnarray}
+
+Fie $z$ solutia ecuatiei (\ref{MED1}).
+
+\begin{definition}
+$x|_{\delta _{h}}\simeq z$ se numeste metoda ecuatiilor cu diferente.
+\end{definition}
+
+\begin{remark}
+Pentru $u_{h}=u\,\,\forall h$ atunci se va obitine metoda lui Euler.
+\end{remark}
+
+\begin{remark}
+Pentru $u_{h}=1/2(u(t,y)+u(t+h,y+hu(t,y))$ atunci se va obtine metoda
+Euler-Couchy.
+\end{remark}
+
+\begin{remark}
+Pentru $u_{h}=\frac{1}{6}(v_{1}+2v_{2}+2v_{3}+v_{4})$ se va obtine metoda
+lui Runge-Kutta.
+\end{remark}
+
+Vom nota $\delta _{h}^{+}=\{t_{0},t_{1},...,t_{n_{h}-1}\}\,si\,\delta
+_{h}^{-}=\{t_{1},t_{2},...,t_{n_{h}}\}$.
+
+\begin{definition}
+Spunem ca metoda ecuatiilor cu diferente este consistenta daca 
+\begin{equation*}
+\lim_{h\rightarrow 0}\max_{t\in \delta _{h}^{+}}\left\vert \frac{x(t+h)-x(t)%
+}{h}-u_{h}(t,x(t))\right\vert =0
+\end{equation*}
+\end{definition}
+
+\begin{theorem}
+Daca%
+\begin{equation}
+\lim_{h\rightarrow 0}\max_{t\in \delta _{h}^{+}}\left\vert
+u(t,x(t))-u_{h}(t,x(t))\right\vert =0  \label{Th1_1}
+\end{equation}%
+Atunci metoda ecuatiilor cu diferente este consistenta.
+\end{theorem}
+
+\begin{proof}
+Presupunem $u$ continua atunci si $x^{\prime }$ continua.
+
+Atunci relatia (\ref{Th1_1}) se scrie:pentru $\forall \varepsilon
+>0\,\,\,\exists h_{0}$ a.i. $h<h_{0}$ avem%
+\begin{equation*}
+\max_{t\in \delta _{h}^{+}}\left\vert u(t,x(t))-u_{h}(t,x(t))\right\vert
+<\varepsilon
+\end{equation*}
+
+Explicitind maximul avem ca pentru $\forall t\in \delta _{h}^{+}$%
+\begin{equation}
+\left\vert u(t,x(t))-u_{h}(t,x(t))\right\vert <\varepsilon  \label{Th1_2}
+\end{equation}
+
+Dar%
+\begin{equation*}
+\left\vert \frac{x(t+h)-x(t)}{h}-u_{h}(t,x(t))\right\vert \leq \left\vert 
+\underset{A}{\underbrace{\frac{x(t+h)-x(t)}{h}}}-u(t,x(t))\right\vert
++\left\vert u(t,x(t)-u_{h}(t,x(t))\right\vert
+\end{equation*}
+
+Explicitind A cu definitia derivate atunci pentru $c\in (t,t+h)$ si
+utilizind presupunerile din metoda ecuatiilor cu diferente ($%
+u_{h}(t,x(t))=x^{\prime }(t)$) avem%
+\begin{equation}
+\left\vert \frac{x(t+h)-x(t)}{h}-u_{h}(t,x(t))\right\vert \leq \left\vert
+x^{\prime }(c)-x^{\prime }(t)\right\vert +\left\vert
+u(t,x(t))-u_{h}(t,x(t))\right\vert  \label{Th1_3}
+\end{equation}
+
+Deoarece $x^{\prime }$ este continua pe un interval compact atunci $%
+x^{\prime }$ este uniform continua si putem scrie%
+\begin{equation}
+\varepsilon >0\,\,\exists \eta _{\varepsilon }:\left\vert t-s\right\vert
+<\eta _{\varepsilon }\Rightarrow \left\vert x^{\prime }(t)-x^{\prime
+}(s)\right\vert <\varepsilon  \label{Th1_4}
+\end{equation}
+
+Daca $h<\eta _{\varepsilon }\Rightarrow \left\vert x^{\prime }(t)-x^{\prime
+}(c)\right\vert <\varepsilon $.
+
+Daca $h<\min (h_{0},\eta _{\varepsilon })$ atunci folosind (\ref{Th1_2}) si (%
+\ref{Th1_4}) avem%
+\begin{equation*}
+\left\vert \frac{x(t+h)-x(t)}{h}-u_{h}(t,x(t))\right\vert \leq \varepsilon
++\varepsilon \,\,\,\forall t\in \delta _{h}^{+}
+\end{equation*}
+
+Deci%
+\begin{equation*}
+\lim_{h\rightarrow 0}\max_{t\in \delta _{h}^{+}}\left\vert \frac{x(t+h)-x(t)%
+}{h}-u_{h}(t,x(t))\right\vert =0
+\end{equation*}
+\end{proof}
+
+\begin{remark}
+\begin{equation*}
+\lim_{h\rightarrow 0}\max_{h\in \delta _{h}^{-}}\left\vert \frac{x(t)-x(t-h)%
+}{h}-u_{h}(t-h,x(t-h))\right\vert =0
+\end{equation*}
+\end{remark}
+
+Notam%
+\begin{equation*}
+\lambda _{h}W(t)=\frac{W(t+h)-W(t)}{h}-u_{h}(t,W(t))
+\end{equation*}
+
+unde $W:\delta _{h}\backslash \{n_{h}\}\rightarrow R$ iar
+
+\begin{equation*}
+\left\Vert \lambda _{h}W\right\Vert =\max_{t\in \delta _{h}^{+}}\left\vert 
+\frac{W(t+h)-W(t)}{h}-u_{h}(t,W(t))\right\vert
+\end{equation*}
+
+Cu aceste notatii relatia (\ref{Th1_1}) devine%
+\begin{equation*}
+\lim_{h\rightarrow 0}\left\Vert \lambda _{h}x\right\Vert =0
+\end{equation*}
+
+\begin{definition}
+Se spune ca metoda ecuatiilor cu diferente este stabila daca $\exists \rho
+>0,\forall \left( x_{h}\right) _{0<h<b-a},\,\,x_{h}:\delta _{h}\rightarrow R$
+cu proprietatile 
+\begin{eqnarray*}
+\exists h_{0},\forall h &\leq &h_{0}\Rightarrow \left\Vert
+x_{h}-x\right\Vert _{h}\leq \rho \\
+x_{h}(a) &=&\alpha _{0} \\
+\lim_{h\rightarrow 0}\left\Vert \lambda _{h}x_{h}-\lambda _{h}x\right\Vert
+&=&0
+\end{eqnarray*}%
+sa avem%
+\begin{equation*}
+\lim_{h\rightarrow 0}\left\Vert x_{h}-x\right\Vert =0
+\end{equation*}
+\end{definition}
+
+\begin{theorem}
+Daca $\exists L,\rho ,h_{0}$ cu $0<h_{0}<b-a$ a.i. $\forall h\leq
+h_{0},\forall t\in \delta _{h},\left\vert y-x(t)\right\vert \leq \rho
+,\left\vert W-x(t)\right\vert \leq \rho $ atunci 
+\begin{equation}
+\left\vert u(t,y)-u_{h}(t,W)\right\vert \leq L\left\vert y-W\right\vert
+\label{Th2_1}
+\end{equation}%
+Atunci metoda ecuatiilor cu diferente este stabila.
+\end{theorem}
+
+\begin{proof}
+Fie $L,\rho ,h_{0}\,$\ ca in (\ref{Th2_1}) iar $\rho ,h_{0}$ satisfac
+conditiile detfinitiei.
+
+Vom arata ca daca $h\leq h_{0}$ avem $t\in \delta _{h}$ si%
+\begin{equation}
+\left\vert x_{h}(t)-x(t)\right\vert \leq (t-a)\exp (L(t-a))\left\Vert
+\lambda _{h}x_{h}-\lambda _{h}x\right\Vert  \label{Th2_2}
+\end{equation}
+
+Daca am demostrat (\ref{Th2_2}) atunci avem%
+\begin{equation*}
+\max_{t\in \delta _{h}}\left\vert x_{h}(t)-x(t)\right\vert \leq (b-a)\exp
+(L(b-a))\left\Vert \lambda _{h}x_{h}-\lambda _{h}x\right\Vert \overset{%
+definitie}{\rightarrow }0
+\end{equation*}
+
+Relatia (\ref{Th2_2}) o vom demostra prin inductie.
+
+Pentru $t=a$ avem $\left\vert x_{h}(a)-x(a)\right\vert =\left\vert \alpha
+_{0}-\alpha _{0}\right\vert =0$.
+
+Presupunem relatia (\ref{Th2_2}) adevarata pentru $t_{j}=t$ si o demostram
+pentru $t_{j+1}=t+h$.
+
+Avem%
+\begin{eqnarray*}
+x_{h}(t+h) &=&x_{h}(t)+h\lambda _{h}x_{h}(t)+hu_{h}(t,x_{h}(t)) \\
+x(t+h) &=&x(t)+h\lambda _{h}x(t)+hu(t,x(t))
+\end{eqnarray*}
+
+Scazind in modul aceste doua relatii avem%
+\begin{equation*}
+\left\vert x_{h}(t+h)-x(t+h)\right\vert \leq \left\vert
+x_{h}(t)-x(t)\right\vert +h\left\vert u_{h}(t,x_{h}(t))-u(t,x(t))\right\vert
++h\left\Vert \lambda _{h}x_{h}-\lambda _{h}x\right\Vert
+\end{equation*}
+
+Aplicind conditiile din definitie avem%
+\begin{equation*}
+\left\vert x_{h}(t+h)-x(t+h)\right\vert \leq \left\vert
+x_{h}(t)-x(t)\right\vert +hL\left\vert x_{h}(t)-x(t)\right\vert +h\left\Vert
+\lambda _{h}x_{h}-\lambda _{h}x\right\Vert
+\end{equation*}
+
+Aplicind relatia (\ref{Th2_2}) avem%
+\begin{equation*}
+\left\vert x_{h}(t+h)-x(t+h)\right\vert \leq (1+hL)(t-a)\exp
+(L(t-a))\left\Vert \lambda _{h}x_{h}-\lambda _{h}x\right\Vert +h\left\Vert
+\lambda _{h}x_{h}-\lambda _{h}x\right\Vert
+\end{equation*}
+
+Desfacind parantezele si facind calcule elementare avem%
+\begin{equation*}
+\left\vert x_{h}(t+h)-x(t+h)\right\vert \leq (t-a)\exp (L(t+h-a))\left\Vert
+\lambda _{h}x_{h}-\lambda _{h}x\right\Vert +h\left\Vert \lambda
+_{h}x_{h}-\lambda _{h}x\right\Vert
+\end{equation*}
+
+Facind majorarea $\exp (L(t+h-a))>\exp (0)$ si dind factor comun avem%
+\begin{equation*}
+\left\vert x_{h}(t+h)-x(t+h)\right\vert \leq (t+h-a)\exp
+(L(t+h-a))\left\Vert \lambda _{h}x_{h}-\lambda _{h}x\right\Vert
+\end{equation*}
+\end{proof}
+
+\chapter{Metoda Euler}
+
+\section{Prezentarea metodei}
+
+Metoda lui Euler este o particularizare a metodei lui Taylor prezentata in
+sectiunea anterioara.
+
+Vom considera urmatoarea problema Couchy:
+
+\begin{gather}
+x^{\prime }(t)=u(t,x(t))  \label{PCouchyE} \\
+x(a)=\alpha _{0}  \notag \\
+\forall t\in \lbrack a,b]  \notag \\
+\alpha _{0}\in R\,\,fixat  \notag
+\end{gather}
+
+unde
+
+\begin{gather*}
+A\times B\subset R^{2} \\
+u:A\times B\rightarrow R\,\,si\,\,u\in C^{n} \\
+\lbrack a,b]\in A
+\end{gather*}
+
+Aceasta problema Couchy este rezolvata cu metoda lui Taylor pe diviziunea $%
+\delta =\{t_{1},...,t_{m}\}$ in care n=1 si $x_{0}=\alpha _{0}$ si atunci
+avem sistemul de ecuatii cu diferente divizate inlocuind aceste
+particularizari in (\ref{difdiv}):
+
+\begin{eqnarray*}
+x_{k+1} &=&x_{k}+u(t_{k},x_{k})\cdot (t_{k+1}-t_{k}) \\
+x_{0} &=&\alpha _{0}
+\end{eqnarray*}
+
+sau
+
+\begin{eqnarray*}
+x_{0} &=&\alpha _{0} \\
+\frac{x_{k+1}-x_{k}}{t_{k+1}-t_{k}} &=&u(t_{k},x_{k})
+\end{eqnarray*}
+
+pentru $\forall k\in \{0,...,m\}$.
+
+Daca notam $z(t_{k})=x_{k}$ atunci
+
+\begin{definition}
+$x|_{\delta }\simeq z$ se numeste metoda lui Euler.
+\end{definition}
+
+\section{\protect\bigskip Consistenta}
+
+Fie
+
+\begin{equation*}
+u_{h}(t,y)=u(t,y)
+\end{equation*}
+
+Pentru a aplica Teorema (\ref{Th1_1}) trebuie sa facem diferenta
+
+\begin{equation*}
+u_{h}(t,x(t))-u(t,x(t))=0
+\end{equation*}
+
+pentru $\forall t\in \delta _{h}\backslash \{t_{n_{h}}\}$.
+
+Deci
+
+\begin{equation*}
+\left\vert u_{h}(t,x(t))-u(t,x(t))\right\vert =0
+\end{equation*}
+
+Asadar metoda Euler este consistenta.
+
+\section{Prezentare implementarii si exemple}
+
+In continuare vom lua urmatorul exemplul:
+
+\begin{eqnarray*}
+x_{0} &=&0 \\
+x^{\prime }(t) &=&t+x(t)\text{\thinspace \thinspace \thinspace }t\in \lbrack
+0,1]
+\end{eqnarray*}
+
+Sa se rezolve aproximativ ecuatia cu metoda lui Euler in cazul in care avem
+urmatoarele diviziuni $\delta _{1}=\{0,1/2,1\}$ si $\delta
+_{2}=\{0,1/4,1/2,3/4,1\}$.
+
+\subsection{Implementare}
+
+\textit{\#include"parser\_func.cpp"}
+
+\textit{\#include\TEXTsymbol{<}math.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdlib.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdio.h\TEXTsymbol{>}}
+
+\textit{int main(int argc, char* argv[])}
+
+\textit{\{}
+
+\textit{\qquad parser\_func *parser;}
+
+\textit{\qquad double *delta;}
+
+\textit{\qquad char *dfunc;}
+
+\textit{\qquad long n,n1;}
+
+\textit{\qquad double *x;}
+
+\textit{\qquad double val1,val2,temp;}
+
+\textit{\qquad long i;}
+
+\textit{\qquad parser=new parser\_func;}
+
+\textit{\qquad dfunc=(char *)calloc(100,sizeof(char));}
+
+\textit{\qquad printf("Introduceti numarul de valori ale diviziunii%
+\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad scanf("\%ld",\&n1);}
+
+\textit{\qquad delta=(double *)calloc(n1,sizeof(double));}
+
+\textit{\qquad x=(double *)calloc(n1,sizeof(double));}
+
+\textit{\qquad printf("Introduceti diviziunea\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}n1;i++)}
+
+\textit{\qquad \qquad scanf("\%lf",\&delta[i]);}
+
+\textit{\qquad printf("Introduceti conditia initiala\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad scanf("\%lf",\&x[0]);}
+
+\textit{\qquad printf("Introduceti functia cu t si y\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad fflush(stdin);}
+
+\textit{\qquad dfunc=gets(dfunc);}
+
+\textit{\qquad parser-\TEXTsymbol{>}set\_function(dfunc);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}n1;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('t',delta[i-1]);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('y',x[i-1]);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&temp);}
+
+\textit{\qquad \qquad x[i]=x[i-1]+temp*(delta[i]-delta[i-1]);}
+
+\textit{\qquad \}}
+
+\textit{\qquad printf("Valorile in diviziune\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}n1;i++)}
+
+\textit{\qquad \qquad printf("\%lf ",x[i]);}
+
+\textit{\qquad printf("\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Clasa parser\_func va fi prezentata in Anexa 1 si contine parserul de
+functii.
+
+Functia set\_var(caracter,valoare) seteaza variabila caracter (care trebuie
+sa fie un caracter majuscul sau minuscul intre a-z deoarece nu tine cont de
+litere mari sau mici) cu valoarea data in valoare.
+
+Functia eval\_func evalueaza functia setata prin set\_function cu
+variabilele setata anterior.
+
+\subsection{Rezultatele rularii}
+
+Pentru $\delta _{1}=\{0,1/2,1\}$ si functia data $t+y$ avem urmatoarele
+rezultate
+
+\begin{equation*}
+\begin{tabular}{llll}
+$t$ & 0 & 0.5 & 1.0 \\ 
+$x(Euler)$ & 0 & 0 & 0.25 \\ 
+$x(Teoretic)$ & 0 & 0.1487 & 0.71828 \\ 
+$\left\vert x(Teoretic)-x(Euler)\right\vert $ & 0 & 0.1487 & 0.46828%
+\end{tabular}%
+\end{equation*}
+
+Pentru $\delta _{2}=\{0,1/4,1/2,3/4,1\}$ si functia data $t+y$ avem
+urmatoarele rezultate
+
+\begin{equation*}
+\begin{tabular}{llllll}
+$t$ & 0 & 0.25 & 0.5 & 0.75 & 1.0 \\ 
+$x(Euler)$ & 0 & 0.0 & 0.0625 & 0.2031 & 0.441 \\ 
+$x(Teoretic)$ & 0 & 0.034 & 0.1487 & 0.367 & 0.71828 \\ 
+$\left\vert x(Teoretic)-x(Euler)\right\vert $ & 0 & 0.034 & 0.0862 & 0.1639
+& 0.27728%
+\end{tabular}%
+\end{equation*}
+
+Se observa cu cit diviziunea are mai multe puncte cu atit mai bine este
+aproximata solutia in punctul final.
+
+\chapter{Metoda Euler-Couchy}
+
+\section{Prezentare generala}
+
+\bigskip Fie $h\in (0,b-a)$ o constanta aleasa atunci vom defini
+
+\begin{equation*}
+n_{h}=\left[ \frac{b-a}{h}\right]
+\end{equation*}
+
+cu aceasta valoare vom defini diviziunea $\delta $ astfel
+
+\begin{eqnarray*}
+t_{0} &=&a \\
+t_{i} &=&t_{0}+i\cdot h\,\,\,\,i=\overline{0,n_{h}}
+\end{eqnarray*}
+
+deci deviziunea $\delta =\{t_{0},t_{1},...,t_{n_{h}}\}$
+
+Cu aceste precizari sistemul de ecuatii cu diferente divizate (\ref{difdiv})
+se rescrie astfel:
+
+\begin{eqnarray*}
+x_{0} &=&\alpha _{0} \\
+x_{k+1} &=&x_{k}+h\sum_{j=1}^{n}\frac{u_{j}(t_{k},x_{k})}{j!}h^{j-1}
+\end{eqnarray*}
+
+Vom nota
+
+\begin{equation*}
+f_{n}(t,y)=\sum_{j=1}^{n}\frac{u_{j}(t,y)}{j!}h^{j-1}
+\end{equation*}
+
+si cu acesta notatie relatia (\ref{Tnx1}) devine
+
+\begin{equation}
+T_{n,x,x_{0}}(s+h)=x(s)+h\cdot f_{n}(s,x(s))  \label{EC1}
+\end{equation}
+
+deci sistemul de ecuatii cu diferente divizate se rescrie astfel
+
+\begin{gather}
+x_{0}=\alpha _{0}  \label{difdiv1} \\
+x_{k+1}=x_{k}+h\cdot f_{n}(t_{k},x_{k})  \notag
+\end{gather}
+
+\begin{theorem}
+Cresterilor finite
+\end{theorem}
+
+Daca $\exists L>0$ astfel incit $\left\vert u(t,y)-u(t,v)\right\vert \leq
+L\left\vert y-v\right\vert $ $\forall t\in \lbrack a,b]\,\,si\,\,\forall
+y,v\in B$ si $\left\vert f_{n}(t,y)-f_{n}(t,v)\right\vert $ $\leq \left\vert
+y-v\right\vert \,\,\forall t\in \lbrack a,b]\,\,si\,\,\forall y,v\in B$
+atunci urmatoarele formule au loc:
+
+\begin{equation}
+\left\vert x(t_{k})-x_{k}\right\vert \leq \frac{h^{n}}{(n+1)!}\left\Vert
+x^{(n+1)}\right\Vert _{\infty }\frac{\exp (Lkh)-1}{L}\,\,\,\,k=\overline{0,n}
+\label{t1}
+\end{equation}
+
+unde $\left\Vert x^{(n+1)}\right\Vert _{\infty }=\underset{t\in \lbrack a,b]}%
+{\sup }\left\vert x^{(n+1)}(t)\right\vert $.
+
+\begin{proof}
+Vom demostra prin inductie dupa k.
+
+Pentru $k=0$ avem $\left\vert x(t_{0})-x_{0}\right\vert =\left\vert \alpha
+_{0}-\alpha _{0}\right\vert =0\leq 0$.
+
+Presupunem adevarata relatia (\ref{t1}) pentru $k$ si o demostram pentru $%
+k+1 $.
+
+Conform formulei lu Taylor cu reste Lagrange avem
+
+\begin{equation*}
+x(t_{k+1})=T_{n,x,t_{k}}(t_{k+1})+\underset{r}{\underbrace{\frac{1}{(n+1)!}%
+x^{(n+1)}(\xi )\cdot (t_{k+1}-t_{k})^{n+1}}}
+\end{equation*}
+
+sau
+
+\begin{equation*}
+x(t_{k+1})=T_{n,x,t_{k}}(t_{k}+h)+r
+\end{equation*}
+
+unde
+
+\begin{equation*}
+|r|\leq \frac{1}{(n+1)!}x^{(n+1)}(\xi )\cdot h^{n+1}
+\end{equation*}
+
+Atunci
+
+\begin{equation*}
+x(t_{k+1})\overset{(\ref{EC1})}{=}x(t_{k})+h\cdot f_{n}(t_{k},x(t_{k}))+r
+\end{equation*}
+
+Vom face diferenta $x(t_{k+1})-x_{k+1}$ in care vom aplica relatia
+anterioara si avem
+
+\begin{equation*}
+x(t_{k+1})-x_{k+1}=x(t_{k})-x_{k+1}+h\cdot f_{n}(t_{k},x(t_{k}))+r
+\end{equation*}
+
+In aceasta relatie aplicind (\ref{difdiv1}) avem
+
+\begin{equation*}
+x(t_{k+1})-x_{k+1}=x(t_{k})-x_{k}+h(f_{n}(t_{k},x(t_{k}))-f_{n}(t_{k},x_{k}))+r
+\end{equation*}
+
+Aplicind modul avem ambilor termeni si efectuind operatii elementare cu
+module avem%
+\begin{equation*}
+\left\vert x(t_{k+1})-x_{k+1}\right\vert \leq \left\vert
+x(t_{k})-x_{k}\right\vert +h\left\vert
+f_{n}(t_{k},x(t_{k}))-f_{n}(t_{k},x_{k})\right\vert +|r|
+\end{equation*}
+
+Aplicind ipoteza referitoare la functia $f_{n}$ (lischitziana in al doilea
+argument) avem%
+\begin{equation*}
+\left\vert x(t_{k+1})-x_{k+1}\right\vert \leq \left\vert
+x(t_{k})-x_{k}\right\vert (1+hL)+|r|
+\end{equation*}
+
+Aplicind ipoteza de inductie matematica avem
+
+\begin{equation*}
+\left\vert x(t_{k+1})-x_{k+1}\right\vert \leq (1+hL)\frac{h^{n}}{(n+1)!}%
+\left\Vert x^{(n+1)}\right\Vert _{\infty }\frac{\exp (LKh)-1}{L}+\frac{%
+h^{n+1}}{(n+1)!}\left\Vert x^{(n+1)}\right\Vert _{\infty }
+\end{equation*}
+
+Efectuind citeva prelucrari elementare avem%
+\begin{equation*}
+\left\vert x(t_{k+1})-x_{k+1}\right\vert \leq \frac{h^{n}}{L(n+1)!}%
+\left\Vert x^{(n+1)}\right\Vert _{\infty }\left( \left( 1+hL\right) \left(
+\exp (Lkh)-1\right) +Lh\right)
+\end{equation*}
+
+Aplicind aproximatia $1+hL<\exp (hL)$ relatia devine%
+\begin{equation*}
+\left\vert x(t_{k+1})-x_{k+1}\right\vert \leq \frac{1}{L}\frac{h^{n}}{(n+1)!}%
+\left\Vert x^{(n+1)}\right\Vert _{\infty }\left( \left( \exp (hkL\right)
+-1\right) \exp (hL)+Lh)
+\end{equation*}
+
+sau%
+\begin{equation*}
+\left\vert x(t_{k+1})-x_{k+1}\right\vert \leq \frac{1}{L}\frac{h^{n}}{(n+1)!}%
+\left\Vert x^{(n+1)}\right\Vert _{\infty }\left( \exp (Lh(k+1)\right) -\exp
+(Lh)+Lh)
+\end{equation*}
+
+Aplicind inca o data aproximatia $1>-\exp (hL)+Lh$ relatia devine%
+\begin{equation*}
+\left\vert x(t_{k+1})-x_{k+1}\right\vert \leq \frac{1}{L}\frac{h^{n}}{(n+1)!}%
+\left\Vert x^{(n+1)}\right\Vert _{\infty }\left( \exp (Lh(k+1)\right) -1)
+\end{equation*}
+\end{proof}
+
+Fie $x:[a,b]\rightarrow R$ solutia problemei (\ref{PCouchyE}).
+
+Fie $h<b-a$ si $n_{h}=\left[ \frac{b-a}{h}\right] $ iar $t_{i}=t_{0}+ih\,\,%
+\forall i=\overline{0,n_{h}}$ iar $t\in \lbrack a,b)$ cu $t+h\in \lbrack
+a,b) $.
+
+Integrind x'(s) intre t si t+h avem
+
+\begin{equation*}
+x(t+h)-x(t)=\int_{t}^{t+h}x^{\prime }(s)ds
+\end{equation*}
+
+Aceata integrala o vom aproxima prin formula trapezului si avem
+
+\begin{equation*}
+x(t+h)-x(t)\simeq \frac{h}{2}(x^{\prime }(t+h)+x^{\prime }(t))
+\end{equation*}
+
+Dar din furmulare aproblemei Couchy avem $x^{\prime }(t)=u(t,x(t))$, cu
+aceasta inlocuind in relatia anterioara avem
+
+\begin{equation*}
+x(t+h)-x(t)\simeq \frac{h}{2}(u(t+h,x(t+h))+u(t,x(t)))
+\end{equation*}
+
+Aproximam $u(t+h,x(t+h))$ cu teorema cresterilor finite si avem
+
+\begin{equation*}
+x(t+h)-x(t)\simeq \frac{h}{2}(u(t+h,x(t)+h\cdot u(t,x(t)))+u(t,x(t))
+\end{equation*}
+
+de aici deducem ecuatiile
+
+\begin{eqnarray*}
+x_{0} &=&\alpha _{0} \\
+\frac{x_{k+1}-x_{k}}{t_{k+1}-t_{k}} &=&\frac{1}{2}(u(t_{k}+h,x_{k}+h\cdot
+u(t_{k},x_{k}))+u(t_{k},x_{k}))
+\end{eqnarray*}
+
+Daca notam $z(t_{k})=x_{k}\,\,\,k=\overline{0,n}$ avem urmatoarea definitie
+
+\begin{definition}
+$x|_{\delta _{h}}\simeq z$ se numeste metoda Euler-Couchy.
+\end{definition}
+
+\section{Consistenta}
+
+Fie
+
+\begin{equation*}
+u_{h}(t,y)=1/2(u(t,y)+u(t+h,y+hu(t,y))
+\end{equation*}
+
+Pentru a aplica Teorema (\ref{Th1_1}) trebuie sa facem diferenta
+
+\begin{equation*}
+u_{h}(t,x(t))-u(t,x(t))=\frac{1}{2}(u(t+h,x(t)+hu(t,x(t)))-u(t,x(t))
+\end{equation*}
+
+Deoarece functia $x^{\prime }(t)=u(t,x(t)):=u(t,y)$ este de fapt functia din
+conditia couchy si aplicind (\ref{cont1}) si (\ref{cont2}) ea este continua
+pe $\{s,x(t)+hx^{\prime }(t)|t,s\in \lbrack a,b]\}=K$.
+
+Se observa ca $K$ este marginita si inchisa deci este compacta pe $[a,b]$.
+
+Cum $u$ este continua pe $K$ atunci ea este uniform continua asadar avem din
+definitia uniform continuitatii: \thinspace $\varepsilon >0,\exists \eta
+_{\varepsilon }>0\,\,a.i.\,|t-s|<\eta _{\varepsilon }\,\,si\,\,|t-w|<\eta
+_{\varepsilon }\,\,cu\,\,(t,y),(s,w)\in K$ atunci $\left\vert
+u(t,y)-u(s,w)\right\vert <\varepsilon $.
+
+atunci $h<\eta _{\varepsilon }$ si $h\ast \max_{t\in \lbrack a,b]}(x^{\prime
+}(t))<\eta _{\varepsilon }$
+
+Deci
+
+\begin{equation*}
+\left\vert u(t+h,x(t)+hx^{\prime }(t))-u(t,x(t))\right\vert <\varepsilon
+\end{equation*}
+
+Asadar metoda Euler-Couchy este consistenta.
+
+\section{Prezentarea implementarii si exemple}
+
+In continuare vom lua urmatorul exemplul:
+
+\begin{eqnarray*}
+x_{0} &=&0 \\
+x^{\prime }(t) &=&t+x(t)\text{\thinspace \thinspace \thinspace }t\in \lbrack
+0,1]
+\end{eqnarray*}
+
+Sa se rezolve aproximativ ecuatia cu metoda lui Euler-Couchy in cazul in
+care avem urmatoarele diviziuni $\delta _{1}$pentru care $h=1/2$ si $\delta
+_{2}$ pentru care $h=1/4$.
+
+\subsection{Implementare}
+
+\textit{\#include"parser\_func.cpp"}
+
+\textit{\#include\TEXTsymbol{<}math.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdlib.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdio.h\TEXTsymbol{>}}
+
+\textit{int main(int argc, char* argv[])}
+
+\textit{\{}
+
+\textit{\qquad parser\_func *parser;}
+
+\textit{\qquad double *delta,a,b,h;}
+
+\textit{\qquad char *dfunc;}
+
+\textit{\qquad long n;}
+
+\textit{\qquad double *x;}
+
+\textit{\qquad double sum1,sum2;}
+
+\textit{\qquad long i;}
+
+\textit{\qquad parser=new parser\_func;}
+
+\textit{\qquad dfunc=(char *)calloc(100,sizeof(char));}
+
+\textit{\qquad printf("Introduceti pasul h=");}
+
+\textit{\qquad scanf("\%lf",\&h);}
+
+\textit{\qquad printf("Introduceti limita inferioara a intervalului%
+\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad scanf("\%lf",\&a);}
+
+\textit{\qquad printf("Introduceti limita superioara a intervalului 
+\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad scanf("\%lf",\&b);}
+
+\textit{\qquad n=(long)((b-a)/h)+1;}
+
+\textit{\qquad x=(double *)calloc(n,sizeof(double));}
+
+\textit{\qquad delta=(double *)calloc(n,sizeof(double));}
+
+\textit{\qquad delta[0]=a;}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}n;i++)}
+
+\textit{\qquad \qquad delta[i]+=i*h;}
+
+\textit{\qquad printf("Introduceti conditia initiala\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad scanf("\%lf",\&x[0]);}
+
+\textit{\qquad printf("Introduceti functia cu t si y\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad fflush(stdin);}
+
+\textit{\qquad dfunc=gets(dfunc);}
+
+\textit{\qquad parser-\TEXTsymbol{>}set\_function(dfunc);}
+
+\textit{\qquad parser-\TEXTsymbol{>}set\_var('t',delta[0]);}
+
+\textit{\qquad parser-\TEXTsymbol{>}set\_var('y',x[0]);}
+
+\textit{\qquad parser-\TEXTsymbol{>}eval\_func(\&sum1);}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}n;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('t',delta[i-1]+h);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('y',x[i-1]+h*sum1);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&sum2);}
+
+\textit{\qquad \qquad x[i]=x[i-1]+(delta[i]-delta[i-1])*(sum2+sum1)/2;}
+
+\textit{\qquad \qquad sum1=sum2;}
+
+\textit{\qquad \}}
+
+\textit{\qquad printf("Valorile in diviziune\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}n;i++)}
+
+\textit{\qquad \qquad printf("\%lf ",x[i]);}
+
+\textit{\qquad printf("\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Clasa parser\_func va fi prezentata in Anexa 1 si contine parserul de
+functii.
+
+Functia set\_var(caracter,valoare) seteaza variabila caracter (care trebuie
+sa fie un caracter majuscul sau minuscul intre a-z deoarece nu tine cont de
+litere mari sau mici) cu valoarea data in valoare.
+
+Functia eval\_func evalueaza functia setata prin set\_function cu
+variabilele setata anterior.
+
+\subsection{Rezultatele rularii}
+
+Pentru $\delta _{1}=\{0,1/2,1\}$ adica pentru pasul $h=0.5$ si intervalul $%
+[0,1.0]$ precum si functia data $t+y$ avem urmatoarele rezultate
+
+\begin{equation*}
+\begin{tabular}{llll}
+$t$ & 0 & 0.5 & 1.0 \\ 
+$x(Euler-Couchy)$ & 0 & 0.125 & 0.5937 \\ 
+$x(Teoretic)$ & 0 & 0.1487 & 0.71828 \\ 
+$\left\vert x(Teoretic)-x(Euler-Couchy)\right\vert $ & 0 & 0.0237 & 0.124%
+\end{tabular}%
+\end{equation*}
+
+Pentru $\delta _{2}=\{0,1/4,1/2,3/4,1\}$ adica pentru pasul $h=0.25$ si
+intervalul $[0,1.0]$ precum si functia data $t+y$ avem urmatoarele rezultate
+
+\begin{equation*}
+\begin{tabular}{llllll}
+$t$ & 0 & 0.25 & 0.5 & 0.75 & 1.0 \\ 
+$x(Euler-Couchy)$ & 0 & 0.03125 & 0.136719 & 0.3403 & 0.66961 \\ 
+$x(Teoretic)$ & 0 & 0.034 & 0.1487 & 0.367 & 0.71828 \\ 
+$\left\vert x(Teoretic)-x(Euler-Couchy)\right\vert $ & 0 & 0.00275 & 0.012 & 
+0.0267 & 0.04867%
+\end{tabular}%
+\end{equation*}
+
+Se observa cu cit diviziunea are mai multe puncte cu atit mai bine este
+aproximata solutia in punctul final.
+
+\chapter{Metoda Runge-Kutta}
+
+\section{Prezentarea metodei}
+
+Fie urmatoarea problema Couchy
+
+\begin{eqnarray}
+x(a) &=&\alpha _{0}  \label{PCouchyRK} \\
+x^{\prime }(t) &=&u(t,x(t))  \notag
+\end{eqnarray}
+
+cu urmatoarele constringeri
+
+\begin{eqnarray*}
+t &\in &[a,b] \\
+\alpha _{0} &\in &B \\
+u &:&A\times B\rightarrow R\,\,\,continua
+\end{eqnarray*}
+
+Se observa ca aceste conditii sunt identice cu conditiile necesare
+prezentate in sectiune \ref{TECouchy} ca problema (\ref{PCTaylor}) sa aiba
+solutie unica, deci putem considera adevarate toate notatille din sectiunea %
+\ref{TECouchy}. Fie acesta solutie unica $x$.
+
+Fie $0<h<(b-a)$ fixat si $n_{h}=[(b-a)/h\dot{]}$ precum si diviziunea $%
+\delta _{h}=\{t_{0},t_{1},...,t_{n_{h}}\}$ definita astfel $%
+t_{0}=a,t_{j}=t_{0}+jh$ $\forall j=\overline{0,n_{h}}$ iar $t\in \lbrack
+a,b) $ cu $t+h\in \lbrack a,b)$.
+
+Integrind x'(s) intre t si t+h avem
+
+\begin{equation*}
+x(t+h)-x(t)=\int_{t}^{t+h}x^{\prime }(s)ds
+\end{equation*}
+
+Acum vom aproxima integrala prin formula lui Simpson si impartind cu h avem
+
+\begin{equation*}
+\frac{x(t+h)-x(t)}{h}\simeq \frac{1}{h}(\frac{h}{6}(x^{\prime
+}(t)+4x^{\prime }(t+h/2)+x^{\prime }(t+h)))
+\end{equation*}
+
+sau%
+\begin{equation}
+\frac{x(t+h)-x(t)}{h}\simeq \frac{1}{6}\left( x^{\prime }(t)+\underset{A}{%
+2\cdot \underbrace{x^{\prime }(t+h/2)}}+2\cdot \underset{B}{\underbrace{%
+x^{\prime }(t+h/2)}}+x^{\prime }(t+h)\right)  \label{RK2}
+\end{equation}
+
+Fie $x^{\prime }(t)=u(t,x(t))$ si fie 
+\begin{equation}
+v_{1}(t,y)=u(t,y)  \label{RKv1}
+\end{equation}
+deci 
+\begin{equation}
+x^{\prime }(t)=v_{1}(t,x(t))  \label{RKx'1}
+\end{equation}
+
+Luam separat termenii A si B.
+
+Pentru A avem:
+
+\begin{equation}
+x^{\prime }(t+h/2)=u(t+h/2,x(t+h/2))  \label{RK3}
+\end{equation}
+
+Din definitia derivatei avem
+
+\begin{equation*}
+\frac{x(t+h/2)-x(t)}{h/2}=x^{\prime }(c)\,\,\,c\in \lbrack t,t+h/2]
+\end{equation*}
+
+Vom aproxima $x^{\prime }(t)\simeq x^{\prime }(t)$ si cu acesta relatia (\ref%
+{RK3}) devine:
+
+\begin{equation*}
+x^{\prime }(t+\frac{h}{2})\simeq u(t+\frac{h}{2},x(t)+\frac{h}{2}x^{\prime
+}(t))
+\end{equation*}
+
+aplicind (\ref{RKx'1}) avem
+
+\begin{equation*}
+x^{\prime }(t+\frac{h}{2})\simeq u(t+\frac{h}{2},x(t)+\frac{h}{2}%
+v_{1}(t,x(t)))
+\end{equation*}
+
+Fie
+
+\begin{equation}
+v_{2}(t,y)=u(t+\frac{h}{2},y+\frac{h}{2}v_{1}(t,y))  \label{RKv2}
+\end{equation}
+
+Cu aceasta notatie avem
+
+\begin{equation}
+x^{\prime }(t+\frac{h}{2})\simeq v_{2}(t,x(t))  \label{RKx'2}
+\end{equation}
+
+Pentru B avem:
+
+\begin{equation}
+x^{\prime }(t+h/2)=u(t+h/2,x(t+h/2))  \label{RK4}
+\end{equation}
+
+Din definitia derivatei avem
+
+\begin{equation*}
+\frac{x(t+h/2)-x(t)}{h/2}=x^{\prime }(c)\,\,\,c\in \lbrack t,t+h/2]
+\end{equation*}
+
+Vom aproxima $x^{\prime }(t)\simeq x^{\prime }(t+h/2)$ si cu aceasta relatia
+(\ref{RK4}) devine:
+
+\begin{equation*}
+x^{\prime }(t+\frac{h}{2})\simeq u(t+\frac{h}{2},x(t)+\frac{h}{2}x^{\prime
+}(x+\frac{h}{2}))
+\end{equation*}
+
+inlocuind relatia (\ref{RKx'2}) in relatia anterioara avem
+
+\begin{equation*}
+x^{\prime }(t+\frac{h}{2})\simeq u(t+\frac{h}{2},x(t)+\frac{h}{2}%
+v_{2}(t,x(t)))
+\end{equation*}
+
+Fie
+
+\begin{equation}
+v_{3}(t,y)=u(t+\frac{h}{2},y+\frac{h}{2}v_{2}(t,y))  \label{RKv3}
+\end{equation}
+
+Cu aceasta notatie avem
+
+\begin{equation}
+x^{\prime }(t+\frac{h}{2})\simeq v_{3}(t,x(t))  \label{RKx'3}
+\end{equation}
+
+In continuare vom aproxima cel de-al treilea termen
+
+\begin{equation*}
+x^{\prime }(t+h)=u(t+h,x(t+h))
+\end{equation*}
+
+Din definitia derivatei avem
+
+\begin{equation*}
+\frac{x(t+h/2)-x(t)}{h/2}=x^{\prime }(c)\,\,\,c\in \lbrack t,t+h/2]
+\end{equation*}
+
+Vom aproxima $x^{\prime }(c)\simeq x^{\prime }(t+h/2)$ si vom avea
+
+\begin{equation*}
+x^{\prime }(t+h)\simeq u(t+h,x(t)+h\cdot x^{\prime }(t+h/2))
+\end{equation*}
+
+in care daca introducem relatia (\ref{RKx'3}) devine
+
+\begin{equation*}
+x^{\prime }(t+h)\simeq u(t+h,x(t)+h\cdot v_{3}(t,x(t)))
+\end{equation*}
+
+Fie
+
+\begin{equation}
+v_{4}(t,y)=u(t+h,y+h\cdot v_{3}(t,y))  \label{RKv4}
+\end{equation}
+
+cu aceasta notatie avem
+
+\begin{equation}
+x^{\prime }(t+h)\simeq v_{4}(t,x(t))  \label{RKx'4}
+\end{equation}
+
+Cu aceste notatii relatia (\ref{RK2}) devine
+
+\begin{equation*}
+\frac{x(t+h)-x(t)}{h}\simeq \frac{1}{6}(v_{1}(t,x(t))+2\cdot
+v_{2}(t,x(t))+2\cdot v_{3}(t,x(t))+v_{4}(t,x(t)))
+\end{equation*}
+
+Fie ecuatia cu diferente finite care aproximeaza solutia problemei Couchy (%
+\ref{PCouchyRK})
+
+\begin{eqnarray*}
+x_{0} &=&\alpha _{0} \\
+\frac{x_{j+1}-x_{j}}{h} &=&\frac{1}{6}%
+(v_{1}(t_{j},x_{j})+2v_{2}(t_{j},x_{j})+2v_{3}(t_{j},x_{j})+v_{4}(t_{j},x_{j}))\,\,j=%
+\overline{0,n_{h}-1}
+\end{eqnarray*}
+
+unde:
+
+\begin{eqnarray*}
+v_{1}(t,y) &=&u(t,y) \\
+v_{2}(t,y) &=&u(t+\frac{h}{2},y+\frac{h}{2}v_{1}(t,y)) \\
+v_{3}(t,y) &=&u(t+\frac{h}{2},y+\frac{h}{2}v_{2}(t,y)) \\
+v_{4}(t,y) &=&u(t+h,y+h\cdot v_{3}(t,y))
+\end{eqnarray*}
+
+Fie $z:\delta _{h}\rightarrow R$ definita astfel $z(t_{j})=x_{j}$ cu $x_{j}$
+solutii ale ecuatiei (\ref{PCouchyRK}).
+
+\begin{definition}
+Aproximarea $x|_{\delta _{h}}\simeq z$ se numeste metoda Runge-Kutta.
+\end{definition}
+
+\section{Consistenta}
+
+Fie
+
+\begin{equation*}
+u_{h}(t,y)=\frac{1}{6}(v_{1}(t,y)+2v_{2}(t,y)+2v_{3}(t,y)+v_{4}(t,y))\,
+\end{equation*}
+
+unde:
+
+\begin{eqnarray*}
+v_{1}(t,y) &=&u(t,y) \\
+v_{2}(t,y) &=&u(t+\frac{h}{2},y+\frac{h}{2}v_{1}(t,y)) \\
+v_{3}(t,y) &=&u(t+\frac{h}{2},y+\frac{h}{2}v_{2}(t,y)) \\
+v_{4}(t,y) &=&u(t+h,y+h\cdot v_{3}(t,y))
+\end{eqnarray*}
+
+Explicitind in parte avem
+
+\begin{eqnarray*}
+u_{h}(t,x(t)) &=&\frac{1}{6}(u(t,x(t))+2u(t+\frac{h}{2},x(t)+\frac{h}{2}%
+u(t,x(t)))+ \\
+&&2u(t+\frac{h}{2},x(t)+\frac{h}{2}v_{2}(t,x(t)))+u(t+h,x(t)+hv_{3}(t,x(t)))
+\end{eqnarray*}
+
+Efectuind diferenta
+
+\begin{eqnarray}
+u_{h}(t,x(t))-u(t,x(t)) &=&\frac{1}{6}(-5u(t,x(t))+2u(t+\frac{h}{2},x(t)+%
+\frac{h}{2}u(t,x(t)))+  \label{RK5} \\
+&&2u(t+\frac{h}{2},x(t)+\frac{h}{2}v_{2}(t,x(t)))+u(t+h,x(t)+hv_{3}(t,x(t)))
+\notag
+\end{eqnarray}
+
+Deoarece functia $x^{\prime }(t)=u(t,x(t)):=u(t,y)$ este de fapt functia din
+conditia couchy si aplicind (\ref{cont1}) si (\ref{cont2}) ea este continua
+pe $\{(s,x(t)+\frac{h}{2}x^{\prime }(t))|t,s\in \lbrack a,b],x(t)+\frac{h}{2}%
+x^{\prime }(t)\in B\}=K_{1}$.
+
+Se observa ca $K_{1}$ este marginita si inchisa deci este compacta.
+
+Cum $u$ este continua pe $K_{1}$ atunci ea este uniform continua asadar avem
+din definitia uniform continuitatii: \thinspace $\varepsilon _{1}>0,\exists
+\eta _{\varepsilon }>0\,\,a.i.\,|t-s|<\eta _{\varepsilon
+_{1}}\,\,si\,\,|t-w|<\eta _{\varepsilon _{1}}\,\,cu\,\,(t,y),(s,w)\in K_{1}$
+atunci $\left\vert u(t,y)-u(s,w)\right\vert <\varepsilon _{1}$.
+
+Deoarece functia $x^{\prime }(t)=u(t,x(t)):=u(t,y)$ este de fapt functia din
+conditia couchy si aplicind (\ref{cont1}) si (\ref{cont2}) ea este continua
+pe $\{(s,x(t)+\frac{h}{2}v_{2}(t,x(t)))|t,s\in \lbrack a,b],x(t)+\frac{h}{2}%
+v_{2}(t,x(t))\in B\}=K_{2}$.
+
+Cum $u$ este continua pe $K_{2}$ atunci ea este uniform continua asadar avem
+din definitia uniform continuitatii: \thinspace $\varepsilon _{2}>0,\exists
+\eta _{\varepsilon _{2}}>0\,\,a.i.\,|t-s|<\eta _{\varepsilon
+_{2}}\,\,si\,\,|t-w|<\eta _{\varepsilon _{2}}\,\,cu\,\,(t,y),(s,w)\in K_{2}$
+atunci $\left\vert u(t,y)-u(s,w)\right\vert <\varepsilon _{2}$.
+
+Deoarece functia $x^{\prime }(t)=u(t,x(t)):=u(t,y)$ este de fapt functia din
+conditia couchy si aplicind (\ref{cont1}) si (\ref{cont2}) ea este continua
+pe $\{(s,x(t)+\frac{h}{2}v_{3}(t,x(t)))|t,s\in \lbrack a,b],x(t)+\frac{h}{2}%
+v_{3}(t,x(t))\in B\}=K_{3}$.
+
+Cum $u$ este continua pe $K_{2}$ atunci ea este uniform continua asadar avem
+din definitia uniform continuitatii: \thinspace $\varepsilon _{3}>0,\exists
+\eta _{\varepsilon _{3}}>0\,\,a.i.\,|t-s|<\eta _{\varepsilon
+_{3}}\,\,si\,\,|t-w|<\eta _{\varepsilon _{3}}\,\,cu\,\,(t,y),(s,w)\in K_{3}$
+atunci $\left\vert u(t,y)-u(s,w)\right\vert <\varepsilon _{3}$.
+
+Deoarece $u_{h}(t,x(t))$ trebuie sa fie definita atunci ea este definita pe $%
+K_{1}\cap K_{2}\cap K_{3}\cap B=K$ deoarece este intersectie de multimi
+compacte multimea rezultata este tot o multime compacta asadar $K$ este o
+multime compacta.
+
+Deoarece $K$ este o multime compacta iar functia $u(t,y)$ este continua pe $%
+K $ atunci $u(t,y)$ este uniform continua pe $K$.
+
+Relatia (\ref{RK5}) se poate scrie astfel:
+
+\begin{eqnarray*}
+u_{h}(t,x(t))-u(t,x(t)) &=&\frac{1}{3}\left( u(t+\frac{h}{2},x(t)+\frac{h}{2}%
+u(t,x(t)))-u(t,x(t))\right) \\
+&&+\frac{1}{3}\left( u(t+\frac{h}{2},x(t)+\frac{h}{2}%
+v_{2}(t,x(t)))-u(t,x(t))\right) \\
+&&+\frac{1}{6}\left( u(t+h,x(t)+hv_{3}(t,x(t))-u(t,x(t))\right)
+\end{eqnarray*}
+
+Aplicind uniform continuitatea pe multimile $K_{1},K_{2},K_{3}$ si daca $%
+h<\min \{2\ast \min \{\eta _{1},\eta _{2}\},\eta _{3}\}$ si
+
+\begin{eqnarray*}
+\frac{h}{2}\max_{t\in \lbrack a,b]}\left\vert x^{\prime }(t)\right\vert
+&<&\eta _{1} \\
+\frac{h}{2}\max_{t\in \lbrack a,b]}\left\vert v_{2}(t,x(t))\right\vert
+&<&\eta _{2} \\
+h\max_{t\in \lbrack a,b]}\left\vert v_{3}(t,x(t))\right\vert &<&\eta _{3}
+\end{eqnarray*}%
+avem
+
+\begin{equation*}
+\left\vert u_{h}(t,x(t))-u(t,x(t))\right\vert <\frac{1}{3}\varepsilon _{1}+%
+\frac{1}{3}\varepsilon _{2}+\frac{1}{6}\varepsilon _{3}=\varepsilon
+\end{equation*}
+
+Deci metoda Runge-Kutta este consistenta.
+
+\section{Prezentarea implementarii si exemple}
+
+In continuare vom lua urmatorul exemplul:
+
+\begin{eqnarray*}
+x_{0} &=&0 \\
+x^{\prime }(t) &=&t+x(t)\text{\thinspace \thinspace \thinspace }t\in \lbrack
+0,1]
+\end{eqnarray*}
+
+Sa se rezolve aproximativ ecuatia cu metoda lui Runge-Kutta in cazul in care
+avem urmatoarele diviziuni $\delta _{1}$pentru care $h=1/2$ si $\delta _{2}$
+pentru care $h=1/4$.
+
+\subsection{Implementare}
+
+\textit{\#include"parser\_func.cpp"}
+
+\textit{\#include\TEXTsymbol{<}math.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdlib.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdio.h\TEXTsymbol{>}}
+
+\textit{int main(int argc, char* argv[])}
+
+\textit{\{}
+
+\textit{\qquad parser\_func *parser;}
+
+\textit{\qquad double *delta,a,b,h;}
+
+\textit{\qquad char *dfunc;}
+
+\textit{\qquad long n;}
+
+\textit{\qquad double *x;}
+
+\textit{\qquad double v1,v2,v3,v4;}
+
+\textit{\qquad long i;}
+
+\textit{\qquad parser=new parser\_func;}
+
+\textit{\qquad dfunc=(char *)calloc(100,sizeof(char));}
+
+\textit{\qquad printf("Introduceti pasul h=");}
+
+\textit{\qquad scanf("\%lf",\&h);}
+
+\textit{\qquad printf("Introduceti limita inferioara a intervalului%
+\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad scanf("\%lf",\&a);}
+
+\textit{\qquad printf("Introduceti limita superioara a intervalului 
+\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad scanf("\%lf",\&b);}
+
+\textit{\qquad n=(long)((b-a)/h)+1;}
+
+\textit{\qquad x=(double *)calloc(n,sizeof(double));}
+
+\textit{\qquad delta=(double *)calloc(n,sizeof(double));}
+
+\textit{\qquad delta[0]=a;}
+
+\textit{\qquad for(i=1;i\TEXTsymbol{<}n;i++)}
+
+\textit{\qquad \qquad delta[i]+=i*h;}
+
+\textit{\qquad printf("Introduceti conditia initiala\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad scanf("\%lf",\&x[0]);}
+
+\textit{\qquad printf("Introduceti functia cu t si y\TEXTsymbol{\backslash}%
+n");}
+
+\textit{\qquad fflush(stdin);}
+
+\textit{\qquad dfunc=gets(dfunc);}
+
+\textit{\qquad parser-\TEXTsymbol{>}set\_function(dfunc);}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}n-1;i++)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('t',delta[i]);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('y',x[i]);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&v1);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('t',delta[i]+h/2);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('y',x[i]+h*v1/2);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&v2);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('y',x[i]+h*v2/2);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&v3);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('t',delta[i+1]);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}set\_var('y',x[i]+h*v3);}
+
+\textit{\qquad \qquad parser-\TEXTsymbol{>}eval\_func(\&v4);}
+
+\textit{\qquad \qquad x[i+1]=x[i]+h*(v1+2*v2+2*v3+v4)/6;}
+
+\textit{\qquad \}}
+
+\textit{\qquad printf("Valorile in diviziune\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad for(i=0;i\TEXTsymbol{<}n;i++)}
+
+\textit{\qquad \qquad printf("\%lf ",x[i]);}
+
+\textit{\qquad printf("\TEXTsymbol{\backslash}n");}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+Clasa parser\_func va fi prezentata in Anexa 1 si contine parserul de
+functii.
+
+Functia set\_var(caracter,valoare) seteaza variabila caracter (care trebuie
+sa fie un caracter majuscul sau minuscul intre a-z deoarece nu tine cont de
+litere mari sau mici) cu valoarea data in valoare.
+
+Functia eval\_func evalueaza functia setata prin set\_function cu
+variabilele setata anterior.
+
+\subsection{Rezultatele rularii}
+
+Pentru $\delta _{1}=\{0,1/2,1\}$ adica pentru pasul $h=0.5$ si intervalul $%
+[0,1.0]$ precum si functia data $t+y$ avem urmatoarele rezultate
+
+\begin{equation*}
+\begin{tabular}{llll}
+$t$ & 0 & 0.5 & 1.0 \\ 
+$x(Runge-Kutta)$ & 0 & 0.1484 & 0.71734 \\ 
+$x(Teoretic)$ & 0 & 0.1487 & 0.71828 \\ 
+$\left\vert x(Teoretic)-x(Runge-Kutta)\right\vert $ & 0 & 0.0003 & 0.00094%
+\end{tabular}%
+\end{equation*}
+
+Pentru $\delta _{2}=\{0,1/4,1/2,3/4,1\}$ adica pentru pasul $h=0.25$ si
+intervalul $[0,1.0]$ precum si functia data $t+y$ avem urmatoarele rezultate
+
+\begin{equation*}
+\begin{tabular}{llllll}
+$t$ & 0 & 0.25 & 0.5 & 0.75 & 1.0 \\ 
+$x(Runge-Kutta)$ & 0 & 0.034 & 0.14869 & 0.3669 & 0.71821 \\ 
+$x(Teoretic)$ & 0 & 0.034 & 0.1487 & 0.367 & 0.71828 \\ 
+$\left\vert x(Teoretic)-x(Runge-Kutta)\right\vert $ & 0 & 0 & 0.00001 & 
+0.0001 & 0.00007%
+\end{tabular}%
+\end{equation*}
+
+Se observa cu cit diviziunea are mai multe puncte cu atit mai bine este
+aproximata solutia in punctul final.
+
+\chapter{Anexa 1 (parser de functii)}
+
+\bigskip In aceasta anexa vom prezenta parserul de functii. Atesta este o
+versiune modifica a parserului prezentat in \cite{Schildt}.
+
+\section{Definierea clasei}
+
+\textit{// parser\_func.h: interface for the parser\_func class.}
+
+\textit{//}
+
+\textit{%
+//////////////////////////////////////////////////////////////////////}
+
+\textit{\#if \_MSC\_VER \TEXTsymbol{>} 1000}
+
+\textit{\#pragma once}
+
+\textit{\#endif // \_MSC\_VER \TEXTsymbol{>} 1000}
+
+\textit{\#include \TEXTsymbol{<}stdlib.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}string.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}ctype.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}math.h\TEXTsymbol{>}}
+
+\textit{\#define DELIMITATOR 1}
+
+\textit{\#define VARIABILA 2}
+
+\textit{\#define NUMAR 3}
+
+\textit{\#define FUNCTION 4}
+
+\textit{class parser\_func }
+
+\textit{\{}
+
+\textit{public:}
+
+\textit{\qquad double get\_var(char var);}
+
+\textit{\qquad void unset\_var(char var);}
+
+\textit{\qquad void set\_var(char var,double val);}
+
+\textit{\qquad void empty\_vars();}
+
+\textit{\qquad parser\_func();}
+
+\textit{\qquad virtual \symbol{126}parser\_func();}
+
+\textit{\qquad void set\_function(char *func);}
+
+\textit{\qquad void eval\_func(double *rez);}
+
+\textit{protected:}
+
+\textit{\qquad char * get\_argument(char *work);}
+
+\textit{\qquad bool is\_function;}
+
+\textit{\qquad double eval\_math(char *s);}
+
+\textit{\qquad double find\_var(char *s);}
+
+\textit{\qquad long isdelim(char c);}
+
+\textit{\qquad void serror(long error);}
+
+\textit{\qquad void putback();}
+
+\textit{\qquad void get\_token(void);}
+
+\textit{\qquad void atom(double *rez);}
+
+\textit{\qquad void eval\_func6(double *rez);}
+
+\textit{\qquad void eval\_func5(double *rez);}
+
+\textit{\qquad void eval\_func4(double *rez);}
+
+\textit{\qquad void eval\_func3(double *rez);}
+
+\textit{\qquad void eval\_func2(double *rez);}
+
+\textit{\qquad void eval\_func1(double *rez);}
+
+\textit{\qquad char simb[80];}
+
+\textit{\qquad char tip\_simb;}
+
+\textit{\qquad double *vars;}
+
+\textit{\qquad char *prog;}
+
+\textit{\qquad char *function;}
+
+\textit{\qquad double (*math\_f[13])(double arg);}
+
+\textit{\};}
+
+\section{Implementarea clasei}
+
+\textit{// parser\_func.cpp: implementation of the parser\_func class.}
+
+\textit{//}
+
+\textit{%
+//////////////////////////////////////////////////////////////////////}
+
+\textit{\#include "stdafx.h"}
+
+\textit{\#include "parser\_func.h"}
+
+\textit{\#include \TEXTsymbol{<}iostream.h\TEXTsymbol{>}}
+
+\textit{\#include\TEXTsymbol{<}stdio.h\TEXTsymbol{>}}
+
+\textit{%
+//////////////////////////////////////////////////////////////////////}
+
+\textit{// Construction/Destruction}
+
+\textit{%
+//////////////////////////////////////////////////////////////////////}
+
+\textit{parser\_func::parser\_func()}
+
+\textit{\{}
+
+\textit{\qquad vars=(double *)calloc(26,sizeof(double));}
+
+\textit{\qquad prog=NULL;}
+
+\textit{\qquad function=NULL;}
+
+\textit{\qquad math\_f[0]=cos;}
+
+\textit{\qquad math\_f[1]=acos;}
+
+\textit{\qquad math\_f[2]=sin;}
+
+\textit{\qquad math\_f[3]=asin;}
+
+\textit{\qquad math\_f[4]=tan;}
+
+\textit{\qquad math\_f[5]=atan;}
+
+\textit{\qquad math\_f[6]=cosh;}
+
+\textit{\qquad math\_f[7]=sinh;}
+
+\textit{\qquad math\_f[8]=tanh;}
+
+\textit{\qquad math\_f[9]=exp;}
+
+\textit{\qquad math\_f[10]=log;}
+
+\textit{\qquad math\_f[11]=log10;}
+
+\textit{\qquad math\_f[12]=fabs;}
+
+\textit{\qquad is\_function=false;}
+
+\textit{\}}
+
+\textit{parser\_func::\symbol{126}parser\_func()}
+
+\textit{\{}
+
+\textit{\qquad if(vars!=NULL) free(vars);}
+
+\textit{\qquad if(prog!=NULL) free(prog);}
+
+\textit{\}}
+
+\textit{void parser\_func::eval\_func(double *rez)}
+
+\textit{//input point}
+
+\textit{\{}
+
+\textit{\qquad prog=function;}
+
+\textit{\qquad get\_token();}
+
+\textit{\qquad if(!*simb)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad serror(2);}
+
+\textit{\qquad \qquad return;}
+
+\textit{\qquad \}}
+
+\textit{\qquad eval\_func1(rez);}
+
+\textit{\qquad if(*simb) serror(0); //last simbol is null}
+
+\textit{\}}
+
+\textit{void parser\_func::eval\_func1(double *rez)}
+
+\textit{//processing a atribution}
+
+\textit{\{}
+
+\textit{\qquad long fanta;}
+
+\textit{\qquad char temp\_simb[80],sseg\_tip;}
+
+\textit{\qquad }
+
+\textit{\qquad if(tip\_simb==VARIABILA)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad //save the old simbol;}
+
+\textit{\qquad \qquad strcpy(temp\_simb,simb);}
+
+\textit{\qquad \qquad sseg\_tip=tip\_simb;}
+
+\textit{\qquad \qquad //computin the index of the variable}
+
+\textit{\qquad \qquad fanta=toupper(*simb)-'A';}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad if(*simb!='=')}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad putback();//return the curent segment}
+
+\textit{\qquad \qquad \qquad //restore the old simbol without atributs}
+
+\textit{\qquad \qquad \qquad strcpy(simb,temp\_simb);}
+
+\textit{\qquad \qquad \qquad tip\_simb=sseg\_tip;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad else}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad \qquad get\_token(); //get the next part of the
+expresion}
+
+\textit{\qquad \qquad \qquad eval\_func2(rez);}
+
+\textit{\qquad \qquad \qquad vars[fanta]=*rez;}
+
+\textit{\qquad \qquad \qquad return;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\qquad eval\_func2(rez);}
+
+\textit{\}}
+
+\textit{void parser\_func::eval\_func2(double *rez)}
+
+\textit{//add or difference of two elements}
+
+\textit{\{}
+
+\textit{\qquad char op;}
+
+\textit{\qquad double temp;}
+
+\textit{\qquad }
+
+\textit{\qquad eval\_func3(rez);}
+
+\textit{\qquad op=*simb;}
+
+\textit{\qquad while(op=='+' \TEXTsymbol{\vert}\TEXTsymbol{\vert} op=='-')}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad eval\_func3(\&temp);}
+
+\textit{\qquad \qquad switch(op)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad case '-':}
+
+\textit{\qquad \qquad \qquad *rez=*rez-temp;}
+
+\textit{\qquad \qquad \qquad break;}
+
+\textit{\qquad \qquad case '+':}
+
+\textit{\qquad \qquad \qquad *rez=*rez+temp;}
+
+\textit{\qquad \qquad \qquad break;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \qquad op=*simb;}
+
+\textit{\qquad \}}
+
+\textit{\}}
+
+\textit{void parser\_func::eval\_func3(double *rez)}
+
+\textit{//product or division of two elements}
+
+\textit{\{}
+
+\textit{\qquad char op;}
+
+\textit{\qquad double temp;}
+
+\textit{\qquad }
+
+\textit{\qquad eval\_func4(rez);}
+
+\textit{\qquad while((op=*simb)=='*' \TEXTsymbol{\vert}\TEXTsymbol{\vert}
+op=='/' \TEXTsymbol{\vert}\TEXTsymbol{\vert} op=='\%')}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad eval\_func4(\&temp);}
+
+\textit{\qquad \qquad switch(op)}
+
+\textit{\qquad \qquad \{}
+
+\textit{\qquad \qquad case '*':}
+
+\textit{\qquad \qquad \qquad *rez=(*rez)*temp;}
+
+\textit{\qquad \qquad \qquad break;}
+
+\textit{\qquad \qquad case '/':}
+
+\textit{\qquad \qquad \qquad *rez=(*rez)/temp;}
+
+\textit{\qquad \qquad \qquad break;}
+
+\textit{\qquad \qquad case '\%':}
+
+\textit{\qquad \qquad \qquad *rez=(long)*rez\%(long)temp;}
+
+\textit{\qquad \qquad \qquad break;}
+
+\textit{\qquad \qquad \}}
+
+\textit{\qquad \}}
+
+\textit{\}}
+
+\textit{void parser\_func::eval\_func4(double *rez)}
+
+\textit{//process an exponent}
+
+\textit{\{}
+
+\textit{\qquad double temp,ex;}
+
+\textit{\qquad eval\_func5(rez);}
+
+\textit{\qquad if(*simb=='\symbol{94}')}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad eval\_func4(\&temp);}
+
+\textit{\qquad \qquad *rez=pow(*rez,temp);}
+
+\textit{\qquad \}}
+
+\textit{\}}
+
+\textit{void parser\_func::eval\_func5(double *rez)}
+
+\textit{//eval + or - unary}
+
+\textit{\{}
+
+\textit{\qquad char op;}
+
+\textit{\qquad op=0;}
+
+\textit{\qquad if((tip\_simb==DELIMITATOR) \&\& *simb=='+' \TEXTsymbol{\vert}%
+\TEXTsymbol{\vert} *simb=='-')}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad op=*simb;}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \}}
+
+\textit{\qquad eval\_func6(rez);}
+
+\textit{\qquad if(op=='-') *rez=-(*rez);}
+
+\textit{\}}
+
+\textit{\ }
+
+\textit{void parser\_func::eval\_func6(double *rez)}
+
+\textit{//process parantheses expresion}
+
+\textit{\{}
+
+\textit{\qquad if(*simb=='(')}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad eval\_func2(rez);}
+
+\textit{\qquad \qquad if(*simb!=')')}
+
+\textit{\qquad \qquad \qquad serror(1);}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \}}
+
+\textit{\qquad else atom(rez);}
+
+\textit{\}}
+
+\textit{double parser\_func::eval\_math(char *s)}
+
+\textit{//evaluate a mathematical predefinite function}
+
+\textit{\{}
+
+\textit{\qquad double rez;}
+
+\textit{\qquad int findex;}
+
+\textit{\qquad if(strcmp(s,"cos")==0) //we have cos}
+
+\textit{\qquad \qquad findex=0;}
+
+\textit{\qquad else if(strcmp(s,"acos")==0) //we have arccos}
+
+\textit{\qquad \qquad findex=1;}
+
+\textit{\qquad else if(strcmp(s,"sin")==0) //we have sin}
+
+\textit{\qquad \qquad findex=2;}
+
+\textit{\qquad else if(strcmp(s,"asin")==0) //we have arcsin}
+
+\textit{\qquad \qquad findex=3;}
+
+\textit{\qquad else if(strcmp(s,"tan")==0) //we have tangent}
+
+\textit{\qquad \qquad findex=4;}
+
+\textit{\qquad else if(strcmp(s,"atan")==0) //we have arctangent}
+
+\textit{\qquad \qquad findex=5;}
+
+\textit{\qquad else if(strcmp(s,"cosh")==0) //we have hiperbolic cosinus }
+
+\textit{\qquad \qquad findex=6;}
+
+\textit{\qquad else if(strcmp(s,"sinh")==0) //we have hyperbolic sinus }
+
+\textit{\qquad \qquad findex=7;}
+
+\textit{\qquad else if(strcmp(s,"tanh")==0) //we have hyperbolic tangent}
+
+\textit{\qquad \qquad findex=8;}
+
+\textit{\qquad else if(strcmp(s,"exp")==0) //we have exponential}
+
+\textit{\qquad \qquad findex=9;}
+
+\textit{\qquad else if(strcmp(s,"log")==0) //we have natural logarithm}
+
+\textit{\qquad \qquad findex=10;}
+
+\textit{\qquad else if(strcmp(s,"log10")==0) //we have 10 base logarithm}
+
+\textit{\qquad \qquad findex=11;}
+
+\textit{\qquad else if(strcmp(s,"fabs")==0) //we have absolute value}
+
+\textit{\qquad \qquad findex=12;}
+
+\textit{\qquad else findex=-1;}
+
+\textit{\qquad char *argument;}
+
+\textit{\qquad char *work;}
+
+\textit{\qquad char old\_tip\_simb;}
+
+\textit{\qquad old\_tip\_simb=tip\_simb;\qquad }
+
+\textit{\qquad work=(char *)calloc(80,sizeof(char));}
+
+\textit{\qquad argument=get\_argument(work);}
+
+\textit{\qquad eval\_func(\&rez);}
+
+\textit{\qquad free(work);}
+
+\textit{\qquad prog=argument;}
+
+\textit{\qquad if(findex==-1)}
+
+\textit{\qquad \qquad return 0.0;}
+
+\textit{\qquad else return math\_f[findex](rez);}
+
+\textit{\}}
+
+\textit{void parser\_func::atom(double *rez)}
+
+\textit{//read the value of the number or a variable}
+
+\textit{\{}
+
+\textit{\qquad switch(tip\_simb)}
+
+\textit{\qquad \{}
+
+\textit{\qquad case VARIABILA:}
+
+\textit{\qquad \qquad *rez=find\_var(simb);}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad return;}
+
+\textit{\qquad case NUMAR:}
+
+\textit{\qquad \qquad *rez=atof(simb);}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad return;}
+
+\textit{\qquad case FUNCTION:}
+
+\textit{\qquad \qquad *rez=eval\_math(simb);}
+
+\textit{\qquad \qquad get\_token();}
+
+\textit{\qquad \qquad return;}
+
+\textit{\qquad default:}
+
+\textit{\qquad \qquad serror(0);}
+
+\textit{\qquad \}}
+
+\textit{\}}
+
+\textit{void parser\_func::get\_token()}
+
+\textit{//return the next simbol}
+
+\textit{\{}
+
+\textit{\qquad char *temp;}
+
+\textit{\qquad tip\_simb=0;}
+
+\textit{\qquad temp=simb;}
+
+\textit{\qquad *temp='\TEXTsymbol{\backslash}0';}
+
+\textit{\qquad if(!prog) return; //end of expresion}
+
+\textit{\qquad while(isspace(*prog)) ++prog;}
+
+\textit{\qquad if(strchr("+-*/\%\symbol{94}=()",*prog))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad tip\_simb=DELIMITATOR;}
+
+\textit{\qquad \qquad *temp++=*prog++;}
+
+\textit{\qquad \}}
+
+\textit{\qquad else if(isalpha(*prog) \&\& !isalpha(*(prog+1)))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad while(!isdelim(*prog)) *temp++=*prog++;}
+
+\textit{\qquad \qquad tip\_simb=VARIABILA;}
+
+\textit{\qquad \}}
+
+\textit{\qquad else if(isalpha(*prog) \&\& isalpha(*(prog+1)))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad while(!isdelim(*prog)) *temp++=*prog++;}
+
+\textit{\qquad \qquad tip\_simb=FUNCTION;}
+
+\textit{\qquad \}}
+
+\textit{\qquad else if(isdigit(*prog))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad while(!isdelim(*prog)) *temp++=*prog++;}
+
+\textit{\qquad \qquad tip\_simb=NUMAR;}
+
+\textit{\qquad \}}
+
+\textit{\qquad *temp='\TEXTsymbol{\backslash}0';}
+
+\textit{\}}
+
+\textit{void parser\_func::putback()}
+
+\textit{//return one simbol from the input flux}
+
+\textit{\{}
+
+\textit{\qquad char *s;}
+
+\textit{\qquad s=simb;}
+
+\textit{\qquad for(;*s;s++) prog--;}
+
+\textit{\}}
+
+\textit{void parser\_func::serror(long error)}
+
+\textit{//print a sintax error}
+
+\textit{\{}
+
+\textit{\qquad static char *e[]=\{}
+
+\textit{\qquad \qquad "Sintax error",}
+
+\textit{\qquad \qquad "Unbalance bracket",}
+
+\textit{\qquad \qquad "Not an expresion"}
+
+\textit{\qquad \};}
+
+\textit{\qquad cout\TEXTsymbol{<}\TEXTsymbol{<}e[error]\TEXTsymbol{<}%
+\TEXTsymbol{<}endl;}
+
+\textit{\}}
+
+\textit{double parser\_func::find\_var(char *s)}
+
+\textit{//return the value of a variable}
+
+\textit{\{}
+
+\textit{\qquad if(!isalpha(*s))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad serror(1);}
+
+\textit{\qquad \qquad return 0.0;}
+
+\textit{\qquad \}}
+
+\textit{\qquad return vars[toupper(*simb)-'A'];}
+
+\textit{\}}
+
+\textit{long parser\_func::isdelim(char c)}
+
+\textit{//return 0 is c is a delimitator}
+
+\textit{\{}
+
+\textit{\qquad if(strchr(" +-/*\%\symbol{94}=()",c) \TEXTsymbol{\vert}%
+\TEXTsymbol{\vert} c==9 \TEXTsymbol{\vert}\TEXTsymbol{\vert} c=='\TEXTsymbol{%
+\backslash}r' \TEXTsymbol{\vert}\TEXTsymbol{\vert} c==0)}
+
+\textit{\qquad \qquad return 1;}
+
+\textit{\qquad return 0;}
+
+\textit{\}}
+
+\textit{void parser\_func::empty\_vars()}
+
+\textit{//empty the variable memory}
+
+\textit{\{}
+
+\textit{\qquad if(vars!=NULL) free(vars);}
+
+\textit{\qquad vars=(double *)calloc(26,sizeof(double));}
+
+\textit{\}}
+
+\textit{void parser\_func::set\_var(char var, double val)}
+
+\textit{//set a variable to a value}
+
+\textit{\{}
+
+\textit{\qquad if(!isalpha(var))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad serror(1);}
+
+\textit{\qquad \qquad return;}
+
+\textit{\qquad \}}
+
+\textit{\qquad vars[toupper(var)-'A']=val;}
+
+\textit{\}}
+
+\textit{void parser\_func::unset\_var(char var)}
+
+\textit{//unset a variable}
+
+\textit{\{}
+
+\textit{\qquad if(!isalpha(var))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad serror(1);}
+
+\textit{\qquad \qquad return;}
+
+\textit{\qquad \}}
+
+\textit{\qquad vars[toupper(var)-'A']=0.0;}
+
+\textit{\}}
+
+\textit{double parser\_func::get\_var(char var)}
+
+\textit{//get a variable}
+
+\textit{\{}
+
+\textit{\qquad if(!isalpha(var))}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad serror(1);}
+
+\textit{\qquad \qquad return 0.0;}
+
+\textit{\qquad \}}
+
+\textit{\qquad return vars[toupper(var)-'A'];}
+
+\textit{\}}
+
+\textit{void parser\_func::set\_function(char *func)}
+
+\textit{//set the function to the system}
+
+\textit{\{}
+
+\textit{\qquad if(function!=NULL) free(function);}
+
+\textit{\qquad function=(char *)calloc(strlen(func)+1,sizeof(char));}
+
+\textit{\qquad strcpy(function,func);}
+
+\textit{\qquad prog=function;}
+
+\textit{\}}
+
+\textit{char * parser\_func::get\_argument(char *work)}
+
+\textit{//get the argument of a predefined function}
+
+\textit{\{}
+
+\textit{\qquad char *temp;}
+
+\textit{\qquad prog++;}
+
+\textit{\qquad long i=0;}
+
+\textit{\qquad long parantheses=1;}
+
+\textit{\qquad while(parantheses!=0)}
+
+\textit{\qquad \{}
+
+\textit{\qquad \qquad if(*prog=='(') parantheses++;}
+
+\textit{\qquad \qquad if(*prog==')') parantheses--;}
+
+\textit{\qquad \qquad if(parantheses==0) break;}
+
+\textit{\qquad \qquad work[i]=*prog;}
+
+\textit{\qquad \qquad i++;}
+
+\textit{\qquad \qquad prog++;}
+
+\textit{\qquad \}}
+
+\textit{\qquad prog++;}
+
+\textit{\qquad temp=prog;}
+
+\textit{\qquad prog=work;}
+
+\textit{\qquad return temp;}
+
+\textit{\}}
+
+\begin{thebibliography}{9}
+\bibitem{Rosca} Rosca,I., "Lectii de Ecuatii fiderentiale si cu derivate
+partiale",Editura Fundatiei "Romania de Maine",2000,ISBN 973-582-190-7
+
+\bibitem{Schildt} Schildt, H.,"C manual complet",Editura
+"Teora",1998,ISBN973-601-471-1
+
+\bibitem{analiza1} Grigore,G., Note de curs Analiza Matematica
+I,Universitatea Spiru Haret, Facultatea de Matematica-Informatica.
+
+\bibitem{an2} Grigore,G., Note de curs Analiza Numerica II,Universitatea
+Spiru Haret, Facultatea de Matematica-Informatica.
+\end{thebibliography}
+
+\end{document}

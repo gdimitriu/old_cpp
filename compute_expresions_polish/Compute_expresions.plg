@@ -1,0 +1,45 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: Compute_expresions - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\WINDOWS\TEMP\RSPF150.TMP" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/Compute_expresions.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\my-data\My-History\university-projects\Compute_expresions\calculexp.cpp"
+"E:\my-data\My-History\university-projects\Compute_expresions\Compute_expresions.cpp"
+]
+Creating command line "cl.exe @C:\WINDOWS\TEMP\RSPF150.TMP" 
+Creating temporary file "C:\WINDOWS\TEMP\RSPF151.TMP" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Debug/Compute_expresions.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\my-data\My-History\university-projects\Compute_expresions\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\WINDOWS\TEMP\RSPF151.TMP" 
+Creating temporary file "C:\WINDOWS\TEMP\RSPF152.TMP" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/Compute_expresions.pdb" /debug /machine:I386 /out:"Debug/Compute_expresions.exe" /pdbtype:sept 
+".\Debug\calculexp.obj"
+".\Debug\Compute_expresions.obj"
+".\Debug\StdAfx.obj"
+]
+Creating command line "link.exe @C:\WINDOWS\TEMP\RSPF152.TMP"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+calculexp.cpp
+Compute_expresions.cpp
+Generating Code...
+Linking...
+
+
+
+<h3>Results</h3>
+Compute_expresions.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

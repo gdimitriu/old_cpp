@@ -1,0 +1,38 @@
+\chapter{Introducere}
+
+\hspace{5mm}Acesta este implementarea programului rshell (Remote Shell)
+pentru masinile UNIX. El ne permite sa executam comenzi pe masina target,
+aceste sunt comenzi Bash, returnind apoi rezultatul pe masina host. Este un
+program mai simplu decit telnet-ul.
+
+Limitarile sunt:
+\begin{itemize}
+\item Nu suporta login, su si alte schimbari de user.
+\item Nesuportind optiunile spuse mai inainte se poatevedea ca userul care
+porneste rshell-ul are accesul ingradit sau are complet accesul in functie
+de userul care a lansat serverul pe masina target.
+\item Nu suprota apelul de programe care lucreaza grafic sau cu consola, de
+exemplu nu se poate lansa un program X, el se lanseaza dar ruleaza pe masina
+target si pierdem controlul lui.
+\item Nu suporta aducerea de fisiere, deoarece a fost gindit ca un program
+care ruleaza numai pe masina target.
+\end{itemize}
+
+In toata lucrarea se numeste {\bf masina target} masina care ruleaza
+servarul si {\bf masina host} masina de pe care se lanseaza rshell-ul adica
+clientul.
+
+Programul este implementat in ANSI C, pentru masinile UNIX, avind o
+portabilitate maxima. Cerinta este ca masina target sa aiba instalat
+interpretorul {\bf bash} pe care se bazeaza programul si sa aiba un
+compilator compatibil gcc. Ca metoda de comunicare cu reteaua s-a am
+stabilit ca se va lucra pe socketuri cu conexiune adica TCP, deoarece este
+mai sigur, programul neavind confirmari pe parcurs.
+
+Comenzile se introduc dupa apelarea programului cu {\bf rshell "IP\_adress"}
+si trebuie neaparat ca intre comanda si argument sa se lase un spatiu.
+Pentru iesiere se tasteaza exit. Daca se observa ca listingul rezultat este
+prea lung se poate face un pipe catre orice pager dar se incurajeaza pagerul
+less.
+
+Servarul din constructie nu accepta decit un singur client.
