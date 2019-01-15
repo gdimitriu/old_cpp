@@ -1,0 +1,27 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by calculator.rc
+!
+      integer, parameter :: IDM_ABOUTBOX                    = 16
+      integer, parameter :: IDD_ABOUTBOX                    = 100
+      integer, parameter :: IDS_ABOUTBOX                    = 101
+      integer, parameter :: IDD_CALCULATOR_DIALOG           = 102
+      integer, parameter :: IDR_MAINFRAME                   = 128
+      integer, parameter :: IDC_0                           = 1000
+      integer, parameter :: IDC_1                           = 1001
+      integer, parameter :: IDC_2                           = 1002
+      integer, parameter :: IDC_3                           = 1003
+      integer, parameter :: IDC_4                           = 1004
+      integer, parameter :: IDC_5                           = 1005
+      integer, parameter :: IDC_6                           = 1006
+      integer, parameter :: IDC_7                           = 1007
+      integer, parameter :: IDC_8                           = 1008
+      integer, parameter :: IDC_9                           = 1009
+      integer, parameter :: IDC_add                         = 1010
+      integer, parameter :: IDC_sub                         = 1011
+      integer, parameter :: IDC_egal                        = 1012
+      integer, parameter :: IDC_rez                         = 1013
+      integer, parameter :: IDC_pct                         = 1014
+      integer, parameter :: IDC_del                         = 1015
+      integer, parameter :: IDC_mul                         = 1016
+      integer, parameter :: IDC_div                         = 1017
