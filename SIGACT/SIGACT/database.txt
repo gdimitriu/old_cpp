@@ -1,0 +1,16 @@
+Brian Kernighan	Peter Weiner	Princepton	1969
+C L. Lucchesi	D.H. Younger	Waterloo	1976
+C.L. Liu	Dean Arden	MIT	1962
+Andy Yao	C.L. Liu	Harward	1972
+Scot Drysdale	Andy Yao	Standford	1979
+David Levine	Scot Drysdale	Dartmouth	1986
+Barry Schaudt	Scot Drysdale	Dartmouth	1991
+Ken Clarkson	Andy Yao	Standford	1984
+Joan Feigenbaum	Andy Yao	Standford	1986
+Weizhen Mao	Andy Yao	Princepton	1990
+Don Friesen	C.L. Liu	UIUC	1978
+Mike Langston	Don Friesen	Texas A&M	1981
+Shmuel Zaks	C.L. Liu	Texas A&M	1981
+Hon Wai Leong	C.L. Liu	UIUC	1986
+Pravin Vaidya	C.L. Liu	UIUC	1986
+Ran Liberskind-Hadas	C.L. Liu	UIUC	1993
