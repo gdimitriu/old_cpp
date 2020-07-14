@@ -1,0 +1,17 @@
+!MS$FREEFORM
+! Microsoft Developer Studio generated include file.
+! Used by test_8_5.rc
+!
+      integer, parameter :: IDM_ABOUTBOX                    = 16
+      integer, parameter :: IDD_ABOUTBOX                    = 100
+      integer, parameter :: IDS_ABOUTBOX                    = 101
+      integer, parameter :: IDD_TEST_8_5_DIALOG             = 102
+      integer, parameter :: IDR_MAINFRAME                   = 128
+      integer, parameter :: IDC_ABORT                       = 1000
+      integer, parameter :: IDC_NEXT                        = 1001
+      integer, parameter :: IDC_Enunt                       = 1002
+      integer, parameter :: IDC_b1                          = 1003
+      integer, parameter :: IDC_b2                          = 1004
+      integer, parameter :: IDC_b3                          = 1005
+      integer, parameter :: IDC_b4                          = 1006
+      integer, parameter :: IDC_b5                          = 1007
