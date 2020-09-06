@@ -1,0 +1,12 @@
+Name: Guru Ghita
+Adress: Calea Serban Voda Nr 133, sect 4
+City: Bucharest
+
+Name: Gica Idiot
+City:Bucharest
+Adress: Calea Serban Voda Nr 133, sect 4
+
+Name: Cretin Ion
+Gender: male
+City:	Bucharest
+Adress: Calea Serban Voda nr 133, sect 4

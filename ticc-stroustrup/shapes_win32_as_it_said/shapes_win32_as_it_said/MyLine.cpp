@@ -1,0 +1,138 @@
+#include "MyLine.h"
+#include <math.h>
+
+CMyLine::CMyLine(void):CMyShape()
+{
+}
+//this is the normal constructor
+CMyLine::CMyLine(CMyPoint &first,CMyPoint &second)
+{
+	//diagonal
+	if((first.getX()<second.getX())&&(first.getY()<second.getY()))
+	{
+		m_nw=first;
+		m_se=second;
+		m_c.setX(first.getX()+abs(int((second.getX()-first.getX())/2)));
+		m_c.setY(first.getY()+abs(int((second.getY()-first.getY())/2)));
+		m_sw=m_ne=m_s=m_n=m_e=m_w=m_c;
+		return;
+	}
+	//diagonal
+	if((first.getX()>second.getX())&&(first.getY()<second.getY()))
+	{
+		m_sw=second;
+		m_ne=first;
+		m_c.setX(second.getX()+abs(int((second.getX()-first.getX())/2)));
+		m_c.setY(first.getY()+abs(int((second.getY()-first.getY())/2)));
+		m_se=m_nw=m_s=m_n=m_e=m_w=m_c;
+		return;
+	}
+	//diagonal
+	if((first.getX()<second.getX())&&(first.getY()>second.getY()))
+	{
+		m_sw=first;
+		m_ne=second;
+		m_c.setX(first.getX()+abs(int((second.getX()-first.getX())/2)));
+		m_c.setY(second.getY()+abs(int((second.getY()-first.getY())/2)));
+		m_se=m_nw=m_s=m_n=m_e=m_w=m_c;
+		return;
+	}
+	//diagonal
+	if((first.getX()>second.getX())&&(first.getY()>second.getY()))
+	{
+		m_se=first;
+		m_nw=second;
+		m_c.setX(second.getX()+abs(int((second.getX()-first.getX())/2)));
+		m_c.setY(second.getY()+abs(int((second.getY()-first.getY())/2)));
+		m_sw=m_ne=m_s=m_n=m_e=m_w=m_c;
+		return;
+	}
+	//horizontal
+	if((first.getX()<second.getX())&&(first.getY()==second.getY()))
+	{
+		m_w=first;
+		m_e=second;
+		m_c.setX(first.getX()+abs(int((second.getX()-first.getX())/2)));
+		m_c.setY(first.getX()+abs(int((second.getY()-first.getY())/2)));
+		m_s=m_n=m_c;
+		m_ne=m_se=m_e;
+		m_nw=m_sw=m_w;
+		return;
+	}
+	//horizontal
+	if((first.getX()>second.getX())&&(first.getY()==second.getY()))
+	{
+		m_e=first;
+		m_w=second;
+		m_c.setX(second.getX()+abs(int((second.getX()-first.getX())/2)));
+		m_c.setY(second.getY()+abs(int((second.getY()-first.getY())/2)));
+		m_s=m_n=m_c;
+		m_ne=m_se=m_e;
+		m_nw=m_sw=m_w;
+		return;
+	}
+	//vertical lines
+	if(first.getX()==second.getX())
+	{
+		if(first.getY()>second.getY())
+		{
+			m_n=first;
+			m_s=second;
+			m_c.setX(first.getX());
+			m_c.setY(second.getY()+abs(int((second.getY()-first.getY())/2)));
+		}
+		else
+		{
+			if(first.getY()<second.getY())
+			{
+				m_n=second;
+				m_s=first;
+				m_c.setX(first.getX());
+				m_c.setY(first.getY()+abs(int((second.getY()-first.getY())/2)));
+			}
+			else
+			{
+				m_c=m_n=m_s=first;
+			}
+		}
+		m_e=m_w=m_c;
+		m_ne=m_nw=m_n;
+		m_se=m_sw=m_s;
+	}
+}
+
+CMyLine::~CMyLine(void)
+{
+}
+
+void CMyLine::draw(void)
+{
+	//horizontal line
+	if(m_c!=m_w)
+	{
+		m_pDC->MoveTo(m_w.getX(),m_w.getY());
+		m_pDC->LineTo(m_e.getX(),m_e.getY());
+		return;
+	}
+	//vertical line
+	if(m_n!=m_c)
+	{
+		m_pDC->MoveTo(m_n.getX(),m_n.getY());
+		m_pDC->LineTo(m_s.getX(),m_s.getY());
+		return;
+	}
+	//diagonal lines
+	if(m_sw!=m_c)
+	{
+		m_pDC->MoveTo(m_sw.getX(),m_sw.getY());
+		m_pDC->LineTo(m_ne.getX(),m_ne.getY());
+		return;
+	}
+	if(m_nw!=m_c)
+	{
+		m_pDC->MoveTo(m_nw.getX(),m_nw.getY());
+		m_pDC->LineTo(m_se.getX(),m_se.getY());
+		return;
+	}
+	m_pDC->SetPixel(m_c.getX(),m_c.getY(),m_color);
+}

@@ -1,0 +1,10 @@
+#define PASCAL __stdcall;
+typedef int BOOL;
+typedef const char * LPCSTR;
+typedef unsigned char BYTE;
+typedef unsigned short WORD;
+typedef unsigned long DWORD;
+typedef long LONG;
+typedef long long LONGLONG;
+typedef unsigned int UINT;
+typedef unsigned long long ULONGLONG;
